@@ -56,17 +56,17 @@ public class UserDataManager : BaseManager<UserDataManager>
 
     #region Item
     //Key : ItemID, Value : RefreshFunc
-    private Dictionary<int, UnityEvent<uint>> m_dicItemCountRefreshEvent = new Dictionary<int, UnityEvent<uint>>();
+    private Dictionary<uint, UnityEvent<uint>> m_dicItemCountRefreshEvent = new Dictionary<uint, UnityEvent<uint>>();
 
     #region RefreshEvent
-    public void AddItemCountRefreshEvent(int nItemID, UnityAction<uint> funcRefresh)
+    public void AddItemCountRefreshEvent(uint itemID, UnityAction<uint> funcRefresh)
     {
-        if(this.m_dicItemCountRefreshEvent.ContainsKey(nItemID) == false)
+        if(this.m_dicItemCountRefreshEvent.ContainsKey(itemID) == false)
         {
-            this.m_dicItemCountRefreshEvent.Add(nItemID, new UnityEvent<uint>());
+            this.m_dicItemCountRefreshEvent.Add(itemID, new UnityEvent<uint>());
         }
 
-        this.m_dicItemCountRefreshEvent[nItemID].AddListener(funcRefresh);
+        this.m_dicItemCountRefreshEvent[itemID].AddListener(funcRefresh);
     }
 
     private void doItemCountRefreshEvent(stItem stItem)
@@ -79,12 +79,12 @@ public class UserDataManager : BaseManager<UserDataManager>
 
     public stItem GetInventoryItem(TableData.TableItem.eID eItemID)
     {
-        return this.GetInventoryItem((int)eItemID);
+        return this.GetInventoryItem((uint)eItemID);
     }
 
-    public stItem GetInventoryItem(int nItemID)
+    public stItem GetInventoryItem(uint itemID)
     {
-        return this.Inventory.GetItem(nItemID);
+        return this.Inventory.GetItem(itemID);
     }
 
     private stItem addItem(stItem stItemInfo)
@@ -116,28 +116,28 @@ public class UserDataManager : BaseManager<UserDataManager>
         return this.UseItem(stItemInfo.ItemID, stItemInfo.Count);
     }
 
-    public bool UseItem(int nItemID, uint nUseCount)
+    public bool UseItem(uint itemID, uint nUseCount)
     {
         //없는 아이템이면 못씀
-        if(this.Inventory.IsContainsItem(nItemID) == false)
+        if(this.Inventory.IsContainsItem(itemID) == false)
         {
             ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 없다!");
             return false;
         }
 
         //갖고 있는 것보다 적으면 못씀
-        if(this.Inventory.IsUseable(nItemID, nUseCount) == false)
+        if(this.Inventory.IsUseable(itemID, nUseCount) == false)
         {
             ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 모자라다!");
             return false;
         }
 
         //아이템 사용
-        this.Inventory.UseItem(nItemID, nUseCount);
+        this.Inventory.UseItem(itemID, nUseCount);
 
         //UI 업데이트
-        this.doItemCountRefreshEvent(this.Inventory.GetItem(nItemID));
-        this.checkNewMark(nItemID);
+        this.doItemCountRefreshEvent(this.Inventory.GetItem(itemID));
+        this.checkNewMark(itemID);
 
         return true;
     }
@@ -155,22 +155,22 @@ public class UserDataManager : BaseManager<UserDataManager>
         return false;
     }
 
-    public bool IsContainsItem(int nItemID)
+    public bool IsContainsItem(uint itemID)
     {
-        return this.Inventory.IsContainsItem(nItemID);
+        return this.Inventory.IsContainsItem(itemID);
     }
 
     public void RefreshNewMark()
     {
-        for(int i = (int)TableData.TableItem.eID.Gold, nMax = (int)TableData.TableItem.eID.Dia; i <= nMax; ++i)
+        for(uint i = (int)TableData.TableItem.eID.Gold, nMax = (int)TableData.TableItem.eID.Dia; i <= nMax; ++i)
         {
             this.checkNewMark(i);
         }
     }
 
-    private void checkNewMark(int nItemID)
+    private void checkNewMark(uint itemID)
     {
-        switch((TableData.TableItem.eID)nItemID)
+        switch((TableData.TableItem.eID)itemID)
         {
             case TableData.TableItem.eID.Gold:
             case TableData.TableItem.eID.Dia:

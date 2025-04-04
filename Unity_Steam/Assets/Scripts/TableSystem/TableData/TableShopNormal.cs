@@ -39,15 +39,15 @@ namespace TableData
         protected Dictionary<int, List<D>> m_dicShopByCateogry = new Dictionary<int, List<D>>();
 
         //Key : ShopID, Value : List<stItem>
-        protected Dictionary<int, List<stItem>> m_dicRewardList = new Dictionary<int, List<stItem>>();
+        protected Dictionary<uint, List<stItem>> m_dicRewardList = new Dictionary<uint, List<stItem>>();
 
-        abstract public string GetString(int nShopID);
+        abstract public string GetString(uint tableID);
         
-        public List<stItem> GetRewardList(int nShopID)
+        public List<stItem> GetRewardList(uint tableID)
         {
-            if(this.m_dicRewardList.ContainsKey(nShopID) == false) return new List<stItem>();
+            if(this.m_dicRewardList.ContainsKey(tableID) == false) return new List<stItem>();
 
-            return this.m_dicRewardList[nShopID];
+            return this.m_dicRewardList[tableID];
         }
 
         public List<D> GetListByCategory(int nTab)
@@ -57,62 +57,62 @@ namespace TableData
             return this.m_dicShopByCateogry[nTab];
         }
 
-        public bool IsReadyAD(int nShopID)
+        public bool IsReadyAD(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return false;
+            if(base.ContainsKey(tableID) == false) return false;
             
-            if(this.GetCurrBuyableCount(nShopID) == 0) return false;
+            if(this.GetCurrBuyableCount(tableID) == 0) return false;
 
             //TODO Userdata
             //return UserDataManager.Instance.Time.IsActive(UserData_Time.eSAVE_TYPE.Shop, nShopID) == false;
             return true;
         }
 
-        public bool IsDaily(int nShopID)
+        public bool IsDaily(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return false;
+            if(base.ContainsKey(tableID) == false) return false;
 
-            return base.GetData(nShopID).limitType == (int)eLIMMIT_TYPE.Daily;
+            return base.GetData(tableID).limitType == (int)eLIMMIT_TYPE.Daily;
         }
 
-        public int GetCurrBuyableCount(int nShopID)
+        public int GetCurrBuyableCount(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return 0;
+            if(base.ContainsKey(tableID) == false) return 0;
 
             //TODO Userdata
             //return base.GetData(nShopID).limitCount - UserDataManager.Instance.Shop.GetShopBuyCount(nShopID);
-            return base.GetData(nShopID).limitCount - 0;
+            return base.GetData(tableID).limitCount - 0;
         }
 
-        public bool IsADBuyable(int nShopID)
+        public bool IsADBuyable(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return false;
-            if(base.GetData(nShopID).purchaseType != (int)ePURCHASE_TYPE.AD) return false;
+            if(base.ContainsKey(tableID) == false) return false;
+            if(base.GetData(tableID).purchaseType != (int)ePURCHASE_TYPE.AD) return false;
 
             //TODO Userdata
             //return base.GetData(nShopID).limitCount > UserDataManager.Instance.Shop.GetShopBuyCount(nShopID);
-            return base.GetData(nShopID).limitCount > 0;
+            return base.GetData(tableID).limitCount > 0;
         }
     }
 
     public class TableData_ShopBase : iTableData
     {
         //tableID type productID purchaseType expose sort category strID strIcon limitType limitCount coolTime costItemID costValue listRewardItemID listRewardValue
-        public int tableID { get; set; }
+        public uint tableID { get; set; }
         public int type { get; set; }
         public string productID { get; set; }
         public int purchaseType { get; set; }
         public int expose { get; set; }
         public int sort { get; set; }
         public int category { get; set; }
-        public int strID { get; set; }
+        public uint strID { get; set; }
         public string strIcon { get; set; }
         public int limitType { get; set; }
         public int limitCount { get; set; }
         public float coolTime { get; set; }
-        public int costItemID { get; set; }
+        public uint costItemID { get; set; }
         public uint costValue { get; set; }
-        public List<int> listRewardItemID { get; set; }
+        public List<uint> listRewardItemID { get; set; }
         public List<uint> listRewardValue { get; set; }
         public stItem stCost { get => new stItem(this.costItemID, this.costValue); }
     }
@@ -132,7 +132,7 @@ namespace TableData
             base.m_dicShopByCateogry.Clear();
             base.m_dicRewardList.Clear();
             TableData_ShopNormal data = null;
-            Dictionary<int, TableData_ShopNormal>.Enumerator enumData = base.GetEnumerator();
+            Dictionary<uint, TableData_ShopNormal>.Enumerator enumData = base.GetEnumerator();
             while(enumData.MoveNext())
             {
                 data = enumData.Current.Value;
@@ -156,28 +156,28 @@ namespace TableData
             }
         }
 
-        override public string GetString(int nShopID)
+        override public string GetString(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return $"{nShopID} 없는 상품 ㅠ";
+            if(base.ContainsKey(tableID) == false) return $"{tableID} 없는 상품 ㅠ";
 
-            TableData_ShopNormal data = base.GetData(nShopID);
+            TableData_ShopNormal data = base.GetData(tableID);
             switch((eCATEGORY)data.category)
             {
                 case eCATEGORY.Dia: return $"{ProjectManager.Instance.Table.Item.GetString_ItemCount(new stItem(data.listRewardItemID[0], data.listRewardValue[0]))}";
 
                 case eCATEGORY.Food:
                 case eCATEGORY.Costume:
-                return string.Format(ProjectManager.Instance.Table.GetString(data.strID), data.listRewardValue[0]);
+                return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID), data.listRewardValue[0]);
             }
 
-            return $"{nShopID} 문제있는디";
+            return $"{tableID} 문제있는디";
         }
 
-        public string GetStringBonus(int nShopID)
+        public string GetStringBonus(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return "";
+            if(base.ContainsKey(tableID) == false) return "";
 
-            ulong uBonus = base.GetData(nShopID).bonusValue;
+            ulong uBonus = base.GetData(tableID).bonusValue;
             if(uBonus == 0) return "";
             return $"+STR 보너스 {uBonus}+STR 개";
         }

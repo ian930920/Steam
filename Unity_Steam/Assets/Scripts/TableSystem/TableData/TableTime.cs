@@ -23,26 +23,26 @@ namespace TableData
 
         public float GetDurationTime(eID eTableID)
         {
-            return base.GetData((int)eTableID).durationTime;
+            return base.GetData((uint)eTableID).durationTime;
         }
 
         public float GetCoolTime(eID eTableID)
         {
-            return base.GetData((int)eTableID).coolTime;
+            return base.GetData((uint)eTableID).coolTime;
         }
 
-        public TimeManager.eTYPE GetType(int nTimeID)
+        public TimeManager.eTYPE GetType(uint tableID)
         {
-            if(base.ContainsKey(nTimeID) == false) return TimeManager.eTYPE.Game;
+            if(base.ContainsKey(tableID) == false) return TimeManager.eTYPE.Game;
 
-            return (TimeManager.eTYPE)base.GetData(nTimeID).type;
+            return (TimeManager.eTYPE)base.GetData(tableID).type;
         }
     }
 
     public class TableData_Time : iTableData
     {
         //tableID coolTime durationTime type
-        public int tableID { get; set; }
+        public uint tableID { get; set; }
         public float coolTime { get; set; }
         public float durationTime { get; set; }
         public int type { get; set; }

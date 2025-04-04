@@ -18,7 +18,7 @@ namespace TableData
     public class TableData_Resource : iTableData
     {
         //tableID type path
-        public int tableID { get; set; }
+        public uint tableID { get; set; }
         public int type { get; set; }
         public string path { get; set; }
     }

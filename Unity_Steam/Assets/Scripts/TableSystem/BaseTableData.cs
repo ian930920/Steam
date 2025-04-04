@@ -21,7 +21,7 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
     }
 
     //Key : ID, Value : Data
-	private Dictionary<int, D> m_dicData = new Dictionary<int, D>();
+	private Dictionary<uint, D> m_dicData = new Dictionary<uint, D>();
 	protected List<D> m_listData = new List<D>();
     public int DataCount { get => this.m_dicData.Count; }
 
@@ -92,7 +92,7 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
     /// </summary>
     /// <param name="dicData">로드한 테이블</param>
     /// <returns>로드해온 테이블이 비어있었는지</returns>
-    private bool addData(Dictionary<int, D> dicData)
+    private bool addData(Dictionary<uint, D> dicData)
 	{
         if(dicData == null) return false;
 
@@ -102,7 +102,7 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
 		return true;
 	}
 
-    public D GetData(int nID)
+    public D GetData(uint nID)
     {
         if(this.m_dicData.ContainsKey(nID) == false)
         {
@@ -123,12 +123,12 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
         return this.m_listData[UnityEngine.Random.Range(0, this.m_listData.Count)];
     }
 
-    public Dictionary<int, D>.Enumerator GetEnumerator()
+    public Dictionary<uint, D>.Enumerator GetEnumerator()
     {
         return this.m_dicData.GetEnumerator();
     }
 
-    public bool ContainsKey(int nID)
+    public bool ContainsKey(uint nID)
     {
         return this.m_dicData.ContainsKey(nID);
     }
@@ -136,7 +136,7 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
     protected virtual void dataProcessing()
     {
         iTableData data = null;
-        Dictionary<int, D>.Enumerator enumData = this.GetEnumerator();
+        Dictionary<uint, D>.Enumerator enumData = this.GetEnumerator();
         while(enumData.MoveNext())
         {
             data = enumData.Current.Value as iTableData;

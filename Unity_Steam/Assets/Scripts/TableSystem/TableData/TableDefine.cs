@@ -8,19 +8,19 @@ namespace TableData
 
         public ulong GetUlongValue(eID eID)
         {
-            return base.GetData((int)eID).uValue;
+            return base.GetData((uint)eID).uValue;
         }
 
         public float GetFloatValue(eID eID)
         {
-            return base.GetData((int)eID).fValue;
+            return base.GetData((uint)eID).fValue;
         }
     }
 
     public class TableData_Define : iTableData
     {
         //tableID uValue fValue
-        public int tableID { get; set; }
+        public uint tableID { get; set; }
         public ulong uValue { get; set; }
         public float fValue { get; set; }
     }

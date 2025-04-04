@@ -43,7 +43,7 @@ public class BaseSound : MonoBehaviour
 
     public void Play(eID eSoundID, eTYPE eType, float fVolume)
     {
-        this.Play(ProjectManager.Instance.Resource.GetAudioClip((int)eSoundID), eType, fVolume);
+        this.Play(ProjectManager.Instance.Resource.GetAudioClip((uint)eSoundID), eType, fVolume);
     }
 
     public void Play(AudioClip clip, eTYPE eType, float fVolume)

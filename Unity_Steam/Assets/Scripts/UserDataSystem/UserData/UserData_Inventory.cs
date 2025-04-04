@@ -12,12 +12,12 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 	{
 		if(base.Data.DicInventory.Count == 0)
 		{
-			Dictionary<int, uint>.Enumerator enumInven;
-			Dictionary<int, Dictionary<int, uint>>.Enumerator enumDic = base.Data.DicInventory.GetEnumerator();
+			Dictionary<uint, uint>.Enumerator enumInven;
+			Dictionary<int, Dictionary<uint, uint>>.Enumerator enumDic = base.Data.DicInventory.GetEnumerator();
 			while(enumDic.MoveNext())
 			{
 				int nInvenType = (int)enumDic.Current.Key;
-				if(base.Data.DicInventory.ContainsKey(nInvenType) == false) base.Data.DicInventory.Add(nInvenType, new Dictionary<int, uint>());
+				if(base.Data.DicInventory.ContainsKey(nInvenType) == false) base.Data.DicInventory.Add(nInvenType, new Dictionary<uint, uint>());
 
 				enumInven = enumDic.Current.Value.GetEnumerator();
 				while(enumInven.MoveNext())
@@ -28,36 +28,36 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		}
 	}
 
-	public bool IsContainsItem(int nItemID)
+	public bool IsContainsItem(uint itemID)
     {
 		//인벤에 있는지 확인
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(nItemID);
+		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
 		if(base.Data.DicInventory.ContainsKey(nInvenType) == false) return false;
 
-		return base.Data.DicInventory[nInvenType].ContainsKey(nItemID);
+		return base.Data.DicInventory[nInvenType].ContainsKey(itemID);
     }
 
 	public bool IsContainsItem(TableData.TableItem.eID eItemID)
     {
-		return this.IsContainsItem((int)eItemID);
+		return this.IsContainsItem((uint)eItemID);
     }
 
-	public stItem GetItem(int nItemID)
+	public stItem GetItem(uint itemID)
     {
-		return new stItem(nItemID, this.getItemCount(nItemID));
+		return new stItem(itemID, this.getItemCount(itemID));
     }
 
 	public stItem GetItem(TableData.TableItem.eID eItemID)
     {
-		return this.GetItem((int)eItemID);
+		return this.GetItem((uint)eItemID);
     }
 
-	private uint getItemCount(int nItemID)
+	private uint getItemCount(uint itemID)
     {
-		if(this.IsContainsItem(nItemID) == false) return 0;
+		if(this.IsContainsItem(itemID) == false) return 0;
 
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(nItemID);
-		return base.Data.DicInventory[nInvenType][nItemID];
+		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		return base.Data.DicInventory[nInvenType][itemID];
     }
 
 	public int GetCountByCategory(TableData.TableItem.eINVEN_TYPE eType)
@@ -67,34 +67,34 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		return base.Data.DicInventory[(int)eType].Count;
 	}
 
-	public bool IsUseable(int nItemID, uint nUseCount)
+	public bool IsUseable(uint itemID, uint nUseCount)
 	{
-		return nUseCount <= this.getItemCount(nItemID);
+		return nUseCount <= this.getItemCount(itemID);
 	}
 
-    public void AddItem(int nItemID, uint nCount)
+    public void AddItem(uint itemID, uint nCount)
     {
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(nItemID);
-		if(this.IsContainsItem(nItemID) == false)
+		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		if(this.IsContainsItem(itemID) == false)
 		{
-			if(base.Data.DicInventory.ContainsKey(nInvenType) == false) base.Data.DicInventory.Add(nInvenType, new Dictionary<int, uint>());
-			base.Data.DicInventory[nInvenType].Add(nItemID, nCount);
+			if(base.Data.DicInventory.ContainsKey(nInvenType) == false) base.Data.DicInventory.Add(nInvenType, new Dictionary<uint, uint>());
+			base.Data.DicInventory[nInvenType].Add(itemID, nCount);
 		}
-		else base.Data.DicInventory[nInvenType][nItemID] += nCount;
+		else base.Data.DicInventory[nInvenType][itemID] += nCount;
 
 		//저장
 		base.SaveClientData();
 	}
 
-    public void UseItem(int nItemID, uint nCount)
+    public void UseItem(uint itemID, uint nCount)
     {
 		//0이면 할 필요 없음
 		if(nCount == 0) return;
 
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(nItemID);
+		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
 
-		uint nResult = base.Data.DicInventory[nInvenType][nItemID] - nCount;
-		base.Data.DicInventory[nInvenType][nItemID] = nResult;
+		uint nResult = base.Data.DicInventory[nInvenType][itemID] - nCount;
+		base.Data.DicInventory[nInvenType][itemID] = nResult;
 
 		//저장
 		base.SaveClientData();
@@ -118,5 +118,5 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 public class JsonData_Inventory : BaseJsonData
 {
 	//Key : InvenType, Value : <Key : ItemID, Value : Value>
-	public Dictionary<int, Dictionary<int, uint>> DicInventory = new Dictionary<int, Dictionary<int, uint>>();
+	public Dictionary<int, Dictionary<uint, uint>> DicInventory = new Dictionary<int, Dictionary<uint, uint>>();
 }

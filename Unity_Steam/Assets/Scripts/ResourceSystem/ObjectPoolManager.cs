@@ -8,8 +8,8 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
     public static readonly string STR_NAME_OBJECTPOOL = "Panel_ObjectPool";
     public static readonly string STR_NAME_SOUND = "Panel_Sound";
 
-    private Dictionary<int, ObjectPool> m_dicObjectPool = new Dictionary<int, ObjectPool>();
-	private Dictionary<int, ObjectPool> m_dicFx = new Dictionary<int, ObjectPool>();
+    private Dictionary<uint, ObjectPool> m_dicObjectPool = new Dictionary<uint, ObjectPool>();
+	private Dictionary<uint, ObjectPool> m_dicFx = new Dictionary<uint, ObjectPool>();
 	private ObjectPool m_opSound = null;
 
     public GameObject GobjParent { private set; get; } = null;
@@ -80,13 +80,13 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
         Transform transFxUI = null; //CustomSceneManager.Instance.MainScene.TransFxUIRoot;
 
         TableData.TableData_ObjectPool data = null;
-        Dictionary<int, TableData.TableData_ObjectPool>.Enumerator enumData = ProjectManager.Instance.Table.ObjectPool.GetEnumerator();
+        Dictionary<uint, TableData.TableData_ObjectPool>.Enumerator enumData = ProjectManager.Instance.Table.ObjectPool.GetEnumerator();
         while(enumData.MoveNext())
         {
             data = enumData.Current.Value;
             if(data.poolCount == 0) continue;
 
-            int nKey = data.tableID;
+            uint nKey = data.tableID;
             switch((TableData.TableObjectPool.eTYPE)data.type)
             {
                 case TableData.TableObjectPool.eTYPE.Fx:
@@ -111,28 +111,27 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
 
     public T GetPoolObjectComponent<T>(TableData.TableObjectPool.eID eID) where T : class
     {
-        int nID = (int)eID;
-        if(this.m_dicObjectPool.ContainsKey(nID) == false)
+        uint tableID = (uint)eID;
+        if(this.m_dicObjectPool.ContainsKey(tableID) == false)
         {
             //Debug.Log(eID);
             return null;
         }
 
-		return this.m_dicObjectPool[nID].GetObjectComponent<T>();
+		return this.m_dicObjectPool[tableID].GetObjectComponent<T>();
     }
 
     public GameObject GetPoolObject(TableData.TableObjectPool.eID eID)
     {
-        int nID = (int)eID;
+        uint tableID = (uint)eID;
+        if(this.m_dicObjectPool.ContainsKey(tableID) == false) return null;
 
-        if(this.m_dicObjectPool.ContainsKey(nID) == false) return null;
-
-        return this.m_dicObjectPool[nID].GetObejct();
+        return this.m_dicObjectPool[tableID].GetObejct();
     }
 
     private void inactiveAllObjects()
     {
-        Dictionary<int, ObjectPool>.Enumerator enumOP = this.m_dicObjectPool.GetEnumerator();
+        Dictionary<uint, ObjectPool>.Enumerator enumOP = this.m_dicObjectPool.GetEnumerator();
         while(enumOP.MoveNext())
         {
             enumOP.Current.Value.InactiveAllObjects();
@@ -149,47 +148,47 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
 
     public void DeactiveAllObjects(TableData.TableObjectPool.eID eID)
     {
-        int nID = (int)eID;
-        if(this.m_dicObjectPool.ContainsKey(nID) == false) return;
+        uint tableID = (uint)eID;
+        if(this.m_dicObjectPool.ContainsKey(tableID) == false) return;
 
-        this.m_dicObjectPool[nID].InactiveAllObjects();
+        this.m_dicObjectPool[tableID].InactiveAllObjects();
     }
 
     #region Effect
     public void PlayEffect(TableData.TableObjectPool.eID eEffectID, Vector3 vecPos)
     {
-        int nResKey = (int)eEffectID;
-        if(this.m_dicFx.ContainsKey(nResKey) == false) return;
+        uint resKey = (uint)eEffectID;
+        if(this.m_dicFx.ContainsKey(resKey) == false) return;
 
         //재생
-        this.m_dicFx[nResKey].GetObjectComponent<BaseFx>().Play(vecPos);
+        this.m_dicFx[resKey].GetObjectComponent<BaseFx>().Play(vecPos);
     }
 
     public void PlayItemDropEffect(int nItemID, Vector3 vecPos)
     {
-        int nResKey = (int)TableData.TableObjectPool.eID.Effect_ItemDrop;
-        if(this.m_dicFx.ContainsKey(nResKey) == false) return;
+        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_ItemDrop;
+        if(this.m_dicFx.ContainsKey(resKey) == false) return;
 
         //재생
-        this.m_dicFx[nResKey].GetObjectComponent<Fx_Particle_Item>().SetItem(nItemID, vecPos);
+        this.m_dicFx[resKey].GetObjectComponent<Fx_Particle_Item>().SetItem(nItemID, vecPos);
     }
     
     public void PlayCountEffectByBigInt(System.Numerics.BigInteger nValue, Vector3 vecPos)
     {
-        int nResKey = (int)TableData.TableObjectPool.eID.Effect_Count;
-        if(this.m_dicObjectPool.ContainsKey(nResKey) == false) return;
+        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count;
+        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
 
         //재생
-        this.m_dicObjectPool[nResKey].GetObjectComponent<Fx_Animation_Count>().Init(nValue, vecPos);
+        this.m_dicObjectPool[resKey].GetObjectComponent<Fx_Animation_Count>().Init(nValue, vecPos);
     }
 
     public void PlayCountEffectByUlong(ulong uValue, Vector3 vecPos)
     {
-        int nResKey = (int)TableData.TableObjectPool.eID.Effect_Count;
-        if(this.m_dicObjectPool.ContainsKey(nResKey) == false) return;
+        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count;
+        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
 
         //재생
-        this.m_dicObjectPool[nResKey].GetObjectComponent<Fx_Animation_Count>().Init(uValue, vecPos);
+        this.m_dicObjectPool[resKey].GetObjectComponent<Fx_Animation_Count>().Init(uValue, vecPos);
     }
     #endregion
 

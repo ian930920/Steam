@@ -25,7 +25,7 @@ namespace TableData
             base.m_dicRewardList.Clear();
             List<stItem> listReward = new List<stItem>();
             TableData_ShopPackage data = null;
-            Dictionary<int, TableData_ShopPackage>.Enumerator enumData = base.GetEnumerator();
+            Dictionary<uint, TableData_ShopPackage>.Enumerator enumData = base.GetEnumerator();
             while(enumData.MoveNext())
             {
                 data = enumData.Current.Value;
@@ -49,19 +49,19 @@ namespace TableData
             }
         }
 
-        override public string GetString(int nShopID)
+        override public string GetString(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return $"{nShopID} 없는 상품 ㅠ";
+            if(base.ContainsKey(tableID) == false) return $"{tableID} 없는 상품 ㅠ";
 
-            return ProjectManager.Instance.Table.GetString(base.GetData(nShopID).strID);
+            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID);
         }
 
-        public bool IsActiveShop(int nShopID)
+        public bool IsActiveShop(uint tableID)
         {
-            if(base.ContainsKey(nShopID) == false) return false;
-            if(string.IsNullOrEmpty(base.GetData(nShopID).deadline) == true) return true;
+            if(base.ContainsKey(tableID) == false) return false;
+            if(string.IsNullOrEmpty(base.GetData(tableID).deadline) == true) return true;
 
-            return (Convert.ToDateTime(base.GetData(nShopID).deadline) - DateTime.Now).TotalSeconds > 0;
+            return (Convert.ToDateTime(base.GetData(tableID).deadline) - DateTime.Now).TotalSeconds > 0;
         }
     }
 

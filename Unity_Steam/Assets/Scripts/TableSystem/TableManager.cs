@@ -75,33 +75,14 @@ public class TableManager : BaseManager<TableManager>
 			//TODO Delete
 		}
 	}
-
-	#region String
-    public string GetString(TableString.eID eStringID, TableString.eTYPE eType = TableString.eTYPE.Title)
-	{
-		return this.GetString((int)eStringID, eType);
-	}
-
-	public string GetString(int nStringID, TableString.eTYPE eType = TableString.eTYPE.Title)
-    {
-		return this.String.GetString(nStringID, eType);
-    }
-	#endregion
-
-	#region Resource
-    public string GetBuildingResPath(int nResKey)
-    {
-		return this.Resource.GetData(nResKey).path;
-    }
-	#endregion
 }
 
 public class TableJson<T> where T : class
 {
-    public Dictionary<int, T> Json { get; set; }
+    public Dictionary<uint, T> Json { get; set; }
 }
 
 public interface iTableData
 {
-    public int tableID { get; set; }
+    public uint tableID { get; set; }
 }

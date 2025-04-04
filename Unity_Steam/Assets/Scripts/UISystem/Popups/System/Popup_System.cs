@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -15,7 +15,7 @@ public class Popup_System : BasePopup
     /*
     public void SetDescription(eSTRING_ID eStringID)
     {
-        this.SetDescription(ProjectManager.Instance.Table.GetString(eStringID));
+        this.SetDescription(ProjectManager.Instance.Table.String.GetString(eStringID));
     }
     */
 

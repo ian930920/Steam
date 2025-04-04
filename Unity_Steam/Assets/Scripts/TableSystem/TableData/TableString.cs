@@ -41,29 +41,29 @@ namespace TableData
             }
         }
 
-        public string GetString(int nID, eTYPE eType)
+        public string GetString(uint tableID, eTYPE eType = eTYPE.Title)
         {
-            if(base.ContainsKey(nID) == false)
+            if(base.ContainsKey(tableID) == false)
             {
-                ProjectManager.Instance.LogError($"StringData : {nID}는 존재하지 않는 키");
+                ProjectManager.Instance.LogError($"StringData : {tableID}는 존재하지 않는 키");
                 return "X";
             }
 
-            return base.GetData(nID).GetLang(eLANGUAGE.KO, eType);
+            return base.GetData(tableID).GetLang(eLANGUAGE.KO, eType);
         }
 
-        public string GetString(eID eStringID, eTYPE eType)
+        public string GetString(eID eStringID, eTYPE eType = eTYPE.Title)
         {
-            int nID = (int)eStringID;
+            uint tableID = (uint)eStringID;
 
-            return this.GetString(nID, eType);
+            return this.GetString(tableID, eType);
         }
     }
 
     public class TableData_String : iTableData
     {
         //tableID title desc
-        public int tableID { get; set; }
+        public uint tableID { get; set; }
         public string title { get; set; }
         public string desc { get; set; }
         //public string engtitle { get; set; }

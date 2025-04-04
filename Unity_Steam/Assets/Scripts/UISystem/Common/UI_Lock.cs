@@ -44,7 +44,7 @@ public class UI_Lock : MonoBehaviour
 
         if(isLock == false) return;
 
-        this.m_textDesc.text = ProjectManager.Instance.Table.GetString(0); //ProjectManager.Instance.Table.Lock.GetString_Title(this.m_nLockID, nTargetID);
+        this.m_textDesc.text = ProjectManager.Instance.Table.String.GetString(TableData.TableString.eID.None); //ProjectManager.Instance.Table.Lock.GetString_Title(this.m_nLockID, nTargetID);
     }
 
     public void OnClicked()

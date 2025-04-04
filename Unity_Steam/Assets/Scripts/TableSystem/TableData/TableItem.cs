@@ -1,4 +1,4 @@
-
+﻿
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
@@ -21,24 +21,24 @@ namespace TableData
 
         public TableData_Item GetData(eID eItemID)
         {
-            int nItemID = (int)eItemID;
+            uint nItemID = (uint)eItemID;
             if(base.ContainsKey(nItemID) == false) return null;
 
             return base.GetData(nItemID);
         }
 
-        public eINVEN_TYPE GetInvenType(int nItemID)
+        public eINVEN_TYPE GetInvenType(uint tableID)
         {
-            if(base.ContainsKey(nItemID) == false) return eINVEN_TYPE.None;
+            if(base.ContainsKey(tableID) == false) return eINVEN_TYPE.None;
 
-		    return (eINVEN_TYPE)base.GetData(nItemID).type;
+		    return (eINVEN_TYPE)base.GetData(tableID).type;
         }
 
-        public string GetString(int nItemID, TableString.eTYPE eStringType = TableString.eTYPE.Title)
+        public string GetString(uint tableID, TableString.eTYPE eStringType = TableString.eTYPE.Title)
         {
-            if(base.ContainsKey(nItemID) == false) return $"없는 애이템인데요 {nItemID}";
+            if(base.ContainsKey(tableID) == false) return $"없는 애이템인데요 {tableID}";
 
-            return ProjectManager.Instance.Table.GetString(base.GetData(nItemID).strID, eStringType);
+            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID, eStringType);
         }
 
         public string GetString_ItemCount(stItem stItem)
@@ -48,47 +48,47 @@ namespace TableData
             return $"{this.GetString(stItem.ItemID)} {Utility_UI.GetCommaNumber(stItem.Count)} +STR 개";
         }
 
-        public Sprite GetSprite(int nItemID)
+        public Sprite GetSprite(uint tableID)
         {
-            if(base.ContainsKey(nItemID) == false) return null;
+            if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(nItemID).iconName);
+            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).iconName);
         }
     }
 
     public class TableData_Item : iTableData
     {
-        //tableID type resID iconName strID material ShortcutID
-        public int tableID { get; set; }
+        //tableID type resID strIcon strID grade material shortcutID
+        public uint tableID { get; set; }
         public int type { get; set; }
-        public int resID { get; set; }
+        public uint resID { get; set; }
         public string iconName { get; set; }
-        public int strID { get; set; }
+        public uint strID { get; set; }
         public int material { get; set; }
-        public int ShortcutID { get; set; }
+        public uint shortcutID { get; set; }
     }
 }
 
 public struct stItem
 {
-    public int ItemID;
+    public uint ItemID;
     public uint Count;
 
     public TableData.TableItem.eINVEN_TYPE InvenType => ProjectManager.Instance.Table.Item.GetInvenType(this.ItemID);
 
-    public stItem(int nItemID)
+    public stItem(uint tableID)
     {
-        this.ItemID = nItemID;
+        this.ItemID = tableID;
         this.Count = 0;
     }
 
     public stItem(TableData.TableItem.eID eItemID)
     {
-        this.ItemID = (int)eItemID;
+        this.ItemID = (uint)eItemID;
         this.Count = 0;
     }
 
-    public stItem(int nItemID, uint nCount)
+    public stItem(uint nItemID, uint nCount)
     {
         this.ItemID = nItemID;
         this.Count = nCount;
@@ -96,7 +96,7 @@ public struct stItem
 
     public stItem(TableData.TableItem.eID eItemID, uint nCount)
     {
-        this.ItemID = (int)eItemID;
+        this.ItemID = (uint)eItemID;
         this.Count = nCount;
     }
 }

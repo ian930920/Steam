@@ -9,7 +9,7 @@ public class ResourceManager : BaseManager<ResourceManager>
     public enum eATLAS_ID
     {
         UI = 20001,
-        Ingame
+        Characer,
     }
 
     public enum eRES_ID
@@ -28,16 +28,16 @@ public class ResourceManager : BaseManager<ResourceManager>
     public RuntimeAnimatorController Animator_Popup { get; private set; } = null;
 
     //Key : resID, value : Sound
-    private Dictionary<int, AudioClip> m_dicSound = new Dictionary<int, AudioClip>();
+    private Dictionary<uint, AudioClip> m_dicSound = new Dictionary<uint, AudioClip>();
 
     //Key : resID, value : atlas
-    private Dictionary<int, SpriteAtlas> m_dicAtlas = new Dictionary<int, SpriteAtlas>();
+    private Dictionary<uint, SpriteAtlas> m_dicAtlas = new Dictionary<uint, SpriteAtlas>();
 
     //Key : resID, Value : Material
-    private Dictionary<int, Material> m_dicMaterial = new Dictionary<int, Material>();
+    private Dictionary<uint, Material> m_dicMaterial = new Dictionary<uint, Material>();
 
     //Key : ePOPUP_ID, Value : Gameobject
-    private Dictionary<int, GameObject> m_dicPopup = new Dictionary<int, GameObject>();
+    private Dictionary<uint, GameObject> m_dicPopup = new Dictionary<uint, GameObject>();
 
     protected override void init()
     {
@@ -57,7 +57,7 @@ public class ResourceManager : BaseManager<ResourceManager>
     public void LoadResByTable()
     {
         TableData.TableData_Resource data = null;
-        Dictionary<int, TableData.TableData_Resource>.Enumerator enumData = ProjectManager.Instance.Table.Resource.GetEnumerator();
+        Dictionary<uint, TableData.TableData_Resource>.Enumerator enumData = ProjectManager.Instance.Table.Resource.GetEnumerator();
         while(enumData.MoveNext())
         {
             data = enumData.Current.Value;
@@ -95,59 +95,59 @@ public class ResourceManager : BaseManager<ResourceManager>
         }
     }
 
-    public GameObject InstantiatePopup(int nPopupID, Transform transParent)
+    public GameObject InstantiatePopup(uint popupID, Transform transParent)
     {
-        if(this.m_dicPopup.ContainsKey(nPopupID) == false) return null;
+        if(this.m_dicPopup.ContainsKey(popupID) == false) return null;
 
-        return Instantiate(this.m_dicPopup[nPopupID], transParent);
+        return Instantiate(this.m_dicPopup[popupID], transParent);
     }
 
-    public Sprite GetSprite(int nResID, string strName)
+    public Sprite GetSprite(uint resID, string strName)
     {
-        if(this.m_dicAtlas.ContainsKey(nResID) == false)
+        if(this.m_dicAtlas.ContainsKey(resID) == false)
         {
-            ProjectManager.Instance.Log($"없는 아틀라스 {nResID}");
+            ProjectManager.Instance.Log($"없는 아틀라스 {resID}");
             return null;
         }
 
         try
         {
-            return this.m_dicAtlas[nResID].GetSprite(strName);
+            return this.m_dicAtlas[resID].GetSprite(strName);
         }
         catch
         {
-            ProjectManager.Instance.Log($"아틀라스 {nResID}에 없는 이미지 {strName}");
+            ProjectManager.Instance.Log($"아틀라스 {resID}에 없는 이미지 {strName}");
             return null;
         }
     }
 
     public Sprite GetSpriteByAtlas(eATLAS_ID eAtlas, string strName)
     {
-        return this.GetSprite((int)eAtlas, strName);
+        return this.GetSprite((uint)eAtlas, strName);
     }
 
     #region Material
-    public Material GetMaterial(int nResKey)
+    public Material GetMaterial(uint resKey)
     {
-        if(this.m_dicMaterial.ContainsKey(nResKey) == false)
+        if(this.m_dicMaterial.ContainsKey(resKey) == false)
         {
             //Debug.Log(nResKey);
             return null;
         }
 
-        return this.m_dicMaterial[nResKey];
+        return this.m_dicMaterial[resKey];
     }
     #endregion
 
-    public AudioClip GetAudioClip(int nResKey)
+    public AudioClip GetAudioClip(uint resKey)
     {
-        if(this.m_dicSound.ContainsKey(nResKey) == false)
+        if(this.m_dicSound.ContainsKey(resKey) == false)
         {
             //ProjectManager.Instance.LogWarning($"FxObject 중 {nResKey}는 존재하지 않습니다");
             return null;
         }
 
-        return this.m_dicSound[nResKey];
+        return this.m_dicSound[resKey];
     }
 
     public GameObject Instantiate(string strPath)

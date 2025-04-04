@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UI_CurrencySlot : MonoBehaviour
 {
     [SerializeField] private TableData.TableItem.eID m_eCurrencyID = TableData.TableItem.eID.Gold;
-    private int ItemID { get => (int)this.m_eCurrencyID; }
+    private uint ItemID { get => (uint)this.m_eCurrencyID; }
     [SerializeField] private Image m_imgIcon = null;
     [SerializeField] private TextMeshProUGUI m_textValue = null;
 

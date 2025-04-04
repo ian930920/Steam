@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,58 +16,58 @@ public class PopupSystem
     private readonly static int DEPTH_TOP = 2000;
 
     //팝업
-    [SerializeField] private Dictionary<int, BasePopup> m_dicPopup = new Dictionary<int, BasePopup>();
+    [SerializeField] private Dictionary<uint, BasePopup> m_dicPopup = new Dictionary<uint, BasePopup>();
 
     //Sort용
-    private List<int> m_listSortingOrder = new List<int>();
+    private List<uint> m_listSortingOrder = new List<uint>();
     private int CurrSortingOrder { get => this.m_listSortingOrder.Count; }
 
     public BasePopup CurrPopup { get; private set; } = null;
     public bool IsPopupOpen { get => this.CurrPopup != null; }
 
-    private void createPopup(int nPopupID)
+    private void createPopup(uint popupID)
     {
-        //GameObject gobjPopup = ResourceManager.Instance.InstantiatePopup(nPopupID, GameSceneManager.Instance.CurrScene.UIRoot);
-        GameObject gobjPopup = ProjectManager.Instance.Resource.InstantiatePopup(nPopupID, ProjectManager.Instance.transform);
+        //GameObject gobjPopup = ResourceManager.Instance.InstantiatePopup(popupID, GameSceneManager.Instance.CurrScene.UIRoot);
+        GameObject gobjPopup = ProjectManager.Instance.Resource.InstantiatePopup(popupID, ProjectManager.Instance.transform);
         BasePopup popup = gobjPopup.GetComponent<BasePopup>();
         popup.InitPopup();
-        this.m_dicPopup.Add(nPopupID, popup);
+        this.m_dicPopup.Add(popupID, popup);
     }
 
-    private bool isContainPopup(int nPopupID)
+    private bool isContainPopup(uint popupID)
     {
-        return this.m_dicPopup.ContainsKey(nPopupID);
+        return this.m_dicPopup.ContainsKey(popupID);
     }
 
-    public BasePopup GetPopup(int nPopupID)
+    public BasePopup GetPopup(uint popupID)
     {
-        if(this.isContainPopup(nPopupID) == false) return null;
+        if(this.isContainPopup(popupID) == false) return null;
 
-        return this.m_dicPopup[nPopupID];
+        return this.m_dicPopup[popupID];
     }
 
     public BasePopup GetPopup(ePOPUP_ID ePopupID)
     {
-        return this.GetPopup((int)ePopupID);
+        return this.GetPopup((uint)ePopupID);
     }
 
     public T GetPopup<T>(ePOPUP_ID ePopupID) where T : class
     {
-        return this.GetPopup((int)ePopupID) as T;
+        return this.GetPopup((uint)ePopupID) as T;
     }
 
     public bool IsOpenPopup(ePOPUP_ID ePopupID)
     {
-        int nPopupID = (int)ePopupID;
-        if(this.isContainPopup(nPopupID) == false) return false;
+        uint popupID = (uint)ePopupID;
+        if(this.isContainPopup(popupID) == false) return false;
 
-        return this.m_dicPopup[nPopupID].IsOpen;
+        return this.m_dicPopup[popupID].IsOpen;
     }
 
     public void OpenPopup(ePOPUP_ID ePopupID, UnityAction funcClose = null)
     {
-        int nPopupID = (int)ePopupID;
-        this.openPopup(nPopupID, funcClose);
+        uint popupID = (uint)ePopupID;
+        this.openPopup(popupID, funcClose);
     }
 
     public void OpenPopupByTab(ePOPUP_ID ePopupID, int nTab)
@@ -77,39 +77,39 @@ public class PopupSystem
 
     public T OpenAndGetPopup<T>(ePOPUP_ID ePopupID, UnityAction funcClose = null) where T : class
     {
-        int nPopupID = (int)ePopupID;
-        this.openPopup(nPopupID, funcClose);
+        uint popupID = (uint)ePopupID;
+        this.openPopup(popupID, funcClose);
 
-        return this.m_dicPopup[nPopupID] as T;
+        return this.m_dicPopup[popupID] as T;
     }
 
-    private void openPopup(int nPopupID, UnityAction funcClose = null)
+    private void openPopup(uint popupID, UnityAction funcClose = null)
     {
-        if(this.isContainPopup(nPopupID) == false) this.createPopup(nPopupID);
+        if(this.isContainPopup(popupID) == false) this.createPopup(popupID);
 
-        if(this.m_dicPopup[nPopupID].IsOpen == false && this.m_dicPopup[nPopupID].PopupType == UIManager.eUI_TYPE.Popup_Main)
+        if(this.m_dicPopup[popupID].IsOpen == false && this.m_dicPopup[popupID].PopupType == UIManager.eUI_TYPE.Popup_Main)
         {
             //뎁스 저장
-            this.CurrPopup = this.m_dicPopup[nPopupID];
-            this.addSortingOrder(nPopupID);
+            this.CurrPopup = this.m_dicPopup[popupID];
+            this.addSortingOrder(popupID);
         }
 
         //열기~!
-        this.m_dicPopup[nPopupID].OpenPopup(this.CurrSortingOrder, funcClose);
+        this.m_dicPopup[popupID].OpenPopup(this.CurrSortingOrder, funcClose);
     }
 
-    private void addSortingOrder(int nPopupID)
+    private void addSortingOrder(uint popupID)
     {
-        this.removeSortingOrder(nPopupID);
+        this.removeSortingOrder(popupID);
 
-        this.m_listSortingOrder.Add(nPopupID);
+        this.m_listSortingOrder.Add(popupID);
     }
 
-    private void removeSortingOrder(int nPopupID)
+    private void removeSortingOrder(uint popupID)
     {
-        if(this.m_listSortingOrder.Contains(nPopupID) == false) return;
+        if(this.m_listSortingOrder.Contains(popupID) == false) return;
 
-        this.m_listSortingOrder.Remove(nPopupID);
+        this.m_listSortingOrder.Remove(popupID);
     }
 
     public bool AutoClosePopup()
@@ -117,8 +117,8 @@ public class PopupSystem
         if(this.CurrSortingOrder == 0) return false;
 
         //팝업 닫기
-        int nPopupID = this.m_listSortingOrder[this.CurrSortingOrder - 1];
-        this.GetPopup(nPopupID).OnCloseClicked();
+        uint popupID = this.m_listSortingOrder[this.CurrSortingOrder - 1];
+        this.GetPopup(popupID).OnCloseClicked();
 
         return true;
     }
@@ -132,32 +132,32 @@ public class PopupSystem
 
     public void ClosePopup(ePOPUP_ID ePopupID)
     {
-        int nPopupID = (int)ePopupID;
-        if(this.isContainPopup(nPopupID) == false) return;
+        uint popupID = (uint)ePopupID;
+        if(this.isContainPopup(popupID) == false) return;
 
-        if(this.m_dicPopup[nPopupID].IsOpen == false) return;
+        if(this.m_dicPopup[popupID].IsOpen == false) return;
 
-        this.m_dicPopup[nPopupID].OnCloseClicked();
+        this.m_dicPopup[popupID].OnCloseClicked();
     }
 
     public void RemovePopup(ePOPUP_ID ePopupID)
     {
-        int nPopupID = (int)ePopupID;
-        if(this.isContainPopup(nPopupID) == false) return;
+        uint popupID = (uint)ePopupID;
+        if(this.isContainPopup(popupID) == false) return;
 
-        this.removeSortingOrder(nPopupID);
+        this.removeSortingOrder(popupID);
         //ProjectManager.Instance.Log($"팝업뎁스 {this.CurrSortingOrder}");
 
-        if(this.m_dicPopup[nPopupID].PopupType == UIManager.eUI_TYPE.Popup_Main)
+        if(this.m_dicPopup[popupID].PopupType == UIManager.eUI_TYPE.Popup_Main)
         {
             this.CurrPopup = null;
 
             for(int i = this.CurrSortingOrder - 1; i >= 0; --i)
             {
-                int nPrevPopupID = this.m_listSortingOrder[i];
-                if(this.GetPopup(nPrevPopupID).PopupType == UIManager.eUI_TYPE.Popup_Main)
+                uint prevPopupID = this.m_listSortingOrder[i];
+                if(this.GetPopup(prevPopupID).PopupType == UIManager.eUI_TYPE.Popup_Main)
                 {
-                    this.CurrPopup = this.GetPopup(nPrevPopupID);
+                    this.CurrPopup = this.GetPopup(prevPopupID);
                     this.CurrPopup.transform.SetAsLastSibling();
                     break;
                 }
@@ -172,7 +172,7 @@ public class PopupSystem
 
     public void RefreshActivePopup()
     {
-        Dictionary<int, BasePopup>.Enumerator enumPopup = this.m_dicPopup.GetEnumerator();
+        Dictionary<uint, BasePopup>.Enumerator enumPopup = this.m_dicPopup.GetEnumerator();
         while(enumPopup.MoveNext())
         {
             if(enumPopup.Current.Value.IsOpen == false) continue;
@@ -184,7 +184,7 @@ public class PopupSystem
     #region System
     public void OpenSystemPopup(TableData.TableString.eID eStringID, UnityAction onClosed = null)
     {
-        this.OpenSystemPopup(ProjectManager.Instance.Table.GetString(eStringID), onClosed);
+        this.OpenSystemPopup(ProjectManager.Instance.Table.String.GetString(eStringID), onClosed);
     }
 
     public void OpenSystemPopup(string strDesc, UnityAction onClosed = null)
@@ -194,7 +194,7 @@ public class PopupSystem
 
     public void OpenSystemConfirmPopup(TableData.TableString.eID eStringID, UnityAction onConfirm, UnityAction onClose = null)
     {
-        this.OpenSystemConfirmPopup(ProjectManager.Instance.Table.GetString((int)eStringID), onConfirm, onClose);
+        this.OpenSystemConfirmPopup(ProjectManager.Instance.Table.String.GetString((uint)eStringID), onConfirm, onClose);
     }
 
     public void OpenSystemConfirmPopup(string strDesc, UnityAction onConfirm, UnityAction onClose = null)
@@ -204,7 +204,7 @@ public class PopupSystem
 
     public void OpenSystemTimerPopup(TableData.TableString.eID eStringID, UnityAction onClosed = null)
     {
-        this.OpenAndGetPopup<Popup_System_Timer>(ePOPUP_ID.System_Timer, onClosed).SetDescription(ProjectManager.Instance.Table.GetString(eStringID));
+        this.OpenAndGetPopup<Popup_System_Timer>(ePOPUP_ID.System_Timer, onClosed).SetDescription(ProjectManager.Instance.Table.String.GetString(eStringID));
     }
 
     public void OpenSystemTimerPopup(string strDesc, UnityAction onClosed = null)

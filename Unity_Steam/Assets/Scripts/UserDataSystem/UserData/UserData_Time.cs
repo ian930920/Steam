@@ -12,7 +12,7 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public abstract class BaseTimeData
 	{
-		public int ID { get; set; }
+		public uint ID { get; set; }
 		public double RemainTime { get; set; }
 		public bool IsActive { get => this.RemainTime > 0; }
 
@@ -22,15 +22,15 @@ public class UserData_Time : UserData<JsonData_Time>
 		//끝나고 실행할 함수
 		private UnityAction m_onFinishedEvent = null;
 
-		virtual public void SetTime(int nID, double dRemainTime)
+		virtual public void SetTime(uint timeID, double dRemainTime)
         {
-			this.ID = nID;
+			this.ID = timeID;
 			this.RemainTime = dRemainTime;
         }
 
-		virtual public void AddTime(int nID, double dRemainTime)
+		virtual public void AddTime(uint timeID, double dRemainTime)
         {
-			this.ID = nID;
+			this.ID = timeID;
 			this.RemainTime += dRemainTime;
         }
 
@@ -92,9 +92,9 @@ public class UserData_Time : UserData<JsonData_Time>
     {
 		public DateTime EndTime { get; set; }
 
-		public override void SetTime(int nID, double dRemainTime)
+		public override void SetTime(uint timeID, double dRemainTime)
         {
-			base.SetTime(nID, dRemainTime);
+			base.SetTime(timeID, dRemainTime);
 			this.EndTime = ProjectManager.Instance.Time.CurrDateTime.AddSeconds(dRemainTime);
 			this.RemainTime = (this.EndTime - ProjectManager.Instance.Time.CurrDateTime).TotalSeconds;
 
@@ -102,9 +102,9 @@ public class UserData_Time : UserData<JsonData_Time>
 			base.AddTimeUpdateEvent();
         }
 
-		public override void AddTime(int nID, double dRemainTime)
+		public override void AddTime(uint timeID, double dRemainTime)
         {
-			base.AddTime(nID, dRemainTime);
+			base.AddTime(timeID, dRemainTime);
 			this.EndTime = this.EndTime.AddSeconds(dRemainTime);
 			this.RemainTime = (this.EndTime - ProjectManager.Instance.Time.CurrDateTime).TotalSeconds;
 
@@ -132,17 +132,17 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public class GameTimeData : BaseTimeData
     {
-		public override void SetTime(int nID, double dRemainTime)
+		public override void SetTime(uint timeID, double dRemainTime)
         {
-			base.SetTime(nID, dRemainTime);
+			base.SetTime(timeID, dRemainTime);
 
 			//시간 업데이트 함수 등록
 			base.AddTimeUpdateEvent();
         }
 
-		public override void AddTime(int nID, double dRemainTime)
+		public override void AddTime(uint timeID, double dRemainTime)
         {
-			base.AddTime(nID, dRemainTime);
+			base.AddTime(timeID, dRemainTime);
 
 			//시간 업데이트 함수 등록
 			base.refreshTimeUpdate();
@@ -168,8 +168,8 @@ public class UserData_Time : UserData<JsonData_Time>
 
     public void InitTimeManagerEvent()
     {
-		Dictionary<int, Dictionary<int, RealTimeData>>.Enumerator enumRealDic = base.Data.DicRealTime.GetEnumerator();
-		Dictionary<int, RealTimeData>.Enumerator enumRealTime;
+		Dictionary<int, Dictionary<uint, RealTimeData>>.Enumerator enumRealDic = base.Data.DicRealTime.GetEnumerator();
+		Dictionary<uint, RealTimeData>.Enumerator enumRealTime;
 		while(enumRealDic.MoveNext())
         {
 			enumRealTime = enumRealDic.Current.Value.GetEnumerator();
@@ -179,8 +179,8 @@ public class UserData_Time : UserData<JsonData_Time>
 			}
         }
 
-		Dictionary<int, Dictionary<int, GameTimeData>>.Enumerator enumGameDic = base.Data.DicGameTime.GetEnumerator();
-		Dictionary<int, GameTimeData>.Enumerator enumGameTime;
+		Dictionary<int, Dictionary<uint, GameTimeData>>.Enumerator enumGameDic = base.Data.DicGameTime.GetEnumerator();
+		Dictionary<uint, GameTimeData>.Enumerator enumGameTime;
 		while(enumGameDic.MoveNext())
         {
 			enumGameTime = enumGameDic.Current.Value.GetEnumerator();
@@ -221,22 +221,22 @@ public class UserData_Time : UserData<JsonData_Time>
 		base.SaveClientData();
 	}
 
-	public void SetTime(eSAVE_TYPE eSaveType, int nTimeID, float fTime)
+	public void SetTime(eSAVE_TYPE eSaveType, uint timeID, float fTime)
     {
-        switch(this.getType(eSaveType, nTimeID))
+        switch(this.getType(eSaveType, timeID))
         {
             case TimeManager.eTYPE.Real:
             {
-				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) base.Data.DicRealTime.Add((int)eSaveType, new Dictionary<int, RealTimeData>());
-				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(nTimeID) == false) base.Data.DicRealTime[(int)eSaveType].Add(nTimeID, new RealTimeData());
-				base.Data.DicRealTime[(int)eSaveType][nTimeID].SetTime(nTimeID, fTime);
+				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) base.Data.DicRealTime.Add((int)eSaveType, new Dictionary<uint, RealTimeData>());
+				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(timeID) == false) base.Data.DicRealTime[(int)eSaveType].Add(timeID, new RealTimeData());
+				base.Data.DicRealTime[(int)eSaveType][timeID].SetTime(timeID, fTime);
             }
             break;
             case TimeManager.eTYPE.Game:
             {
-				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) base.Data.DicGameTime.Add((int)eSaveType, new Dictionary<int, GameTimeData>());
-				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(nTimeID) == false) base.Data.DicGameTime[(int)eSaveType].Add(nTimeID, new GameTimeData());
-				base.Data.DicGameTime[(int)eSaveType][nTimeID].SetTime(nTimeID, fTime);
+				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) base.Data.DicGameTime.Add((int)eSaveType, new Dictionary<uint, GameTimeData>());
+				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(timeID) == false) base.Data.DicGameTime[(int)eSaveType].Add(timeID, new GameTimeData());
+				base.Data.DicGameTime[(int)eSaveType][timeID].SetTime(timeID, fTime);
             }
             break;
         }
@@ -247,25 +247,25 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public void SetTime(TableData.TableTime.eID eTimeID, float fTime)
     {
-		this.SetTime((int)eSAVE_TYPE.Define, (int)eTimeID, fTime);
+		this.SetTime((int)eSAVE_TYPE.Define, (uint)eTimeID, fTime);
     }
 
-	public void AddTime(eSAVE_TYPE eSaveType, int nTimeID, float fTime)
+	public void AddTime(eSAVE_TYPE eSaveType, uint timeID, float fTime)
     {
-        switch(this.getType(eSaveType, nTimeID))
+        switch(this.getType(eSaveType, timeID))
         {
             case TimeManager.eTYPE.Real:
             {
-				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) base.Data.DicRealTime.Add((int)eSaveType, new Dictionary<int, RealTimeData>());
-				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(nTimeID) == false) base.Data.DicRealTime[(int)eSaveType].Add(nTimeID, new RealTimeData());
-				base.Data.DicRealTime[(int)eSaveType][nTimeID].AddTime(nTimeID, fTime);
+				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) base.Data.DicRealTime.Add((int)eSaveType, new Dictionary<uint, RealTimeData>());
+				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(timeID) == false) base.Data.DicRealTime[(int)eSaveType].Add(timeID, new RealTimeData());
+				base.Data.DicRealTime[(int)eSaveType][timeID].AddTime(timeID, fTime);
             }
             break;
             case TimeManager.eTYPE.Game:
             {
-				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) base.Data.DicGameTime.Add((int)eSaveType, new Dictionary<int, GameTimeData>());
-				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(nTimeID) == false) base.Data.DicGameTime[(int)eSaveType].Add(nTimeID, new GameTimeData());
-				base.Data.DicGameTime[(int)eSaveType][nTimeID].AddTime(nTimeID, fTime);
+				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) base.Data.DicGameTime.Add((int)eSaveType, new Dictionary<uint, GameTimeData>());
+				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(timeID) == false) base.Data.DicGameTime[(int)eSaveType].Add(timeID, new GameTimeData());
+				base.Data.DicGameTime[(int)eSaveType][timeID].AddTime(timeID, fTime);
             }
             break;
         }
@@ -274,34 +274,34 @@ public class UserData_Time : UserData<JsonData_Time>
 		base.SaveClientData();
 	}
 
-	private TimeManager.eTYPE getType(eSAVE_TYPE eSaveType, int nTimeID)
+	private TimeManager.eTYPE getType(eSAVE_TYPE eSaveType, uint timeID)
     {
 		switch(eSaveType)
         {
-            case (int)eSAVE_TYPE.Define: return ProjectManager.Instance.Table.Time.GetType(nTimeID);
+            case (int)eSAVE_TYPE.Define: return ProjectManager.Instance.Table.Time.GetType(timeID);
 
             default: return TimeManager.eTYPE.Real;
         }
     }
 
-	public bool IsActive(eSAVE_TYPE eSaveType, int nTimeID)
+	public bool IsActive(eSAVE_TYPE eSaveType, uint timeID)
     {
-		switch(this.getType(eSaveType, nTimeID))
+		switch(this.getType(eSaveType, timeID))
         {
             case TimeManager.eTYPE.Real:
             {
 				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) return false;
-				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(nTimeID) == false) return false;
+				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(timeID) == false) return false;
 
-				return base.Data.DicRealTime[(int)eSaveType][nTimeID].IsActive;
+				return base.Data.DicRealTime[(int)eSaveType][timeID].IsActive;
             }
 
             case TimeManager.eTYPE.Game:
             {
 				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) return false;
-				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(nTimeID) == false) return false;
+				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(timeID) == false) return false;
 
-				return base.Data.DicGameTime[(int)eSaveType][nTimeID].IsActive;
+				return base.Data.DicGameTime[(int)eSaveType][timeID].IsActive;
             }
         }
 		return false;
@@ -309,27 +309,27 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public bool IsActive(TableData.TableTime.eID eTimeID)
 	{
-		return this.IsActive((int)eSAVE_TYPE.Define, (int)eTimeID);
+		return this.IsActive((int)eSAVE_TYPE.Define, (uint)eTimeID);
 	}
 
-	public double GetRemainTime(eSAVE_TYPE eSaveType, int nTimeID)
+	public double GetRemainTime(eSAVE_TYPE eSaveType, uint timeID)
     {
-		switch(this.getType(eSaveType, nTimeID))
+		switch(this.getType(eSaveType, timeID))
         {
             case TimeManager.eTYPE.Real:
             {
 				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) return 0.0f;
-				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(nTimeID) == false) return 0.0f;
+				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(timeID) == false) return 0.0f;
 
-				return base.Data.DicRealTime[(int)eSaveType][nTimeID].RemainTime;
+				return base.Data.DicRealTime[(int)eSaveType][timeID].RemainTime;
             }
 
             case TimeManager.eTYPE.Game:
             {
 				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) return 0.0f;
-				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(nTimeID) == false) return 0.0f;
+				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(timeID) == false) return 0.0f;
 
-				return base.Data.DicGameTime[(int)eSaveType][nTimeID].RemainTime;
+				return base.Data.DicGameTime[(int)eSaveType][timeID].RemainTime;
             }
         }
 		return 0.0f;
@@ -337,15 +337,15 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public double GetRemainTime(TableData.TableTime.eID eTimeID)
     {
-		return this.GetRemainTime((int)eSAVE_TYPE.Define, (int)eTimeID);
+		return this.GetRemainTime((int)eSAVE_TYPE.Define, (uint)eTimeID);
     }
 
 	public void RefreshCurrTime()
     {
 		if(base.Data == null) return;
 
-		Dictionary<int, Dictionary<int, RealTimeData>>.Enumerator enumRealDic = base.Data.DicRealTime.GetEnumerator();
-		Dictionary<int, RealTimeData>.Enumerator enumRealTime;
+		Dictionary<int, Dictionary<uint, RealTimeData>>.Enumerator enumRealDic = base.Data.DicRealTime.GetEnumerator();
+		Dictionary<uint, RealTimeData>.Enumerator enumRealTime;
 		while(enumRealDic.MoveNext())
         {
 			enumRealTime = enumRealDic.Current.Value.GetEnumerator();
@@ -359,24 +359,24 @@ public class UserData_Time : UserData<JsonData_Time>
 		this.saveLastUpdateTime();
     }
 
-	public void AddFinishEvent(eSAVE_TYPE eSaveType, int nTimeID, UnityAction funcFinished)
+	public void AddFinishEvent(eSAVE_TYPE eSaveType, uint timeID, UnityAction funcFinished)
     {
-		switch(this.getType(eSaveType, nTimeID))
+		switch(this.getType(eSaveType, timeID))
         {
             case TimeManager.eTYPE.Real:
             {
 				if(base.Data.DicRealTime.ContainsKey((int)eSaveType) == false) return;
-				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(nTimeID) == false) return;
+				if(base.Data.DicRealTime[(int)eSaveType].ContainsKey(timeID) == false) return;
 
-				base.Data.DicRealTime[(int)eSaveType][nTimeID].AddFinishEvent(funcFinished);
+				base.Data.DicRealTime[(int)eSaveType][timeID].AddFinishEvent(funcFinished);
             }
             break;
             case TimeManager.eTYPE.Game:
             {
 				if(base.Data.DicGameTime.ContainsKey((int)eSaveType) == false) return;
-				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(nTimeID) == false) return;
+				if(base.Data.DicGameTime[(int)eSaveType].ContainsKey(timeID) == false) return;
 
-				base.Data.DicGameTime[(int)eSaveType][nTimeID].AddFinishEvent(funcFinished);
+				base.Data.DicGameTime[(int)eSaveType][timeID].AddFinishEvent(funcFinished);
             }
             break;
         }
@@ -384,7 +384,7 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	public void AddFinishEvent(TableData.TableTime.eID eTimeID, UnityAction funcFinished)
     {
-		this.AddFinishEvent((int)eSAVE_TYPE.Define, (int)eTimeID, funcFinished);
+		this.AddFinishEvent((int)eSAVE_TYPE.Define, (uint)eTimeID, funcFinished);
     }
 
 	public void AddPlayTime()
@@ -398,10 +398,10 @@ public class UserData_Time : UserData<JsonData_Time>
 public class JsonData_Time : BaseJsonData
 {
 	//Key : UserData_Time.eSAVE_TYPE, Value : UserData_Time_Real
-	public Dictionary<int, Dictionary<int, UserData_Time.RealTimeData>> DicRealTime = new Dictionary<int, Dictionary<int, UserData_Time.RealTimeData>>();
+	public Dictionary<int, Dictionary<uint, UserData_Time.RealTimeData>> DicRealTime = new Dictionary<int, Dictionary<uint, UserData_Time.RealTimeData>>();
 
 	//Key : UserData_Time.eSAVE_TYPE, Value : UserData_Time_Game
-	public Dictionary<int, Dictionary<int, UserData_Time.GameTimeData>> DicGameTime = new Dictionary<int, Dictionary<int, UserData_Time.GameTimeData>>();
+	public Dictionary<int, Dictionary<uint, UserData_Time.GameTimeData>> DicGameTime = new Dictionary<int, Dictionary<uint, UserData_Time.GameTimeData>>();
 
 	public DateTime LastUpdateTime = DateTime.Now.AddYears(-10);
 	public DateTime OfflineRewardTime = DateTime.Now;
