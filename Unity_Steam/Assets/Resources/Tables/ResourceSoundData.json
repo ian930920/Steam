@@ -1,0 +1,22 @@
+{"Json":{
+  "10001": { "type":1, "path":"Sounds/Btn_Click"},
+  "10002": { "type":1, "path":"Sounds/Popup_Open"},
+  "10003": { "type":1, "path":"Sounds/Order"},
+  "10004": { "type":1, "path":"Sounds/Error"},
+  "10005": { "type":1, "path":"Sounds/ItemDrop"},
+  "10006": { "type":1, "path":"Sounds/ItemDrop_Special"},
+  "10007": { "type":1, "path":"Sounds/Reward"},
+  "10008": { "type":1, "path":"Sounds/Buy"},
+  "10009": { "type":1, "path":"Sounds/Upgrade"},
+  "10010": { "type":1, "path":"Sounds/Success"},
+  "10011": { "type":1, "path":"Sounds/Fail"},
+  "10012": { "type":1, "path":"Sounds/NextPage"},
+  "10013": { "type":1, "path":"Sounds/Typing"},
+  "10014": { "type":1, "path":"Sounds/Buff"},
+  "10015": { "type":1, "path":"Sounds/Atteck"},
+  "10016": { "type":1, "path":"Sounds/Event"},
+  "10017": { "type":1, "path":"Sounds/Mission"},
+  "10018": { "type":1, "path":"Sounds/ItemBox_Open"},
+  "10019": { "type":1, "path":"Sounds/Bboyrorong"},
+  "11001": { "type":1, "path":"Sounds/BGM_1"}
+}}

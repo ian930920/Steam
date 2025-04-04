@@ -1,0 +1,5 @@
+{"Json":{
+  "40001": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System"},
+  "40002": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System_Timer"},
+  "40003": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System_Confirm_Text"}
+}}

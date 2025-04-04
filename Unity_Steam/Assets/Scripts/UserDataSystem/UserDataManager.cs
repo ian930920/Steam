@@ -1,0 +1,191 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
+using UnityEngine.Events;
+
+public class UserDataManager : BaseManager<UserDataManager>
+{
+    public enum eID
+    {
+        Account = 0,
+        Setting,
+        Inventory,
+        Time,
+    };
+
+    private Dictionary<eID, BaseUserData> m_dicUser = new Dictionary<eID, BaseUserData>()
+    {
+        { eID.Account, new UserData_Account() },
+        { eID.Setting, new UserData_Setting() },
+        { eID.Inventory, new UserData_Inventory() },
+        { eID.Time, new UserData_Time() },
+    };
+
+    public UserData_Account Account => this.m_dicUser[eID.Account] as UserData_Account;
+    public UserData_Setting Setting => this.m_dicUser[eID.Setting] as UserData_Setting;
+    public UserData_Inventory Inventory => this.m_dicUser[eID.Inventory] as UserData_Inventory;
+    public UserData_Time Time => this.m_dicUser[eID.Time] as UserData_Time;
+
+    public string BuildVersion { get; set; }
+    public string PatchVersion { get; set; }
+
+    protected override void init()
+    {
+        //this.Account.LoadClientData();
+        this.LoadClientData();
+    }
+
+    public override void ResetManager()
+    {
+        Dictionary<eID, BaseUserData>.Enumerator enumUser = this.m_dicUser.GetEnumerator();
+        while(enumUser.MoveNext())
+        {
+            enumUser.Current.Value.Reset();
+        }
+    }
+
+    public void LoadClientData()
+    {
+        Dictionary<eID, BaseUserData>.Enumerator enumUser = this.m_dicUser.GetEnumerator();
+        while(enumUser.MoveNext())
+        {
+            enumUser.Current.Value.LoadClientData();
+        }
+    }
+
+    #region Item
+    //Key : ItemID, Value : RefreshFunc
+    private Dictionary<int, UnityEvent<uint>> m_dicItemCountRefreshEvent = new Dictionary<int, UnityEvent<uint>>();
+
+    #region RefreshEvent
+    public void AddItemCountRefreshEvent(int nItemID, UnityAction<uint> funcRefresh)
+    {
+        if(this.m_dicItemCountRefreshEvent.ContainsKey(nItemID) == false)
+        {
+            this.m_dicItemCountRefreshEvent.Add(nItemID, new UnityEvent<uint>());
+        }
+
+        this.m_dicItemCountRefreshEvent[nItemID].AddListener(funcRefresh);
+    }
+
+    private void doItemCountRefreshEvent(stItem stItem)
+    {
+        if(this.m_dicItemCountRefreshEvent.ContainsKey(stItem.ItemID) == false) return;
+
+        this.m_dicItemCountRefreshEvent[stItem.ItemID].Invoke(stItem.Count);
+    }
+    #endregion
+
+    public stItem GetInventoryItem(TableData.TableItem.eID eItemID)
+    {
+        return this.GetInventoryItem((int)eItemID);
+    }
+
+    public stItem GetInventoryItem(int nItemID)
+    {
+        return this.Inventory.GetItem(nItemID);
+    }
+
+    private stItem addItem(stItem stItemInfo)
+    {
+        this.Inventory.AddItem(stItemInfo.ItemID, stItemInfo.Count);
+
+        //UI 업데이트
+        this.doItemCountRefreshEvent(this.Inventory.GetItem(stItemInfo.ItemID));
+        this.checkNewMark(stItemInfo.ItemID);
+
+        return stItemInfo;
+    }
+
+    public stItem AddItem(stItem stItemInfo)
+    {
+        return this.addItem(stItemInfo);
+    }
+
+    public void AddItem(stItem[] arrItemInfo)
+    {
+        for(int i = 0, nMax = arrItemInfo.Length; i < nMax; ++i)
+        {
+            this.AddItem(arrItemInfo[i]);
+        }
+    }
+
+    public bool UseItem(stItem stItemInfo)
+    {
+        return this.UseItem(stItemInfo.ItemID, stItemInfo.Count);
+    }
+
+    public bool UseItem(int nItemID, uint nUseCount)
+    {
+        //없는 아이템이면 못씀
+        if(this.Inventory.IsContainsItem(nItemID) == false)
+        {
+            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 없다!");
+            return false;
+        }
+
+        //갖고 있는 것보다 적으면 못씀
+        if(this.Inventory.IsUseable(nItemID, nUseCount) == false)
+        {
+            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 모자라다!");
+            return false;
+        }
+
+        //아이템 사용
+        this.Inventory.UseItem(nItemID, nUseCount);
+
+        //UI 업데이트
+        this.doItemCountRefreshEvent(this.Inventory.GetItem(nItemID));
+        this.checkNewMark(nItemID);
+
+        return true;
+    }
+
+    public bool IsUseableItem(stItem stItemInfo)
+    {
+        return this.Inventory.IsUseable(stItemInfo.ItemID, stItemInfo.Count);
+    }
+
+    public bool CheckUseableItem(stItem stItemInfo)
+    {
+        if(this.IsUseableItem(stItemInfo) == true) return true;
+
+        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup($"{stItemInfo.ItemID} 부족 +STR");
+        return false;
+    }
+
+    public bool IsContainsItem(int nItemID)
+    {
+        return this.Inventory.IsContainsItem(nItemID);
+    }
+
+    public void RefreshNewMark()
+    {
+        for(int i = (int)TableData.TableItem.eID.Gold, nMax = (int)TableData.TableItem.eID.Dia; i <= nMax; ++i)
+        {
+            this.checkNewMark(i);
+        }
+    }
+
+    private void checkNewMark(int nItemID)
+    {
+        switch((TableData.TableItem.eID)nItemID)
+        {
+            case TableData.TableItem.eID.Gold:
+            case TableData.TableItem.eID.Dia:
+            {
+                //강화 가능한지 확인
+                //EX) UIManager.Instance.HUD?.SetNew(ePOPUP_ID.Upgrade, ProjectManager.Instance.Table.UpgradeAbility.IsUpgradeable());
+            }
+            break;
+        }
+    }
+    #endregion
+
+    #region Debug
+    public void Debug_Cheat()
+    {
+    }
+    #endregion
+}

@@ -1,0 +1,4 @@
+{"Json":{
+  "20001": { "type":2, "productID":"package_1", "purchaseType":1, "expose":0, "sort":1, "category":4, "strID":10003, "strIcon":"Icon_Package_0", "limitType":2, "limitCount":1, "coolTime":0, "costItemID":0, "costValue":19900, "listRewardItemID":"[102]", "listRewardValue":"[100]", "deadline":0},
+  "10001": { "type":2, "productID":"", "purchaseType":3, "expose":1, "sort":0, "category":4, "strID":10011, "strIcon":"Icon_Cat_Gift", "limitType":3, "limitCount":2, "coolTime":0, "costItemID":0, "costValue":0, "listRewardItemID":"[102,103]", "listRewardValue":"[10,50]", "deadline":0}
+}}

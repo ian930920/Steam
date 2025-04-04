@@ -1,0 +1,6 @@
+{"Json":{
+  "101": { "type":1, "productID":"", "purchaseType":3, "expose":1, "sort":1, "category":1, "strID":0, "strIcon":"Icon_Shop_Dia_1", "limitType":3, "limitCount":10, "coolTime":600, "costItemID":0, "costValue":0, "listRewardItemID":"[102]", "listRewardValue":"[10]", "bonusValue":0},
+  "201": { "type":1, "productID":"dia_1", "purchaseType":1, "expose":1, "sort":1, "category":1, "strID":0, "strIcon":"storemoney_07", "limitType":1, "limitCount":0, "coolTime":0, "costItemID":0, "costValue":1000, "listRewardItemID":"[102]", "listRewardValue":"[100]", "bonusValue":0},
+  "301": { "type":1, "productID":"", "purchaseType":2, "expose":1, "sort":0, "category":0, "strID":0, "strIcon":"Img_Icon_Churu", "limitType":1, "limitCount":0, "coolTime":0, "costItemID":102, "costValue":10, "listRewardItemID":"[104]", "listRewardValue":"[1]", "bonusValue":0},
+  "401": { "type":1, "productID":"", "purchaseType":2, "expose":1, "sort":3, "category":2, "strID":10006, "strIcon":"Icon_Gacha_Costume_2", "limitType":1, "limitCount":0, "coolTime":0, "costItemID":102, "costValue":490, "listRewardItemID":"[300]", "listRewardValue":"[5]", "bonusValue":0}
+}}

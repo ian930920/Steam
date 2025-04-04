@@ -1,0 +1,4 @@
+{"Json":{
+  "1": { "type":1, "coolTime":60, "durationTime":10},
+  "2": { "type":2, "coolTime":60, "durationTime":10}
+}}

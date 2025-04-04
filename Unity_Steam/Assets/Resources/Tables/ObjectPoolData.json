@@ -1,0 +1,6 @@
+{"Json":{
+  "1": { "type":2, "poolCount":10, "path":"Prefabs/Effects/Effect_Count"},
+  "2": { "type":1, "poolCount":10, "path":"Prefabs/Effects/Effect_ItemDrop"},
+  "101": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Gauge"},
+  "102": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Button"}
+}}
