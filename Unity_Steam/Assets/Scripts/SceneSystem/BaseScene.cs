@@ -41,7 +41,7 @@ public abstract class BaseScene : MonoBehaviour
 		ProjectManager.Instance.Scene.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.Out, this.m_fStartDuration, this.m_colorStart, this.onFadeEnd));
 
 		//hud
-		this.m_hud.Init();
+		this.m_hud?.Init();
 	}
 
 	virtual public void OnSceneEnd()

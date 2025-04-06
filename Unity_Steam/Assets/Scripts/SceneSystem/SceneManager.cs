@@ -7,13 +7,15 @@ public class SceneManager : BaseManager<SceneManager>
     public enum eSCENE_ID
     {
         Title,
-        Main,
+        //Main,
+        Battle,
     }
 
     private string[] m_arrSceneName =
 	{
         "TitleScene",
-        "MainScene",
+        //"MainScene",
+        "BattleScene",
     };
 
 	private eSCENE_ID m_reserveSceneID { get; set; }
@@ -52,7 +54,7 @@ public class SceneManager : BaseManager<SceneManager>
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(this.m_arrSceneName[(int)this.m_reserveSceneID]);
 
-        //씬 바꼈으면 해당 씬의 Canvas에 맞게 다시 세팅
+        // ? ?? ? ? ?? Canvas ??? ???
         this.m_fadeSystem.UpdateCanvasScaler();
     }
 

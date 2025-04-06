@@ -9,10 +9,12 @@ public class TitleScene : BaseScene
         ProjectManager.Instance.InitInTitleScene();
 
         base.OnSceneStart();
+
+        this.OnGameStartClicked();
     }
 
     public void OnGameStartClicked()
     {
-        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Main);
+        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Battle);
     }
 }

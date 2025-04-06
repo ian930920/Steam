@@ -16,9 +16,10 @@ public class TableManager : BaseManager<TableManager>
 	public TableDefine Define { get; private set; } = null;
 	public TableTime Time { get; private set; } = null;
 	public TableItem Item { get; private set; } = null;
-#endregion
+	public TableCharacter Character { get; private set; } = null;
+	#endregion
 
-    protected override void init()
+	protected override void init()
     {
 		if(this.GameObject == null)
 		{
@@ -49,6 +50,9 @@ public class TableManager : BaseManager<TableManager>
 			$"{strPath}/ResourceSoundData",
 		});
 		this.ObjectPool = TableObjectPool.Instance.LoadTable($"{strPath}/ObjectPoolData");
+
+		//캐릭터
+		this.Character = TableCharacter.Instance.LoadTable($"{strPath}/CharacterData");
 
 #if UNITY_EDITOR
 		if(true)
