@@ -1,0 +1,5 @@
+{"Json":{
+  "1000": { "cost":1, "cooldown":0, "coe":1, "acc":0.7, "dur":0, "target":1, "type":1, "buff":0, "debuff":[]},
+  "1001": { "cost":0, "cooldown":0, "coe":0.5, "acc":0.6, "dur":0, "target":1, "type":1, "buff":0, "debuff":[]},
+  "1002": { "cost":2, "cooldown":1, "coe":2, "acc":0.6, "dur":0, "target":1, "type":1, "buff":0, "debuff":[1000]}
+}}

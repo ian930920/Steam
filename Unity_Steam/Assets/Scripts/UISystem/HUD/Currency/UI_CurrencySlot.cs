@@ -29,8 +29,7 @@ public class UI_CurrencySlot : MonoBehaviour
 
     private void refreshSlot(uint nCount)
     {
-        //this.m_textValue.text = Utility_UI.GetCommaNumber(nCount);
-        this.m_textValue.text = Utility_UI.GetBigIntToABC(new BigInteger(200000));
+        this.m_textValue.text = Utility_UI.GetCommaNumber(nCount);
     }
 
     public void OnShortCutClicked()

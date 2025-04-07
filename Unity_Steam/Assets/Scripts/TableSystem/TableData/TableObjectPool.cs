@@ -8,17 +8,26 @@ namespace TableData
     {
         public enum eID
         {
-            Effect_Count = 1,           //Ä«¿îÆ®
-            Effect_ItemDrop,            //¾ÆÀÌÅÛ µå¶ø ÀÌÆåÆ®
+            Char_User = 1001,           //ìœ ì €
+            Char_Enemy,                 //ì 
 
-            ReactiveUI_Button = 101,    //¹İÀÀÇü ¹öÆ°
-            ReactiveUI_Gauge,           //ÀÏ¹İ °ÔÀÌÁö
+            ReactiveUI_Button = 2001,   //ë°˜ì‘í˜• ë²„íŠ¼
+            ReactiveUI_Gauge,           //ì¼ë°˜ ê²Œì´ì§€
+            UI_CharaterStatusBar,       //ìºë¦­í„° ìƒíƒœë°”
+
+            Effect_ItemDrop = 3001,     //ì•„ì´í…œ ë“œë ì´í™íŠ¸
+            Effect_Attack,              //ê³µê²© ì´í™íŠ¸
+            Effect_Damage,              //í”¼ê²© ì´í™íŠ¸
+
+            Effect_Count = 4001,        //ì¹´ìš´íŠ¸
         }
 
         public enum eTYPE
         {
-            Fx = 1,
-            UI,
+            Prefab_Root_Normal = 1,
+            Prefab_Root_UI,
+            FX_Root_Normal,
+            FX_Root_UI,
         }
     }
 

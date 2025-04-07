@@ -1,4 +1,4 @@
 {"Json":{
-  "1": { "hp":10, "listSkillID":[1], "resID":20002, "strSprite":"User"},
-  "10001": { "hp":5, "listSkillID":[1], "resID":20002, "strSprite":"Enemy_1"}
+  "1": { "hp":20, "listSkillID":[1000], "resID":20002, "strSprite":"User"},
+  "10001": { "hp":3, "listSkillID":[1000,1001,1002], "resID":20002, "strSprite":"Enemy_1"}
 }}

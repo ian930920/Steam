@@ -434,11 +434,11 @@ namespace LunarConsolePluginInternal
         {
             if (call.target == null)
             {
-                Debug.LogWarning($"Action '{m_title}' ({gameObject.name}) is missing a target object", gameObject); 
+                Debug.LogWarning(string.Format("Action '{0}' ({1}) is missing a target object", m_title, gameObject.name), gameObject); 
             }
             else if (!LunarConsoleActionCall.IsPersistantListenerValid(call.target, call.methodName, call.mode))
             {
-                Debug.LogWarning($"Action '{ m_title}' ({gameObject.name}) is missing a handler <{call.target.GetType()}.{call.methodName} ({ModeParamTypeName(call.mode)})>", gameObject); 
+                Debug.LogWarning(string.Format("Action '{0}' ({1}) is missing a handler <{2}.{3} ({4})>", m_title, gameObject.name, call.target.GetType(), call.methodName, ModeParamTypeName(call.mode)), gameObject); 
             }
         }
         

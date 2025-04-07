@@ -22,7 +22,7 @@ public class UIManager : BaseManager<UIManager>
 
     #region Screen
     static public float PIXELS_PER_UINIT = 0.01f;
-    static public Vector2 VEC2_SCREEN_REF = new Vector2(1280, 720);
+    static public Vector2 VEC2_SCREEN_REF = new Vector2(1920, 1080);
     static public float SCREEN_REF_RATE = VEC2_SCREEN_REF.x / VEC2_SCREEN_REF.y;
 
     //화면 비율

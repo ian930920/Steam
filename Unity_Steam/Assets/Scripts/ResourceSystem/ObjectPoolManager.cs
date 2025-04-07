@@ -76,8 +76,8 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
     private void loadByTable()
     {
         //EX) transParent
-        Transform transReactiveUI = null; //ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().transform;
-        Transform transFxUI = null; //CustomSceneManager.Instance.MainScene.TransFxUIRoot;
+        Transform transRootGobj = ProjectManager.Instance.Scene.CurrScene.TransRootObjectPool;
+        Transform transRootUI = ProjectManager.Instance.Scene.CurrScene.HUD.TransReactiveParent;
 
         TableData.TableData_ObjectPool data = null;
         Dictionary<uint, TableData.TableData_ObjectPool>.Enumerator enumData = ProjectManager.Instance.Table.ObjectPool.GetEnumerator();
@@ -89,20 +89,39 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
             uint nKey = data.tableID;
             switch((TableData.TableObjectPool.eTYPE)data.type)
             {
-                case TableData.TableObjectPool.eTYPE.Fx:
-                {
-                    if(this.m_dicFx.ContainsKey(nKey) == true) continue;
-
-                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transFxUI);
-                    this.m_dicFx.Add(nKey, objectPool);
-                }
-                break;
-                case TableData.TableObjectPool.eTYPE.UI:
+                case TableData.TableObjectPool.eTYPE.Prefab_Root_Normal:
                 {
                     if(this.m_dicObjectPool.ContainsKey(nKey) == true) continue;
 
-                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transReactiveUI);
+                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transRootGobj);
                     this.m_dicObjectPool.Add(nKey, objectPool);
+                }
+                break;
+
+                case TableData.TableObjectPool.eTYPE.Prefab_Root_UI:
+                {
+                    if(this.m_dicObjectPool.ContainsKey(nKey) == true) continue;
+
+                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transRootUI);
+                    this.m_dicObjectPool.Add(nKey, objectPool);
+                }
+                break;
+
+                case TableData.TableObjectPool.eTYPE.FX_Root_Normal:
+                {
+                    if(this.m_dicFx.ContainsKey(nKey) == true) continue;
+
+                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transRootGobj);
+                    this.m_dicFx.Add(nKey, objectPool);
+                }
+                break;
+
+                case TableData.TableObjectPool.eTYPE.FX_Root_UI:
+                {
+                    if(this.m_dicFx.ContainsKey(nKey) == true) continue;
+
+                    ObjectPool objectPool = new ObjectPool(data.path, data.poolCount, transRootUI);
+                    this.m_dicFx.Add(nKey, objectPool);
                 }
                 break;
             }

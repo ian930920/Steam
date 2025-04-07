@@ -1,30 +1,27 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
-public class BaseCharacter : MonoBehaviour
+public abstract class BaseCharacter : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer m_renderer = null;
+    [SerializeField] protected SpriteRenderer m_renderer = null;
 
-    [Header("UI")][Space(5)]
-    [SerializeField] private UI_Reactive_Gauge m_uiHP = null;
-    [SerializeField] private Transform m_targetUI = null;
+    private UI_CharacterStatusBar m_uiStatusBar = null;
 
     public uint CharID { get; private set; } = 0; 
     private ulong m_nMaxHP = 0;
     private ulong m_nCurrHP = 0;
-    private List<Skill> m_listSkill = new List<Skill>();
-    private bool isUser => this.CharID == (uint)TableData.TableCharacter.eID.User;
+    protected List<Skill> m_listSkill = new List<Skill>();
 
     public void Init(TableData.TableCharacter.eID eID)
     {
         this.Init((uint)eID);
     }
 
-    public void Init(uint charID)
+    public virtual void Init(uint charID)
     {
         this.CharID = charID;
         this.m_renderer.sprite = ProjectManager.Instance.Table.Character.GetSprite(this.CharID);
-        this.m_renderer.flipX = this.isUser;
 
         TableData.TableData_Character dataChar = ProjectManager.Instance.Table.Character.GetData(this.CharID);
         this.m_nMaxHP = dataChar.hp;
@@ -37,67 +34,66 @@ public class BaseCharacter : MonoBehaviour
 
         this.gameObject.SetActive(true);
         this.transform.localPosition = Vector3.zero;
-        //this.m_uiHP.ActiveUI(new );
+
+        //캐릭터 상태바 세팅
+        if(this.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_CharaterStatusBar);
+        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.m_nMaxHP);
     }
 
     public void Attack(BaseCharacter charTarget)
     {
-        //TODO 스킬 인덱스 정하기 
-        charTarget.Damaged(this.GetAttackDamage());
+        StartCoroutine("coAttack", charTarget);
     }
 
-    public ulong GetAttackDamage(int nSkillIdx = 0)
+    private IEnumerator coAttack(BaseCharacter charTarget)
     {
-        ulong nDamage = this.m_listSkill[nSkillIdx].GetDamage();
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup($"공격 데미지 {nDamage}");
+        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Attack, this.transform.position);
+
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+
+        //TODO 스킬 인덱스 정하기 
+        charTarget.Damaged(this.getAttackDamage(Random.Range(0, this.m_listSkill.Count)));
+
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+
+        //턴 바꾸기~
+        this.checkFinishTurn();
+    }
+
+    protected abstract void checkFinishTurn();
+
+    private ulong getAttackDamage(int nSkillIdx = 0)
+    {
+        //TODO 캐릭터 기본 스테이터스 적용
+        ulong nDamage = this.m_listSkill[nSkillIdx].GetDamage(1);
+        ProjectManager.Instance.Log($"공격 데미지 {nDamage}");
         return nDamage;
     }
 
     public void Damaged(ulong nDamage)
     {
+        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
+
         this.m_nCurrHP -= nDamage;
+        this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
+
         if(this.m_nCurrHP <= 0) this.death();
-        else ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup($"피격 체력 {this.m_nCurrHP}");
     }
 
-    private void death()
+    protected virtual void death()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("사망");
+        ProjectManager.Instance.Log("사망");
+        
         this.gameObject.SetActive(false);
     }
 
-    private void OnMouseUp()
+    private void OnDisable()
     {
-        if(this.isUser == true) return;
-        if(ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().IsUserTurn == false) return;
-
-        //공격 선텍
-        ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().Attack(this);
+        //상태바 지우기
+        if(this.m_uiStatusBar != null)
+        {
+            this.m_uiStatusBar.gameObject.SetActive(false);
+            this.m_uiStatusBar = null;
+        }
     }
-}
-
-public class Skill
-{
-    public SkillData Status { get; private set; } = new SkillData();
-
-    public Skill(uint skillID)
-    {
-        //TODO 스킬 테이블참조
-        this.Status.Damage = 1;
-    }
-
-    public ulong GetDamage()
-    {
-        return this.Status.Damage;
-    }
-}
-
-public class SkillData
-{
-    public ulong Damage { get; set; } = 0;
-    public int Speed { get; set; } = 0;
-    public int Amor { get; set; } = 0;
-
-    public ushort Cost { get; set; } = 0;
-    public ushort Turn { get; set; } = 0;
 }

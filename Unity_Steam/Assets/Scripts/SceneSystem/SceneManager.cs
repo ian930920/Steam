@@ -54,7 +54,7 @@ public class SceneManager : BaseManager<SceneManager>
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(this.m_arrSceneName[(int)this.m_reserveSceneID]);
 
-        // ? ?? ? ? ?? Canvas ??? ???
+        //씬 바꼈으면 해당 씬의 Canvas에 맞게 다시 세팅
         this.m_fadeSystem.UpdateCanvasScaler();
     }
 

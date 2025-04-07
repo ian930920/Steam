@@ -1,13 +1,15 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
-/// ???????????? ???????? ???? Manager or System ????
+/// 프로젝트에서 사용되는 모든 Manager or System 관리
 /// </summary>
 public class ProjectManager : MonoBehaviour
 {
-    //TODO ?????????? Tag ???? : "ProjectManager" "Scene"
-    //TODO ???????? Define?? ???? : DEBUG_LOG
+    //TODO 프로젝트에 Tag 추가 : "ProjectManager" "Scene"
+    //TODO 프로젝트 Define에 추가 : DEBUG_LOG
 
 #region Instance
     //Singleton Ojbect is only Managers
@@ -27,7 +29,7 @@ public class ProjectManager : MonoBehaviour
             instance = gobj.AddComponent<ProjectManager>();
         }
 
-        //???? ???? ?????? ???? ???????? ????
+        //아직 파괴 안되게 세팅 안됐다면 세팅
         if(instance.gameObject.scene.name != "DontDestroyOnLoad") DontDestroyOnLoad(instance.gameObject);
 
         return instance;
@@ -41,7 +43,7 @@ public class ProjectManager : MonoBehaviour
     [SerializeField] private QueueActionSystem m_systemQueueAction  = null;
     public QueueActionSystem QueueActionSystem => this.m_systemQueueAction;
 
-#region ?????? ???????? System
+#region 무조건 사용하는 System
     public UIManager UI { private set; get; } = null;
     public SceneManager Scene { private set; get; } = null;
     public TableManager Table { private set; get; } = null;
@@ -53,14 +55,14 @@ public class ProjectManager : MonoBehaviour
 
     private void Awake()
     {
-        //?????? ????
+        //프레임 고정
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
 
-        //????????
+        //슬립모드
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        //???? ?????? ???????? Manager or System
+        //항상 초기화 해야하는 Manager or System
         this.Table = TableManager.Init(this.gameObject);
         this.UI = UIManager.Init(this.gameObject);
         this.Scene = SceneManager.Init(this.gameObject);
@@ -72,14 +74,15 @@ public class ProjectManager : MonoBehaviour
 
     public void InitInTitleScene()
     {
-        //?????? ???????? ???? ?? ?????????? Manager or System
+        //타이틀 씬에서만 생성 및 초기화하는 Manager or System
         this.Table.LoadClientTables();
         this.Resource.LoadResByTable();
     }
 
-    public void InitInMainScene()
+    public void InitInBattleScene()
     {
-        //???? ???????? ???? ?? ?????????? Manager or System
+        //메인 씬에서만 생성 및 초기화하는 Manager or System
+        this.ObjectPool.InitObjectPool();
     }
 
     private void Update()
@@ -93,32 +96,19 @@ public class ProjectManager : MonoBehaviour
 	{
 		if(Input.GetKeyUp(KeyCode.Escape) == false) return;
 
-		//???? ????????????
-        //if(this.Scene.CurrScene == null || this.Scene.CurrSceneID != SceneManager.eSCENE_ID.Main) return;
+        //팝업닫기
+        if(this.UI.PopupSystem.AutoClosePopup() == true) return;
 
-        /*
-        //???????????????? ????
-		if(UserDataManager.Instance.Tutorial.IsActiveTutorial == true) return;
-
-        //???? ????
-        if(UIManager.Instance.PopupSystem.CurrPopup != null)
-        {
-        }
-        */
-
-        //TODO ????????
-        //if(UIManager.Instance.PopupSystem.AutoClosePopup() == true) return;
-
-        //TODO ????????????????? ????
-        //UIManager.Instance.PopupSystem.OpenSystemConfirmPopup("?????????????????", this.QuitGame);
+        //종료하시겠습니까? 팝업
+        this.UI.PopupSystem.OpenSystemConfirmPopup("+STR 종료하시겠습니까?", this.QuitGame);
 	}
 
     /// <summary>
-    /// ???? ????
+    /// 게임 종료
     /// </summary>
     public void QuitGame()
 	{
-        //?????? ????
+        //데이터 저장
         //UserDataManager.Instance.SaveData();
 
 #if UNITY_EDITOR

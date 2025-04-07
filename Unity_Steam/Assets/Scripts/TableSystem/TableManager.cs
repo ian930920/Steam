@@ -17,6 +17,7 @@ public class TableManager : BaseManager<TableManager>
 	public TableTime Time { get; private set; } = null;
 	public TableItem Item { get; private set; } = null;
 	public TableCharacter Character { get; private set; } = null;
+	public TableSkill Skill { get; private set; } = null;
 	#endregion
 
 	protected override void init()
@@ -53,6 +54,7 @@ public class TableManager : BaseManager<TableManager>
 
 		//캐릭터
 		this.Character = TableCharacter.Instance.LoadTable($"{strPath}/CharacterData");
+		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
 
 #if UNITY_EDITOR
 		if(true)

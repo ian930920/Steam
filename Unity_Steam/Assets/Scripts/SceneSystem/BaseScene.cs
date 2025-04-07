@@ -14,11 +14,13 @@ public abstract class BaseScene : MonoBehaviour
 
 	[SerializeField] private float m_fEndDuration = 0.3f;
 	[SerializeField] private Color m_colorEnd = Color.black;
-	public float FadeEndDuration { get { return m_fEndDuration; } }
+	public float FadeEndDuration => this.m_fEndDuration;
 
 	[Header("HUD")][Space(5)]
 	[SerializeField] private BaseHUD m_hud = null;
-	public BaseHUD HUD { get { return this.m_hud; } }
+	public BaseHUD HUD => this.m_hud;
+	[SerializeField] private Transform m_transRootObjectPool = null;
+	public Transform TransRootObjectPool => this.m_transRootObjectPool;
 
 	private void Awake()
 	{
