@@ -1,5 +1,10 @@
 {"Json":{
-  "1000": { "cost":1, "cooldown":0, "coe":1, "acc":0.7, "dur":0, "target":1, "type":1, "buff":0, "debuff":[]},
-  "1001": { "cost":0, "cooldown":0, "coe":0.5, "acc":0.6, "dur":0, "target":1, "type":1, "buff":0, "debuff":[]},
-  "1002": { "cost":2, "cooldown":1, "coe":2, "acc":0.6, "dur":0, "target":1, "type":1, "buff":0, "debuff":[1000]}
+  "1000": { "type":1, "cooldown":0, "coe":1, "acc":0.7, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31001},
+  "1001": { "type":1, "cooldown":0, "coe":0.5, "acc":0.6, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31002},
+  "1002": { "type":1, "cooldown":1, "coe":2, "acc":0.6, "crit":0.3, "dur":0, "target":1, "listStatusID":[1000], "strID":31003},
+  "2000": { "type":1, "cooldown":1, "coe":20, "acc":0.7, "crit":0.2, "dur":0, "target":1, "listStatusID":[1000], "strID":32001},
+  "2001": { "type":1, "cooldown":0, "coe":15, "acc":0.6, "crit":0.2, "dur":0, "target":5, "listStatusID":[1000], "strID":32002},
+  "2002": { "type":3, "cooldown":0, "coe":30, "acc":1, "crit":0, "dur":1, "target":10, "listStatusID":[1000], "strID":32003},
+  "2003": { "type":3, "cooldown":0, "coe":20, "acc":1, "crit":0, "dur":2, "target":0, "listStatusID":[1000], "strID":32004},
+  "2004": { "type":2, "cooldown":0, "coe":10, "acc":1, "crit":0.2, "dur":0, "target":10, "listStatusID":[], "strID":32005}
 }}

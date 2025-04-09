@@ -16,8 +16,10 @@ public class TableManager : BaseManager<TableManager>
 	public TableDefine Define { get; private set; } = null;
 	public TableTime Time { get; private set; } = null;
 	public TableItem Item { get; private set; } = null;
-	public TableCharacter Character { get; private set; } = null;
+	public TableUser User { get; private set; } = null;
+	public TableEnemy Enemy { get; private set; } = null;
 	public TableSkill Skill { get; private set; } = null;
+	public TableSummon Summon { get; private set; } = null;
 	#endregion
 
 	protected override void init()
@@ -41,6 +43,7 @@ public class TableManager : BaseManager<TableManager>
 		this.String = TableString.Instance.LoadTables(new string[]
 		{
 			$"{strPath}/StringData",
+			$"{strPath}/StringCharacterData",
 		});
 
 		//Resource
@@ -53,8 +56,10 @@ public class TableManager : BaseManager<TableManager>
 		this.ObjectPool = TableObjectPool.Instance.LoadTable($"{strPath}/ObjectPoolData");
 
 		//캐릭터
-		this.Character = TableCharacter.Instance.LoadTable($"{strPath}/CharacterData");
+		this.User = TableUser.Instance.LoadTable($"{strPath}/UserData");
+		this.Enemy = TableEnemy.Instance.LoadTable($"{strPath}/EnemyData");
 		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
+		this.Summon = TableSummon.Instance.LoadTable($"{strPath}/SummonData");
 
 #if UNITY_EDITOR
 		if(true)

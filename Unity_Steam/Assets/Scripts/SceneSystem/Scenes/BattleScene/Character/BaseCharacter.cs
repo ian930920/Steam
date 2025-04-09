@@ -4,55 +4,91 @@ using System.Collections.Generic;
 
 public abstract class BaseCharacter : MonoBehaviour
 {
+    private enum eSTATE
+    {
+        Idle,
+        Attack,
+        Damaged,
+    }
+
+    private static readonly string[] STR_ANIM_TRIGGER =
+    {
+        "Idle",
+        "Attack",
+        "Damaged",
+    };
+
     [SerializeField] protected SpriteRenderer m_renderer = null;
+    [SerializeField] protected Animator m_animator = null;
+
+    public uint CharID { get; private set; } = 0; 
+    protected ulong m_nCurrHP = 0;
+    protected CharecterStatus m_status = null;
+
+    protected List<Skill> m_listSkill = new List<Skill>();
+    protected Skill m_currSkill = null;
 
     private UI_CharacterStatusBar m_uiStatusBar = null;
 
-    public uint CharID { get; private set; } = 0; 
-    private ulong m_nMaxHP = 0;
-    private ulong m_nCurrHP = 0;
-    protected List<Skill> m_listSkill = new List<Skill>();
-
-    public void Init(TableData.TableCharacter.eID eID)
-    {
-        this.Init((uint)eID);
-    }
+    protected List<BaseCharacter> m_listTarget = new List<BaseCharacter>();
 
     public virtual void Init(uint charID)
     {
         this.CharID = charID;
-        this.m_renderer.sprite = ProjectManager.Instance.Table.Character.GetSprite(this.CharID);
-
-        TableData.TableData_Character dataChar = ProjectManager.Instance.Table.Character.GetData(this.CharID);
-        this.m_nMaxHP = dataChar.hp;
-        this.m_nCurrHP = this.m_nMaxHP;
-        this.m_listSkill.Clear();
-        for(int i = 0, nMax = dataChar.listSkillID.Count; i < nMax; ++i)
-        {
-            this.m_listSkill.Add(new Skill(dataChar.listSkillID[i]));
-        }
+        this.m_renderer.sprite = ProjectManager.Instance.Table.Enemy.GetSprite(this.CharID);
 
         this.gameObject.SetActive(true);
         this.transform.localPosition = Vector3.zero;
+        this.m_listTarget.Clear();
 
         //캐릭터 상태바 세팅
         if(this.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_CharaterStatusBar);
-        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.m_nMaxHP);
+        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.m_status.MaxHP);
+
+        this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Idle]);
     }
 
-    public void Attack(BaseCharacter charTarget)
+    public virtual void SetMyTurn()
     {
-        StartCoroutine("coAttack", charTarget);
+        //타겟 모두 비우고
+        this.m_currSkill = null;
+
+        //각 하위 클래스에서 사용할 스킬 정해
     }
 
-    private IEnumerator coAttack(BaseCharacter charTarget)
+    public void SetCurrSkill(int nSkillIdx)
     {
-        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Attack, this.transform.position);
+        this.m_currSkill = this.m_listSkill[nSkillIdx];
 
-        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+        //스킬타입에 따른 타겟 설정
+        this.m_listTarget.Clear();
+        this.setTarget();
+    }
 
-        //TODO 스킬 인덱스 정하기 
-        charTarget.Damaged(this.getAttackDamage(Random.Range(0, this.m_listSkill.Count)));
+    abstract protected void setTarget();
+
+    public void AddTarget(BaseCharacter charTarget)
+    {
+        if(this.m_currSkill.TargetCount == this.m_listTarget.Count) return;
+        if(this.m_currSkill.isValiedTatget(charTarget) == false) return;
+        if(this.m_listTarget.Contains(charTarget) == true) return;
+
+        this.m_listTarget.Add(charTarget);
+    }
+
+    public void UseSkill()
+    {
+        //지금 설정된 스킬 사용
+        StartCoroutine("coUseSkill");
+    }
+
+    private IEnumerator coUseSkill()
+    {
+        this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Attack]);
+
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
+        
+        this.m_currSkill.UseSkill(this.m_listTarget);
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
 
@@ -62,22 +98,25 @@ public abstract class BaseCharacter : MonoBehaviour
 
     protected abstract void checkFinishTurn();
 
-    private ulong getAttackDamage(int nSkillIdx = 0)
-    {
-        //TODO 캐릭터 기본 스테이터스 적용
-        ulong nDamage = this.m_listSkill[nSkillIdx].GetDamage(1);
-        ProjectManager.Instance.Log($"공격 데미지 {nDamage}");
-        return nDamage;
-    }
-
     public void Damaged(ulong nDamage)
     {
         ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
 
-        this.m_nCurrHP -= nDamage;
+        this.m_nCurrHP = (ulong)Mathf.Clamp(this.m_nCurrHP - nDamage, 0, this.m_nCurrHP);
         this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
+        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nDamage, this.transform.position);
+        this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
 
-        if(this.m_nCurrHP <= 0) this.death();
+        if(this.m_nCurrHP < 1) this.death();
+    }
+
+    public void Heal(ulong nHeal)
+    {
+        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
+
+        this.m_nCurrHP = (ulong)Mathf.Clamp(nHeal + this.m_nCurrHP, this.m_nCurrHP, this.m_status.MaxHP);
+        this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
+        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nHeal, this.transform.position);
     }
 
     protected virtual void death()
@@ -95,5 +134,17 @@ public abstract class BaseCharacter : MonoBehaviour
             this.m_uiStatusBar.gameObject.SetActive(false);
             this.m_uiStatusBar = null;
         }
+    }
+}
+
+public class CharecterStatus
+{
+    public ulong MaxHP { get; private set; } = 0;
+    public ulong Strength { get; private set; } = 0;
+
+    public CharecterStatus(ulong nMaxHP, ulong nStrength)
+    {
+        this.MaxHP = nMaxHP;
+        this.Strength = nStrength;
     }
 }

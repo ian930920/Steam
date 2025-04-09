@@ -18,7 +18,7 @@ public abstract class BaseScene : MonoBehaviour
 
 	[Header("HUD")][Space(5)]
 	[SerializeField] private BaseHUD m_hud = null;
-	public BaseHUD HUD => this.m_hud;
+	public BaseHUD BaseHUD => this.m_hud;
 	[SerializeField] private Transform m_transRootObjectPool = null;
 	public Transform TransRootObjectPool => this.m_transRootObjectPool;
 

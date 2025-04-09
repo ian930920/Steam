@@ -9,7 +9,7 @@ public class UI_CharacterStatusBar : MonoBehaviour
 
     public void Init(Vector3 vecPos, ulong nHP)
     {
-        this.transform.position = new Vector3(vecPos.x, vecPos.y - 0.4f, vecPos.z);
+        this.transform.position = new Vector3(vecPos.x, vecPos.y - 20, vecPos.z);
 
         this.m_sliderHP.minValue = 0;
         this.m_sliderHP.maxValue = nHP;

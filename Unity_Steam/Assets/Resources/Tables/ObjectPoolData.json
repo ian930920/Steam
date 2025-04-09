@@ -4,8 +4,8 @@
   "2001": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Gauge"},
   "2002": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Button"},
   "2003": { "type":2, "poolCount":10, "path":"Prefabs/UI/UI_CharacterStatusBar"},
+  "2004": { "type":2, "poolCount":10, "path":"Prefabs/Effects/Effect_Count"},
   "3001": { "type":3, "poolCount":10, "path":"Prefabs/Effects/Effect_ItemDrop"},
   "3002": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Attack"},
-  "3003": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Blood"},
-  "4001": { "type":4, "poolCount":10, "path":"Prefabs/Effects/Effect_Count"}
+  "3003": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Blood"}
 }}

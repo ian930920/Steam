@@ -3,13 +3,11 @@ using UnityEngine;
 
 namespace TableData
 {
-    public class TableCharacter : BaseTableData<TableCharacter, TableData_Character>
+    public class TableEnemy : BaseTableData<TableEnemy, TableData_Enemy>
     {
         public enum eID
         {
-            User = 1,
-
-            Enemy_1 = 10001,
+            Enemy_1 = 1001,
         }
 
         public enum eTYPE
@@ -26,11 +24,12 @@ namespace TableData
         }
     }
 
-    public class TableData_Character : iTableData
+    public class TableData_Enemy : iTableData
     {
-        //tableID hp listSkillID resID strSprite
+        //tableID hp strength listSkillID resID strSprite
         public uint tableID { get; set; }
         public ulong hp { get; set; }
+        public ulong strength { get; set; }
         public List<uint> listSkillID { get; set; }
         public uint resID { get; set; }
         public string strSprite { get; set; }

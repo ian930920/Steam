@@ -77,7 +77,7 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
     {
         //EX) transParent
         Transform transRootGobj = ProjectManager.Instance.Scene.CurrScene.TransRootObjectPool;
-        Transform transRootUI = ProjectManager.Instance.Scene.CurrScene.HUD.TransReactiveParent;
+        Transform transRootUI = ProjectManager.Instance.Scene.CurrScene.BaseHUD.TransReactiveParent;
 
         TableData.TableData_ObjectPool data = null;
         Dictionary<uint, TableData.TableData_ObjectPool>.Enumerator enumData = ProjectManager.Instance.Table.ObjectPool.GetEnumerator();

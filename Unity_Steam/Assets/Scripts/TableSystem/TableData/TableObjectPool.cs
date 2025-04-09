@@ -14,12 +14,12 @@ namespace TableData
             ReactiveUI_Button = 2001,   //반응형 버튼
             ReactiveUI_Gauge,           //일반 게이지
             UI_CharaterStatusBar,       //캐릭터 상태바
+            Effect_Count,               //카운트
 
             Effect_ItemDrop = 3001,     //아이템 드랍 이펙트
             Effect_Attack,              //공격 이펙트
             Effect_Damage,              //피격 이펙트
 
-            Effect_Count = 4001,        //카운트
         }
 
         public enum eTYPE

@@ -8,7 +8,7 @@ public class BattleScene : BaseScene
     [SerializeField] private Transform[] m_arrTransEnemy = null;
 
     //캐릭터 관련 변수
-    private Character_User m_charUser = null;
+    public Character_User CharUser { get; private set; } = null;
     private List<Character_Enemy> m_listCharEnemy = new List<Character_Enemy>();
 
     //전투 관련 변수
@@ -17,12 +17,21 @@ public class BattleScene : BaseScene
     public bool IsUserTurn { get; private set; }  = true;
     public bool IsUserAttackable { get; private set; }  = true;
 
+    public HUD_Battle HUD => base.BaseHUD as HUD_Battle;
+
     public override void OnSceneStart()
     {
         base.OnSceneStart();
 
         //세팅~
         ProjectManager.Instance.InitInBattleScene();
+
+        //일단 소환수 모두 추가
+        Dictionary<uint, TableData.TableData_Summon>.Enumerator enumSummon = ProjectManager.Instance.Table.Summon.GetEnumerator();
+        while(enumSummon.MoveNext())
+        {
+            ProjectManager.Instance.UserData.Summon.AddSummon(enumSummon.Current.Key);
+        }
 
         //스테이지 리셋
         this.resetStage();
@@ -32,8 +41,8 @@ public class BattleScene : BaseScene
     private void resetStage()
     {
         //유저 초기화
-        this.m_charUser?.gameObject.SetActive(false);
-        this.m_charUser = null;
+        this.CharUser?.gameObject.SetActive(false);
+        this.CharUser = null;
 
         //적 초기화
         for(int i = 0, nMax = this.m_listCharEnemy.Count; i < nMax; ++i)
@@ -47,15 +56,14 @@ public class BattleScene : BaseScene
         
         //전투 변수 초기화
         this.setTurn(true);
-        this.IsUserAttackable = true;
     }
 
     public void InitStage()
     {
         //유저 세팅
-        this.m_charUser = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Character_User>(TableData.TableObjectPool.eID.Char_User);
-        this.m_charUser.transform.SetParent(this.m_transUser);
-        this.m_charUser.Init(TableData.TableCharacter.eID.User);
+        this.CharUser = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Character_User>(TableData.TableObjectPool.eID.Char_User);
+        this.CharUser.transform.SetParent(this.m_transUser);
+        this.CharUser.Init((uint)TableData.TableUser.eID.User);
 
         //적 세팅
         int nEnemyCount = 3;
@@ -63,7 +71,7 @@ public class BattleScene : BaseScene
         {
             this.m_listCharEnemy.Add(ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Character_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
             this.m_listCharEnemy[i].transform.SetParent(this.m_arrTransEnemy[i]);
-            this.m_listCharEnemy[i].Init(TableData.TableCharacter.eID.Enemy_1);
+            this.m_listCharEnemy[i].Init((uint)(TableData.TableEnemy.eID.Enemy_1 + i));
         }
     }
 
@@ -102,7 +110,8 @@ public class BattleScene : BaseScene
         if(this.IsUserTurn == true)
         {
             this.IsUserAttackable = true;
-            this.m_charAttacker = this.m_charUser;
+            this.m_charAttacker = this.CharUser;
+            this.m_charAttacker.SetMyTurn();
             ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("유저 턴");
         }
         else
@@ -118,14 +127,47 @@ public class BattleScene : BaseScene
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
 
         this.m_charAttacker = this.m_listCharEnemy[nIdx];
-        this.Attack(this.m_charUser);
+        this.m_charAttacker.SetMyTurn();
+        this.m_charAttacker.UseSkill();
     }
 
-    public void Attack(BaseCharacter charTarget)
+    public void AddTarget(BaseCharacter charTarget)
     {
-        if(this.IsUserAttackable == true) this.IsUserAttackable = false;
+        this.m_charAttacker.AddTarget(charTarget);
+    }
 
-        this.m_charAttacker.Attack(charTarget);
+    public void AddAllEnemyTarget()
+    {
+        if(this.IsUserTurn == true)
+        {
+            //적 모두 저장
+            for(int i = 0, nMax = this.m_listCharEnemy.Count; i < nMax; ++i)
+            {
+                this.m_charAttacker.AddTarget(this.m_listCharEnemy[i]);
+            }
+        }
+        else
+        {
+            //유저 저장
+            this.m_charAttacker.AddTarget(this.CharUser);
+        }
+    }
+
+    public void AddAllFriendlyTarget()
+    {
+        if(this.IsUserTurn == true)
+        {
+            //유저 저장
+            this.m_charAttacker.AddTarget(this.CharUser);
+        }
+        else
+        {
+            //적 모두 저장
+            for(int i = 0, nMax = this.m_listCharEnemy.Count; i < nMax; ++i)
+            {
+                this.m_charAttacker.AddTarget(this.m_listCharEnemy[i]);
+            }
+        }
     }
 
     public void RemoveEnemy(Character_Enemy charEnemy)

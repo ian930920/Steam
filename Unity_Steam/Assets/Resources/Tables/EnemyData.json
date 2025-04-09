@@ -1,0 +1,7 @@
+{"Json":{
+  "1001": { "hp":100, "strength":10, "listSkillID":[1000, 1002], "resID":20002, "strSprite":"Enemy_1"},
+  "1002": { "hp":50, "strength":20, "listSkillID":[1000, 1001], "resID":20002, "strSprite":"Enemy_2"},
+  "1003": { "hp":200, "strength":5, "listSkillID":[1000, 1002], "resID":20002, "strSprite":"Enemy_3"},
+  "1004": { "hp":75, "strength":12, "listSkillID":[1000, 1001], "resID":20002, "strSprite":"Enemy_4"},
+  "1005": { "hp":125, "strength":7, "listSkillID":[1000,1002], "resID":20002, "strSprite":"Enemy_5"}
+}}
