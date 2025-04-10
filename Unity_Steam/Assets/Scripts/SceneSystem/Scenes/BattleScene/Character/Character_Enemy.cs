@@ -5,8 +5,8 @@ public class Character_Enemy : BaseCharacter
     public override void Init(uint charID)
     {
         TableData.TableData_Enemy dataEnemy = ProjectManager.Instance.Table.Enemy.GetData(charID);
-        base.m_status = new CharecterStatus(dataEnemy.hp, dataEnemy.strength);
-        base.m_nCurrHP = base.m_status.MaxHP;
+        base.m_stat = new Character_Stat(dataEnemy.hp, 0, dataEnemy.strength);
+        base.m_nCurrHP = base.m_stat.HP;
 
         base.Init(charID);
         base.m_renderer.sprite = ProjectManager.Instance.Table.Enemy.GetSprite(base.CharID);
@@ -14,7 +14,7 @@ public class Character_Enemy : BaseCharacter
         base.m_listSkill.Clear();
         for(int i = 0, nMax = dataEnemy.listSkillID.Count; i < nMax; ++i)
         {
-            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], base.m_status));
+            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], base.getStat));
         }
     }
 

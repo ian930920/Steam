@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UserData_Summon : UserData<JsonData_Summon>
+public class UserData_User : UserData<JsonData_User>
 {
 	public class SummonData
 	{
@@ -28,17 +28,14 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		}
 	}
 
-	#region PP_KEY
-	static private string PP_KEY = "Summon";
-	#endregion
-
-	protected override string StrKey => PP_KEY;
+	protected override string StrKey => "User";
 
 	protected override void dataProcessing()
 	{
 	}
-		
-	public void AddSummon(uint summonID)
+
+#region Summon
+    public void AddSummon(uint summonID)
 	{
 		if(base.Data.DicSummon.ContainsKey(summonID) == true) return;
 
@@ -46,7 +43,13 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		base.SaveClientData();
 	}
 
-	public void AddRune(uint summonID, uint runeID)
+	public List<SummonData> GetSummonDataByList()
+	{
+		return base.Data.DicSummon.Values.ToList();
+	}
+
+#region Rune
+    public void AddRune(uint summonID, uint runeID)
 	{
 		if(base.Data.DicSummon.ContainsKey(summonID) == false) return;
 
@@ -61,15 +64,15 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		base.Data.DicSummon[summonID].RemoveRune(runeID);
 		base.SaveClientData();
 	}
-
-	public List<SummonData> GetSummonDataByList()
-	{
-		return base.Data.DicSummon.Values.ToList();
-	}
+#endregion
+#endregion
 }
 
-public class JsonData_Summon : BaseJsonData
+public class JsonData_User : BaseJsonData
 {
+	//TODO 룬
+	//TODO 유물
+
 	//Key : InvenType, Value : <Key : ItemID, Value : Value>
-	public Dictionary<uint, UserData_Summon.SummonData> DicSummon = new Dictionary<uint, UserData_Summon.SummonData>();
+	public Dictionary<uint, UserData_User.SummonData> DicSummon = new Dictionary<uint, UserData_User.SummonData>();
 }

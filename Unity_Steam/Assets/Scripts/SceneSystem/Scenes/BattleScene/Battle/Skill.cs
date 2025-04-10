@@ -1,10 +1,8 @@
-using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Skill
 {
-    private CharecterStatus m_status = null;
     private TableData.TableData_Skill m_data = null;
     public TableData.TableSkill.eTARGET_TYPE TargetType => (TableData.TableSkill.eTARGET_TYPE)this.m_data.target;
     public int TargetCount
@@ -31,20 +29,24 @@ public class Skill
         }
     }
 
-    public Skill(uint skillID, CharecterStatus status)
+    private Character_Stat m_status = null;
+    private Func<Character_Stat> m_funcGetStat = null;
+
+    public Skill(uint skillID, Func<Character_Stat> funcGetStat)
     {
-        this.m_status = status;
         this.m_data = ProjectManager.Instance.Table.Skill.GetData(skillID);
+        this.m_funcGetStat = funcGetStat;
     }
 
     private ulong getDamage()
     {
+        this.m_status = this.m_funcGetStat.Invoke();
         switch((TableData.TableSkill.eTYPE)this.m_data.type)
         {
             case TableData.TableSkill.eTYPE.Attack:
             case TableData.TableSkill.eTYPE.Heal:
             {
-                return this.m_data.coe * this.m_status.Strength;
+                return (ulong)(this.m_data.coe * this.m_status.Strength);
             }
 
             case TableData.TableSkill.eTYPE.Status:
@@ -53,7 +55,7 @@ public class Skill
             break;
         }
 
-        return this.m_data.coe * this.m_status.Strength;
+        return (ulong)(this.m_data.coe * this.m_status.Strength);
     }
 
     public bool isValiedTatget(BaseCharacter charTarget)

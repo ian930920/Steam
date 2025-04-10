@@ -24,14 +24,10 @@ namespace TableData
         }
     }
 
-    public class TableData_Enemy : iTableData
+    public class TableData_Enemy : TableData_Character
     {
         //tableID hp strength listSkillID resID strSprite
-        public uint tableID { get; set; }
-        public ulong hp { get; set; }
         public ulong strength { get; set; }
         public List<uint> listSkillID { get; set; }
-        public uint resID { get; set; }
-        public string strSprite { get; set; }
     }
 }

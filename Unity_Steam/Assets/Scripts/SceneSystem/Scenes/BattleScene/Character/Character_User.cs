@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using static UserData_Summon;
+using static UserData_User;
 
 public class Character_User : BaseCharacter
 {
@@ -10,8 +10,8 @@ public class Character_User : BaseCharacter
     public override void Init(uint charID)
     {
         TableData.TableData_User dataChar = ProjectManager.Instance.Table.User.GetData(charID);
-        base.m_status = new CharecterStatus(dataChar.hp, dataChar.strength);
-        base.m_nCurrHP = base.m_status.MaxHP;
+        base.m_stat = new Character_Stat(dataChar.hp, 0, 0); //TODO Mana
+        base.m_nCurrHP = base.m_stat.HP;
 
         base.Init(charID);
         base.m_renderer.sprite = ProjectManager.Instance.Table.User.GetSprite(base.CharID);

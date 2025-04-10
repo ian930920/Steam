@@ -22,8 +22,9 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField] protected Animator m_animator = null;
 
     public uint CharID { get; private set; } = 0; 
+    protected Character_Stat m_stat = null;
     protected ulong m_nCurrHP = 0;
-    protected CharecterStatus m_status = null;
+    protected ulong m_nCurrMP = 0;
 
     protected List<Skill> m_listSkill = new List<Skill>();
     protected Skill m_currSkill = null;
@@ -43,7 +44,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
         //캐릭터 상태바 세팅
         if(this.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_CharaterStatusBar);
-        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.m_status.MaxHP);
+        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.m_stat.HP);
 
         this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Idle]);
     }
@@ -102,7 +103,8 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
 
-        this.m_nCurrHP = (ulong)Mathf.Clamp(this.m_nCurrHP - nDamage, 0, this.m_nCurrHP);
+        if(this.m_nCurrHP <= nDamage) nDamage = this.m_nCurrHP;
+        this.m_nCurrHP -= nDamage;
         this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
         ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nDamage, this.transform.position);
         this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
@@ -114,7 +116,7 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
 
-        this.m_nCurrHP = (ulong)Mathf.Clamp(nHeal + this.m_nCurrHP, this.m_nCurrHP, this.m_status.MaxHP);
+        this.m_nCurrHP = (ulong)Mathf.Clamp(nHeal + this.m_nCurrHP, this.m_nCurrHP, this.m_stat.HP);
         this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
         ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nHeal, this.transform.position);
     }
@@ -135,16 +137,9 @@ public abstract class BaseCharacter : MonoBehaviour
             this.m_uiStatusBar = null;
         }
     }
-}
 
-public class CharecterStatus
-{
-    public ulong MaxHP { get; private set; } = 0;
-    public ulong Strength { get; private set; } = 0;
-
-    public CharecterStatus(ulong nMaxHP, ulong nStrength)
+    protected Character_Stat getStat()
     {
-        this.MaxHP = nMaxHP;
-        this.Strength = nStrength;
+        return this.m_stat;
     }
 }

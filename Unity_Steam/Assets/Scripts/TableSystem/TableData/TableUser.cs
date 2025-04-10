@@ -24,14 +24,18 @@ namespace TableData
         }
     }
 
-    public class TableData_User : iTableData
+    public class TableData_Character : iTableData
     {
-        //tableID hp strength listSkillID resID strSprite
+        //tableID hp strength resID strSprite
         public uint tableID { get; set; }
         public ulong hp { get; set; }
-        public ulong strength { get; set; }
-        public List<uint> listSkillID { get; set; }
         public uint resID { get; set; }
         public string strSprite { get; set; }
+    }
+
+    public class TableData_User : TableData_Character
+    {
+        //tableID hp maxMana resID strSprite
+        public ulong maxMana { get; set; }
     }
 }
