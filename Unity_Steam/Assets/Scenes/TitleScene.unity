@@ -597,6 +597,7 @@ MonoBehaviour:
   m_fEndDuration: 0.3
   m_colorEnd: {r: 0, g: 0, b: 0, a: 1}
   m_hud: {fileID: 699238349}
+  m_transRootObjectPool: {fileID: 0}
 --- !u!82 &1775190001
 AudioSource:
   m_ObjectHideFlags: 0

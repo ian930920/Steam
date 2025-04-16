@@ -19,6 +19,7 @@ namespace TableData
             Effect_ItemDrop = 3001,     //아이템 드랍 이펙트
             Effect_Attack,              //공격 이펙트
             Effect_Damage,              //피격 이펙트
+            Effect_Heal,                //힐 이펙트
 
         }
 

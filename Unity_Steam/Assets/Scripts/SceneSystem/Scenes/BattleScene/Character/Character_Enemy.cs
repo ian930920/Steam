@@ -14,7 +14,7 @@ public class Character_Enemy : BaseCharacter
         base.m_listSkill.Clear();
         for(int i = 0, nMax = dataEnemy.listSkillID.Count; i < nMax; ++i)
         {
-            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], base.getStat));
+            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], 0, base.getStat));
         }
     }
 
@@ -33,39 +33,16 @@ public class Character_Enemy : BaseCharacter
         //스킬타입에 따른 타겟 설정
         switch(this.m_currSkill.TargetType)
         {
-            case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
-            case TableData.TableSkill.eTARGET_TYPE.Friendly_Select_1:
-            {
-                //일단 유저 캐릭터 세팅
-                base.AddTarget(ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().CharUser);
-            }
-            break;
-
             case TableData.TableSkill.eTARGET_TYPE.Self:
             {
                 //나 세팅
                 this.m_listTarget.Add(this);
             }
             break;
-                
-            case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
-            case TableData.TableSkill.eTARGET_TYPE.Friendly_Random_1:
-            {
-                //TODO 랜덤 세팅
-            }
-            break;
 
-            case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
+            default:
             {
-                //지금 스킬이 전체 스킬이면 타겟 모두 저장해
-                ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().AddAllEnemyTarget();
-            }
-            break;
-
-            case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
-            {
-                //지금 스킬이 전체 스킬이면 타겟 모두 저장해
-                ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().AddAllFriendlyTarget();
+                ProjectManager.Instance.BattleScene.User_AddTargetFromAttacker(this, this.m_currSkill.TargetType);
             }
             break;
         }
@@ -74,7 +51,7 @@ public class Character_Enemy : BaseCharacter
     protected override void checkFinishTurn()
     {
         //턴 바꾸기~
-        ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().ChangeTurn();
+        ProjectManager.Instance.BattleScene.Enemy_NextAttack();
     }
 
     protected override void death()
@@ -82,18 +59,15 @@ public class Character_Enemy : BaseCharacter
         base.death();
 
         //지우기
-        ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().RemoveEnemy(this);
+        ProjectManager.Instance.BattleScene.RemoveEnemy(this);
     }
 
     private void OnMouseUp()
     {
-        if(ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().IsUserTurn == false) return;
-        if(ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().IsUserAttackable == false) return;
+        if(ProjectManager.Instance.BattleScene.IsUserTurn == false) return;
+        if(ProjectManager.Instance.BattleScene.IsUserClickable == false) return;
 
         //타겟 저장
-        ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().AddTarget(this);
-
-        //유저 스킬 사용
-        ProjectManager.Instance.Scene.GetCurrScene<BattleScene>().CharUser.UseSkill();
+        ProjectManager.Instance.BattleScene.User_AddTarget(this);
     }
 }

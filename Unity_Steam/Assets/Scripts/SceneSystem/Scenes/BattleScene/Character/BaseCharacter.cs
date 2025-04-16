@@ -24,7 +24,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public uint CharID { get; private set; } = 0; 
     protected Character_Stat m_stat = null;
     protected ulong m_nCurrHP = 0;
-    protected ulong m_nCurrMP = 0;
+    protected ulong m_nCurrMana = 0;
 
     protected List<Skill> m_listSkill = new List<Skill>();
     protected Skill m_currSkill = null;
@@ -54,6 +54,8 @@ public abstract class BaseCharacter : MonoBehaviour
         //타겟 모두 비우고
         this.m_currSkill = null;
 
+        this.UpdateSkillTurn();
+
         //각 하위 클래스에서 사용할 스킬 정해
     }
 
@@ -77,8 +79,14 @@ public abstract class BaseCharacter : MonoBehaviour
         this.m_listTarget.Add(charTarget);
     }
 
-    public void UseSkill()
+    public virtual void UseSkill()
     {
+        if(this.m_currSkill.IsUseable(this.m_nCurrMana) == false)
+        {
+            this.checkFinishTurn();
+            return;
+        }
+
         //지금 설정된 스킬 사용
         StartCoroutine("coUseSkill");
     }
@@ -88,37 +96,53 @@ public abstract class BaseCharacter : MonoBehaviour
         this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Attack]);
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
-        
-        this.m_currSkill.UseSkill(this.m_listTarget);
 
-        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+        //this.m_currSkill.UseSkill(this.m_listTarget);
+        this.useCurrSkill();
+
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
 
         //턴 바꾸기~
         this.checkFinishTurn();
     }
 
-    protected abstract void checkFinishTurn();
-
-    public void Damaged(ulong nDamage)
+    public void UpdateSkillTurn()
     {
+        for(int i = 0, nMax = this.m_listSkill.Count; i < nMax; ++i)
+        {
+            this.m_listSkill[i].UpdateTurn();
+        }
+    }
+
+    protected abstract void checkFinishTurn();
+    protected virtual void useCurrSkill()
+    {
+        this.m_currSkill.UseSkill(this.m_listTarget);
+    }
+
+    public void Damaged(stDamage stDamage)
+    {
+        if(this.m_nCurrHP < 1) return;
+
         ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
 
-        if(this.m_nCurrHP <= nDamage) nDamage = this.m_nCurrHP;
-        this.m_nCurrHP -= nDamage;
+        if(this.m_nCurrHP <= stDamage.Damage) stDamage.Damage = this.m_nCurrHP;
+        this.m_nCurrHP -= stDamage.Damage;
         this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
-        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nDamage, this.transform.position);
+        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
         this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
 
         if(this.m_nCurrHP < 1) this.death();
     }
 
-    public void Heal(ulong nHeal)
+    public void Heal(stDamage stDamage)
     {
-        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
+        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Heal, this.transform.position);
 
-        this.m_nCurrHP = (ulong)Mathf.Clamp(nHeal + this.m_nCurrHP, this.m_nCurrHP, this.m_stat.HP);
+        stDamage.IsHeal = true;
+        this.m_nCurrHP = (ulong)Mathf.Clamp(stDamage.Damage + this.m_nCurrHP, this.m_nCurrHP, this.m_stat.HP);
         this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
-        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(nHeal, this.transform.position);
+        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
     }
 
     protected virtual void death()

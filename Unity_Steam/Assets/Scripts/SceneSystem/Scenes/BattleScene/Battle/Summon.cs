@@ -7,12 +7,14 @@ public class Summon
     public TableData.TableData_Summon Data { get; private set; } = null;
     protected Character_Stat m_stat = null;
 
+    public uint RemainTurn => this.Skill.RemainTurn;
+
     public Summon(uint summonID)
     {
         this.m_summonID = summonID;
 
         this.Data = ProjectManager.Instance.Table.Summon.GetData(this.m_summonID);
-        this.Skill = new Skill(this.Data.skillID, this.getStat);
+        this.Skill = new Skill(this.Data.skillID, this.Data.cost, this.getStat);
         this.m_stat = new Character_Stat();
     }
 

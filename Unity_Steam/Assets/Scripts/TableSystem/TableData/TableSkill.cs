@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Playables;
 using UnityEngine;
 
 namespace TableData
@@ -30,20 +31,27 @@ namespace TableData
 
         }
 
-        public string GetString(uint tableID, TableString.eTYPE eType = TableString.eTYPE.Title)
+        public string GetString_Title(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return "없는 스킬";
 
-            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID, eType);
+            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID);
+        }
+
+        public string GetString_Desc(uint tableID, ulong value)
+        {
+            if(base.ContainsKey(tableID) == false) return "없는 스킬";
+
+            TableData_Skill data = base.GetData(tableID);
+            return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(value), data.dur);
         }
     }
 
     public class TableData_Skill : iTableData
     {
-        //tableID type cost cooldown coe acc crit dur target buff debuff strID
+        //tableID type cooldown coe acc crit dur target buff debuff strID
         public uint tableID { get; set; }
         public uint type { get; set; }
-        public uint cost { get; set; }
         public uint cooldown { get; set; }
         public float coe { get; set; }
         public float acc { get; set; }

@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Skill
 {
-    private TableData.TableData_Skill m_data = null;
-    public TableData.TableSkill.eTARGET_TYPE TargetType => (TableData.TableSkill.eTARGET_TYPE)this.m_data.target;
+    public TableData.TableData_Skill Data { get; private set; } = null;
+    public TableData.TableSkill.eTARGET_TYPE TargetType => (TableData.TableSkill.eTARGET_TYPE)this.Data.target;
     public int TargetCount
     {
         get
         {
-            switch((TableData.TableSkill.eTARGET_TYPE)this.m_data.target)
+            switch((TableData.TableSkill.eTARGET_TYPE)this.Data.target)
             {
                 case TableData.TableSkill.eTARGET_TYPE.Self:
                 case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
@@ -31,31 +32,54 @@ public class Skill
 
     private Character_Stat m_status = null;
     private Func<Character_Stat> m_funcGetStat = null;
+    public ulong Cost { get; private set; } = 0;
 
-    public Skill(uint skillID, Func<Character_Stat> funcGetStat)
+    public uint RemainTurn { get; private set; } = 0;
+
+    public Skill(uint skillID, ulong cost, Func<Character_Stat> funcGetStat)
     {
-        this.m_data = ProjectManager.Instance.Table.Skill.GetData(skillID);
+        this.Data = ProjectManager.Instance.Table.Skill.GetData(skillID);
+        this.Cost = cost;
         this.m_funcGetStat = funcGetStat;
+        this.RemainTurn = 0;
     }
 
-    private ulong getDamage()
+    public ulong GetDefaultDamage()
     {
         this.m_status = this.m_funcGetStat.Invoke();
-        switch((TableData.TableSkill.eTYPE)this.m_data.type)
-        {
-            case TableData.TableSkill.eTYPE.Attack:
-            case TableData.TableSkill.eTYPE.Heal:
-            {
-                return (ulong)(this.m_data.coe * this.m_status.Strength);
-            }
+        return (ulong)(this.Data.coe * this.m_status.Strength);
+    }
 
-            case TableData.TableSkill.eTYPE.Status:
-            break;
-            case TableData.TableSkill.eTYPE.Summon:
-            break;
+    private stDamage getDamage()
+    {
+        this.m_status = this.m_funcGetStat.Invoke();
+        stDamage damage = new stDamage();
+
+        //명중률 확인
+        if(UnityEngine.Random.Range(0, 1.0f) <= this.Data.acc)
+        {
+            //치명타
+            damage.IsCritical = UnityEngine.Random.Range(0, 1.0f) <= this.Data.crit;
+            float fCritical = 1.0f;
+            if(damage.IsCritical) fCritical = 1.5f; //TODO 치명타 값
+
+            switch((TableData.TableSkill.eTYPE)this.Data.type)
+            {
+                case TableData.TableSkill.eTYPE.Attack:
+                case TableData.TableSkill.eTYPE.Heal:
+                {
+                    damage.Damage = (ulong)(this.GetDefaultDamage() * fCritical);
+                }
+                break;
+
+                case TableData.TableSkill.eTYPE.Status:
+                break;
+                case TableData.TableSkill.eTYPE.Summon:
+                break;
+            }
         }
 
-        return (ulong)(this.m_data.coe * this.m_status.Strength);
+        return damage;
     }
 
     public bool isValiedTatget(BaseCharacter charTarget)
@@ -65,9 +89,26 @@ public class Skill
         return true;
     }
 
-    public void UseSkill(List<BaseCharacter> listTarget)
+    public bool IsUseable(ulong nCurrMana)
     {
-        switch((TableData.TableSkill.eTYPE)this.m_data.type)
+        if(this.RemainTurn > 0)
+        {
+            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("쿨타임");
+            return false;
+        }
+
+        if(this.Cost > nCurrMana)
+        {
+            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("마나 부족");
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool UseSkill(List<BaseCharacter> listTarget)
+    {
+        switch((TableData.TableSkill.eTYPE)this.Data.type)
         {
             case TableData.TableSkill.eTYPE.Attack:
             {
@@ -92,5 +133,37 @@ public class Skill
             case TableData.TableSkill.eTYPE.Summon:
             break;
         }
+
+        this.RemainTurn = this.Data.cooldown;
+
+        //슬롯 갱신
+        ProjectManager.Instance.BattleScene.HUD.RefreshSummonSlot();
+
+        return true;
+    }
+
+    public void UpdateTurn()
+    {
+        if(this.RemainTurn < 1) return;
+
+        this.RemainTurn--;
+
+        //슬롯 갱신
+        ProjectManager.Instance.BattleScene.HUD.RefreshSummonUI();
+    }
+}
+
+public struct stDamage
+{
+    public ulong Damage;
+    public bool IsCritical;
+    public bool IsHeal;
+    public bool IsMiss => this.Damage == 0;
+
+    public stDamage(ulong damage, bool isCritical)
+    {
+        this.Damage = damage;
+        this.IsCritical = isCritical;
+        this.IsHeal = false;
     }
 }

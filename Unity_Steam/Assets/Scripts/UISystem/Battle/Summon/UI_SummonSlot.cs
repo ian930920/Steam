@@ -1,33 +1,37 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Unity.Burst.Intrinsics;
 
-public class UI_SummonSlot : BaseSlot<TableData.TableData_Summon>
+public class UI_SummonSlot : MonoBehaviour
 {
+    public Summon Summon { get; private set; } = null;
+
     [SerializeField] private Image m_imgIcon = null;
-    [SerializeField] private Image m_imgEdge = null;
+    [SerializeField] private Image m_imgSelect = null;
+    [SerializeField] private Image m_imgTurn = null;
+    [SerializeField] private TextMeshProUGUI m_textTurn = null;
 
-    public uint SummonID => base.Data.tableID;
-
-    protected override void init()
+    public void Init(Summon summon)
     {
-        base.init();
-
-        this.m_imgEdge.enabled = false;
-        this.gameObject.SetActive(true);
-    }
-
-    public override void RefreshSlot(TableData.TableData_Summon data)
-    {
-        base.RefreshSlot(data);
-
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetSprite(base.Data.tableID);
+        this.Summon = summon;
 
         this.SetSelect(false);
         this.gameObject.SetActive(true);
+
+        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetSprite(this.Summon.Data.tableID);
+        this.RefreshSlot();
+    }
+
+    public void RefreshSlot()
+    {
+        bool isCoolTime = this.Summon.RemainTurn > 0;
+        this.m_textTurn.text = isCoolTime ? this.Summon.RemainTurn.ToString(): "";
+        this.m_imgTurn.enabled = isCoolTime;
     }
 
     public void SetSelect(bool bSelect)
     {
-        this.m_imgEdge.enabled = bSelect;
+        this.m_imgSelect.enabled = bSelect;
     }
 }

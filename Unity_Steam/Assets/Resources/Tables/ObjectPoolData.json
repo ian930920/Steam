@@ -7,5 +7,6 @@
   "2004": { "type":2, "poolCount":10, "path":"Prefabs/Effects/Effect_Count"},
   "3001": { "type":3, "poolCount":10, "path":"Prefabs/Effects/Effect_ItemDrop"},
   "3002": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Attack"},
-  "3003": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Blood"}
+  "3003": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Blood"},
+  "3004": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Heal"}
 }}

@@ -287,6 +287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Gauge
       objectReference: {fileID: 0}
+    - target: {fileID: 7233655290036015579, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -44,6 +44,7 @@ public class TableManager : BaseManager<TableManager>
 		{
 			$"{strPath}/StringData",
 			$"{strPath}/StringCharacterData",
+			$"{strPath}/StringStatusData",
 		});
 
 		//Resource

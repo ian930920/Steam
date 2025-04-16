@@ -51,7 +51,10 @@ public class ProjectManager : MonoBehaviour
     public ResourceManager Resource { private set; get; } = null;
     public ObjectPoolManager ObjectPool { private set; get; } = null;
     public UserDataManager UserData { private set; get; } = null;
-#endregion
+    #endregion
+
+    //씬 편하게쓰기~
+    public BattleScene BattleScene => this.Scene.GetCurrScene<BattleScene>();
 
     private void Awake()
     {
