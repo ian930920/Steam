@@ -78,7 +78,7 @@ public class Enemy : Team
 
         this.ListChar.Remove(charEnemy);
 
-        if(this.ListChar.Count == 0) ProjectManager.Instance.BattleScene.StageWin();
+        if(this.ListChar.Count == 0) ProjectManager.Instance.BattleScene?.StageWin();
     }
 
     public override void AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)

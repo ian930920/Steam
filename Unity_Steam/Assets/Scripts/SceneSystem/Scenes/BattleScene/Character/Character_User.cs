@@ -6,12 +6,12 @@ public class Character_User : BaseCharacter
 {
     private readonly static uint COUNT_MANA_MAX = 5;
 
-    private List<Summon> m_listSummon = new List<Summon>();
+    protected List<Summon> m_listSummon = new List<Summon>();
 
     public override void Init(uint charID)
     {
         TableData.TableData_User dataChar = ProjectManager.Instance.Table.User.GetData(charID);
-        base.m_stat = new Character_Stat(dataChar.hp, COUNT_MANA_MAX, 0); //TODO Mana
+        base.m_stat = new CharacterStat(dataChar.hp, COUNT_MANA_MAX, 0); //TODO Mana
         base.m_nCurrHP = base.m_stat.HP;
         base.m_nCurrMana = base.m_stat.MP;
 
@@ -35,8 +35,8 @@ public class Character_User : BaseCharacter
         }
         
         //UI 세팅
-        ProjectManager.Instance.BattleScene.HUD.InitSummonUI(this.m_listSummon);
-        ProjectManager.Instance.BattleScene.HUD.InitManaUI(this.m_nCurrMana);
+        ProjectManager.Instance.BattleScene?.HUD.InitSummonUI(this.m_listSummon);
+        ProjectManager.Instance.BattleScene?.HUD.InitManaUI(this.m_nCurrMana);
     }
 
     public bool IsFinishTurn()
@@ -53,12 +53,12 @@ public class Character_User : BaseCharacter
         if(this.IsFinishTurn() == false)
         {
             //스킬 사용할 수 있다고 세팅
-            ProjectManager.Instance.BattleScene.SetUserClickable(true);
+            ProjectManager.Instance.BattleScene?.SetUserClickable(true);
             return;
         }
 
         //턴 바꾸기~
-        ProjectManager.Instance.BattleScene.ChangeTurn();
+        ProjectManager.Instance.BattleScene?.ChangeTurn();
     }
 
     protected override void useCurrSkill()
@@ -66,7 +66,7 @@ public class Character_User : BaseCharacter
         base.useCurrSkill();
 
         this.m_nCurrMana -= base.m_currSkill.Cost;
-        ProjectManager.Instance.BattleScene.HUD.RefreshMana(this.m_nCurrMana);
+        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
     }
 
     protected override void death()
@@ -74,18 +74,18 @@ public class Character_User : BaseCharacter
         base.death();
 
         //패배
-        ProjectManager.Instance.BattleScene.StageDefeat();
+        ProjectManager.Instance.BattleScene?.StageDefeat();
     }
 
     public override void SetMyTurn()
     {
         base.SetMyTurn();
 
-        ProjectManager.Instance.BattleScene.SetUserClickable(true);
+        ProjectManager.Instance.BattleScene?.SetUserClickable(true);
 
         //마나 채우기
         base.m_nCurrMana = base.m_stat.MP;
-        ProjectManager.Instance.BattleScene.HUD.RefreshMana(base.m_nCurrMana);
+        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(base.m_nCurrMana);
 
         //선택돼있는 스킬로
         base.SetCurrSkill(ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx);
@@ -113,13 +113,13 @@ public class Character_User : BaseCharacter
             case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
             {
                 //지금 스킬이 전체 스킬이면 타겟 모두 저장해
-                ProjectManager.Instance.BattleScene.User_AddFriendlyTarget();
+                ProjectManager.Instance.BattleScene?.User_AddFriendlyTarget();
             }
             break;
 
             default:
             {
-                ProjectManager.Instance.BattleScene.Enemy_AddTargetFromAttacker(this, this.m_currSkill.TargetType);
+                ProjectManager.Instance.BattleScene?.Enemy_AddTargetFromAttacker(this, this.m_currSkill.TargetType);
             }
             break;
         }
@@ -127,10 +127,11 @@ public class Character_User : BaseCharacter
 
     private void OnMouseUp()
     {
-        if(ProjectManager.Instance.BattleScene.IsUserTurn == false) return;
-        if(ProjectManager.Instance.BattleScene.IsUserClickable == false) return;
+        if(ProjectManager.Instance.BattleScene?.IsUserTurn == false) return;
+        if(ProjectManager.Instance.BattleScene?.IsUserClickable == false) return;
+        if(ProjectManager.Instance.Table.Skill.IsFriendlyTarget(base.m_currSkill.Data.tableID) == false) return;
 
         //타겟 저장
-        ProjectManager.Instance.BattleScene.User_AddTarget(this);
+        ProjectManager.Instance.BattleScene?.User_AddTarget(this);
     }
 }

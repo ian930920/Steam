@@ -1,6 +1,7 @@
 {"Json":{
   "1001": { "type":1, "poolCount":1, "path":"Prefabs/Char_User"},
   "1002": { "type":1, "poolCount":10, "path":"Prefabs/Char_Enemy"},
+  "1003": { "type":1, "poolCount":3, "path":"Prefabs/Char_SummonObj"},
   "2001": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Gauge"},
   "2002": { "type":2, "poolCount":5, "path":"Prefabs/UI/Reactive/ReactiveUI_Button"},
   "2003": { "type":2, "poolCount":10, "path":"Prefabs/UI/UI_CharacterStatusBar"},

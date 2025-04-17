@@ -1,8 +1,8 @@
 {"Json":{
-  "1": { "rarity":0, "cost":3, "skillID":2000, "resID":0, "strSprite":0},
-  "2": { "rarity":3, "cost":2, "skillID":2001, "resID":0, "strSprite":0},
-  "3": { "rarity":0, "cost":2, "skillID":2002, "resID":0, "strSprite":0},
-  "4": { "rarity":2, "cost":2, "skillID":2003, "resID":0, "strSprite":0},
-  "5": { "rarity":3, "cost":1, "skillID":2004, "resID":0, "strSprite":0},
-  "6": { "rarity":2, "cost":2, "skillID":2005, "resID":0, "strSprite":0}
+  "1": { "rarity":0, "cost":3, "skillID":2000, "resID":20002, "strSprite":"Summon_1"},
+  "2": { "rarity":3, "cost":2, "skillID":2001, "resID":20002, "strSprite":"Summon_2"},
+  "3": { "rarity":0, "cost":2, "skillID":2002, "resID":20002, "strSprite":"Summon_3"},
+  "4": { "rarity":2, "cost":2, "skillID":2003, "resID":20002, "strSprite":"Summon_4"},
+  "5": { "rarity":3, "cost":1, "skillID":2004, "resID":20002, "strSprite":"Summon_5"},
+  "6": { "rarity":2, "cost":2, "skillID":2005, "resID":20002, "strSprite":"Summon_6"}
 }}

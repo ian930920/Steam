@@ -132,4 +132,14 @@ public class BattleScene : BaseScene
     {
         this.m_teamUser.CharUser.SetCurrSkill(nSkillIdx);
     }
+
+    public void AddUserSummonObj(uint summonID, CharacterStat stat)
+    {
+        this.m_teamUser.AddSummonObject(summonID, stat);
+    }
+
+    public void RemoveUserSummonObj(Character_SummonObj summonObj)
+    {
+        this.m_teamUser.RemoveSummonObject(summonObj);
+    }
 }

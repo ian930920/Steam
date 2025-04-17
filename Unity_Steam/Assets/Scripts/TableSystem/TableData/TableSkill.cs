@@ -45,6 +45,36 @@ namespace TableData
             TableData_Skill data = base.GetData(tableID);
             return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(value), data.dur);
         }
+
+        public bool IsFriendlyTarget(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return false;
+
+            TableData_Skill data = base.GetData(tableID);
+
+            switch((eTYPE)data.type)
+            {
+                case eTYPE.Heal:
+                case eTYPE.Summon:
+                return true;
+            }
+
+            switch((eTARGET_TYPE)data.target)
+            {
+                case eTARGET_TYPE.Enemy_Select_1:
+                case eTARGET_TYPE.Enemy_Random_2:
+                case eTARGET_TYPE.Enemy_All:
+                return false;
+
+                case eTARGET_TYPE.Self:
+                case eTARGET_TYPE.Friendly_Select_1:
+                case eTARGET_TYPE.Friendly_Random_1:
+                case eTARGET_TYPE.Friendly_All:
+                return true;
+            }
+
+            return false;
+        }
     }
 
     public class TableData_Skill : iTableData

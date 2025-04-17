@@ -5,7 +5,7 @@ public class Character_Enemy : BaseCharacter
     public override void Init(uint charID)
     {
         TableData.TableData_Enemy dataEnemy = ProjectManager.Instance.Table.Enemy.GetData(charID);
-        base.m_stat = new Character_Stat(dataEnemy.hp, 0, dataEnemy.strength);
+        base.m_stat = new CharacterStat(dataEnemy.hp, 0, dataEnemy.strength);
         base.m_nCurrHP = base.m_stat.HP;
 
         base.Init(charID);
@@ -42,7 +42,7 @@ public class Character_Enemy : BaseCharacter
 
             default:
             {
-                ProjectManager.Instance.BattleScene.User_AddTargetFromAttacker(this, this.m_currSkill.TargetType);
+                ProjectManager.Instance.BattleScene?.User_AddTargetFromAttacker(this, this.m_currSkill.TargetType);
             }
             break;
         }
@@ -51,7 +51,7 @@ public class Character_Enemy : BaseCharacter
     protected override void checkFinishTurn()
     {
         //턴 바꾸기~
-        ProjectManager.Instance.BattleScene.Enemy_NextAttack();
+        ProjectManager.Instance.BattleScene?.Enemy_NextAttack();
     }
 
     protected override void death()
@@ -59,15 +59,15 @@ public class Character_Enemy : BaseCharacter
         base.death();
 
         //지우기
-        ProjectManager.Instance.BattleScene.RemoveEnemy(this);
+        ProjectManager.Instance.BattleScene?.RemoveEnemy(this);
     }
 
     private void OnMouseUp()
     {
-        if(ProjectManager.Instance.BattleScene.IsUserTurn == false) return;
-        if(ProjectManager.Instance.BattleScene.IsUserClickable == false) return;
+        if(ProjectManager.Instance.BattleScene?.IsUserTurn == false) return;
+        if(ProjectManager.Instance.BattleScene?.IsUserClickable == false) return;
 
         //타겟 저장
-        ProjectManager.Instance.BattleScene.User_AddTarget(this);
+        ProjectManager.Instance.BattleScene?.User_AddTarget(this);
     }
 }

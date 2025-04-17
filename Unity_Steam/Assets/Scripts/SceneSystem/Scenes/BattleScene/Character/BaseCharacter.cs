@@ -22,7 +22,7 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField] protected Animator m_animator = null;
 
     public uint CharID { get; private set; } = 0; 
-    protected Character_Stat m_stat = null;
+    protected CharacterStat m_stat = null;
     protected ulong m_nCurrHP = 0;
     protected ulong m_nCurrMana = 0;
 
@@ -38,8 +38,8 @@ public abstract class BaseCharacter : MonoBehaviour
         this.CharID = charID;
         this.m_renderer.sprite = ProjectManager.Instance.Table.Enemy.GetSprite(this.CharID);
 
-        this.gameObject.SetActive(true);
         this.transform.localPosition = Vector3.zero;
+        this.gameObject.SetActive(true);
         this.m_listTarget.Clear();
 
         //캐릭터 상태바 세팅
@@ -124,12 +124,20 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         if(this.m_nCurrHP < 1) return;
 
+        if(stDamage.Damage < 1)
+        {
+            ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+            return;
+        }
+
         ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Damage, this.transform.position);
 
         if(this.m_nCurrHP <= stDamage.Damage) stDamage.Damage = this.m_nCurrHP;
         this.m_nCurrHP -= stDamage.Damage;
-        this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
         ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+       
+        this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
+        
         this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
 
         if(this.m_nCurrHP < 1) this.death();
@@ -150,10 +158,7 @@ public abstract class BaseCharacter : MonoBehaviour
         ProjectManager.Instance.Log("사망");
         
         this.gameObject.SetActive(false);
-    }
 
-    private void OnDisable()
-    {
         //상태바 지우기
         if(this.m_uiStatusBar != null)
         {
@@ -162,7 +167,7 @@ public abstract class BaseCharacter : MonoBehaviour
         }
     }
 
-    protected Character_Stat getStat()
+    protected CharacterStat getStat()
     {
         return this.m_stat;
     }

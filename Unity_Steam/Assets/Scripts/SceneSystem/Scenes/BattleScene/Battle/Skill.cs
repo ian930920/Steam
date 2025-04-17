@@ -30,13 +30,13 @@ public class Skill
         }
     }
 
-    private Character_Stat m_status = null;
-    private Func<Character_Stat> m_funcGetStat = null;
+    private CharacterStat m_status = null;
+    private Func<CharacterStat> m_funcGetStat = null;
     public ulong Cost { get; private set; } = 0;
 
     public uint RemainTurn { get; private set; } = 0;
 
-    public Skill(uint skillID, ulong cost, Func<Character_Stat> funcGetStat)
+    public Skill(uint skillID, ulong cost, Func<CharacterStat> funcGetStat)
     {
         this.Data = ProjectManager.Instance.Table.Skill.GetData(skillID);
         this.Cost = cost;
@@ -130,14 +130,20 @@ public class Skill
 
             case TableData.TableSkill.eTYPE.Status:
             break;
+
             case TableData.TableSkill.eTYPE.Summon:
+            {
+                //TODO 유저만 사용가능한 스킬인지 확인
+                //생성!
+                ProjectManager.Instance.BattleScene?.AddUserSummonObj(2001, new CharacterStat(this.GetDefaultDamage(), 0, 0, this.Data.dur));
+            }
             break;
         }
 
         this.RemainTurn = this.Data.cooldown;
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene.HUD.RefreshSummonSlot();
+        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonSlot();
 
         return true;
     }
@@ -149,7 +155,7 @@ public class Skill
         this.RemainTurn--;
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene.HUD.RefreshSummonUI();
+        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonUI();
     }
 }
 

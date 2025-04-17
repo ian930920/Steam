@@ -5,7 +5,7 @@ public class Summon
     private uint m_summonID = 0;
     public Skill Skill { get; private set; } = null;
     public TableData.TableData_Summon Data { get; private set; } = null;
-    protected Character_Stat m_stat = null;
+    protected CharacterStat m_stat = null;
 
     public uint RemainTurn => this.Skill.RemainTurn;
 
@@ -15,10 +15,10 @@ public class Summon
 
         this.Data = ProjectManager.Instance.Table.Summon.GetData(this.m_summonID);
         this.Skill = new Skill(this.Data.skillID, this.Data.cost, this.getStat);
-        this.m_stat = new Character_Stat();
+        this.m_stat = new CharacterStat();
     }
 
-    private Character_Stat getStat()
+    private CharacterStat getStat()
     {
         //TODO 나중에 여기에서 룬 + 버프 추가 적용해서 return
         return this.m_stat;

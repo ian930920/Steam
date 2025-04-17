@@ -10,6 +10,7 @@ namespace TableData
         {
             Char_User = 1001,           //유저
             Char_Enemy,                 //적
+            Char_SummonObj,             //소환물
 
             ReactiveUI_Button = 2001,   //반응형 버튼
             ReactiveUI_Gauge,           //일반 게이지

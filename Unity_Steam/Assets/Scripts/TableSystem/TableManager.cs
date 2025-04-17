@@ -20,6 +20,7 @@ public class TableManager : BaseManager<TableManager>
 	public TableEnemy Enemy { get; private set; } = null;
 	public TableSkill Skill { get; private set; } = null;
 	public TableSummon Summon { get; private set; } = null;
+	public TableSummonObj SummonObj { get; private set; } = null;
 	#endregion
 
 	protected override void init()
@@ -61,6 +62,7 @@ public class TableManager : BaseManager<TableManager>
 		this.Enemy = TableEnemy.Instance.LoadTable($"{strPath}/EnemyData");
 		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
 		this.Summon = TableSummon.Instance.LoadTable($"{strPath}/SummonData");
+		this.SummonObj = TableSummonObj.Instance.LoadTable($"{strPath}/SummonObjData");
 
 #if UNITY_EDITOR
 		if(true)

@@ -9,18 +9,9 @@ public abstract class Team : MonoBehaviour
 
     protected void turnFinish()
     {
-        ProjectManager.Instance.BattleScene.ChangeTurn();
+        ProjectManager.Instance.BattleScene?.ChangeTurn();
     }
     
     public abstract void AddTarget(BaseCharacter charTarget);
     public abstract void AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget);
-
-    /*
-    public void CheckTurnFinish()
-    {
-        if(this.IsMyTurn() == true) return;
-
-        ProjectManager.Instance.BattleScene.ChangeTurn();
-    }
-    */
 }
