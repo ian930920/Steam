@@ -69,6 +69,6 @@ public class UI_Summon : MonoBehaviour
         }
 
         //유저 스킬 저장
-        ProjectManager.Instance.BattleScene?.SelectUserSkill(this.SelectedIdx);
+        ProjectManager.Instance.BattleScene?.User_SelectSkill(this.SelectedIdx);
     }
 }

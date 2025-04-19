@@ -15,6 +15,6 @@ public class Fx_Multiple : BaseFx
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(this.m_animClip.length);
 
-        this.gameObject.SetActive(false);
+        base.Stop();
     }
 }

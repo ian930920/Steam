@@ -19,7 +19,7 @@ public class UI_SummonSlot : MonoBehaviour
         this.SetSelect(false);
         this.gameObject.SetActive(true);
 
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetSprite(this.Summon.Data.tableID);
+        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetIcon(this.Summon.Data.tableID);
         this.RefreshSlot();
     }
 

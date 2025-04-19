@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Skill
 {
@@ -114,7 +113,8 @@ public class Skill
             {
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
-                    listTarget[i].Damaged(this.getDamage());
+                    var target = listTarget[i];
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Damaged(this.getDamage()));
                 }
             }
             break;
@@ -123,7 +123,8 @@ public class Skill
             {
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
-                    listTarget[i].Heal(this.getDamage());
+                    var target = listTarget[i];
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Heal(this.getDamage()));
                 }
             }
             break;
@@ -135,9 +136,21 @@ public class Skill
             {
                 //TODO 유저만 사용가능한 스킬인지 확인
                 //생성!
-                ProjectManager.Instance.BattleScene?.AddUserSummonObj(2001, new CharacterStat(this.GetDefaultDamage(), 0, 0, this.Data.dur));
+                ProjectManager.Instance.BattleScene?.User_AddSummonObj(2001, new CharacterStat(this.GetDefaultDamage(), 0, 0, this.Data.dur));
             }
             break;
+        }
+
+        //상태이상 추가
+        if(this.Data.listStatusID.Count > 0)
+        {
+            for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
+            {
+                for(int j = 0, nStatusMax = this.Data.listStatusID.Count; j < nStatusMax; ++j)
+                {
+                    listTarget[i].AddStatus(this.Data.listStatusID[j], this.Data.dur);
+                }
+            }
         }
 
         this.RemainTurn = this.Data.cooldown;

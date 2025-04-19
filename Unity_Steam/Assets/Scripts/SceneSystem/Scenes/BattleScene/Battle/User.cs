@@ -6,6 +6,9 @@ public class User : Team
 {
     [SerializeField] private Transform m_transParent = null;
     [SerializeField] private Transform[] m_arrTransSummonObjParent = null;
+
+    [SerializeField] private SummonSkill m_summonSkill = null;
+
     public Character_User CharUser { get; private set; } = null;
 
     private List<Character_SummonObj> m_listSummonObj = new List<Character_SummonObj>();
@@ -66,7 +69,7 @@ public class User : Team
 
     public void UseSkill()
     {
-        ProjectManager.Instance.BattleScene?.SetUserClickable(false);
+        ProjectManager.Instance.BattleScene?.User_SetClickable(false);
         this.CharUser.UseSkill();
     }
 
@@ -128,6 +131,8 @@ public class User : Team
         summonObj.SetStat(stat);
         summonObj.Init(summonObjID);
         this.m_listSummonObj.Add(summonObj);
+
+        ProjectManager.Instance.ObjectPool.PlayEffect(TableData.TableObjectPool.eID.Effect_Summon_Defence, summonObj.transform.position);
     }
 
     public void RemoveSummonObject(Character_SummonObj summonObj)

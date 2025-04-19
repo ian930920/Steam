@@ -11,9 +11,9 @@ public class Character_User : BaseCharacter
     public override void Init(uint charID)
     {
         TableData.TableData_User dataChar = ProjectManager.Instance.Table.User.GetData(charID);
-        base.m_stat = new CharacterStat(dataChar.hp, COUNT_MANA_MAX, 0); //TODO Mana
-        base.m_nCurrHP = base.m_stat.HP;
-        base.m_nCurrMana = base.m_stat.MP;
+        base.Stat = new CharacterStat(dataChar.hp, COUNT_MANA_MAX, 0); //TODO Mana
+        base.m_nCurrHP = base.Stat.HP;
+        base.m_nCurrMana = base.Stat.MP;
 
         base.Init(charID);
         base.m_renderer.sprite = ProjectManager.Instance.Table.User.GetSprite(base.CharID);
@@ -53,17 +53,20 @@ public class Character_User : BaseCharacter
         if(this.IsFinishTurn() == false)
         {
             //스킬 사용할 수 있다고 세팅
-            ProjectManager.Instance.BattleScene?.SetUserClickable(true);
+            ProjectManager.Instance.BattleScene?.User_SetClickable(true);
             return;
         }
 
         //턴 바꾸기~
-        ProjectManager.Instance.BattleScene?.ChangeTurn();
+        this.TurnFinish();
     }
 
     protected override void useCurrSkill()
     {
         base.useCurrSkill();
+
+        //스킬 이펙트
+        ProjectManager.Instance.BattleScene?.ActiveSummonSkill(this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx].Data.tableID);
 
         this.m_nCurrMana -= base.m_currSkill.Cost;
         ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
@@ -81,10 +84,10 @@ public class Character_User : BaseCharacter
     {
         base.SetMyTurn();
 
-        ProjectManager.Instance.BattleScene?.SetUserClickable(true);
+        ProjectManager.Instance.BattleScene?.User_SetClickable(true);
 
         //마나 채우기
-        base.m_nCurrMana = base.m_stat.MP;
+        base.m_nCurrMana = base.Stat.MP;
         ProjectManager.Instance.BattleScene?.HUD.RefreshMana(base.m_nCurrMana);
 
         //선택돼있는 스킬로

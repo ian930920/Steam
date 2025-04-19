@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 namespace TableData
@@ -14,11 +12,18 @@ namespace TableData
             Legendary,      //전설
         }
 
-        public Sprite GetSprite(uint tableID)
+        public Sprite GetIcon(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return null;
 
             return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strSprite);
+        }
+
+        public Sprite GetSprite(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return null;
+
+            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
         }
     }
 

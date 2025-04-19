@@ -6,6 +6,7 @@ public class BattleScene : BaseScene
 {
     [SerializeField] private User m_teamUser = null;
     [SerializeField] private Enemy m_teamEnemy = null;
+    [SerializeField] private SummonSkill m_summonSkill = null;
 
     public bool IsUserTurn { get; private set; }  = true;
     public bool IsUserClickable { get; private set; }  = true;
@@ -70,15 +71,16 @@ public class BattleScene : BaseScene
         //스테이지 리셋
         this.resetStage();
     }
-#endregion
-
-    public void SetUserClickable(bool isClickable)
-    {
-        this.IsUserClickable = isClickable;
-    }
-
+    #endregion
     public void ChangeTurn()
     {
+        StartCoroutine("coChangeTurn");
+    }
+
+    private IEnumerator coChangeTurn()
+    {
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+
         this.setTurn(!this.IsUserTurn);
     }
 
@@ -97,9 +99,15 @@ public class BattleScene : BaseScene
         }
     }
 
-    public void Enemy_NextAttack()
+#region User
+    public void User_SetClickable(bool isClickable)
     {
-        this.m_teamEnemy.CheckTurnFinish();
+        this.IsUserClickable = isClickable;
+    }
+
+    public void User_SelectSkill(int nSkillIdx)
+    {
+        this.m_teamUser.CharUser.SetCurrSkill(nSkillIdx);
     }
 
     public void User_AddTarget(BaseCharacter charTarget)
@@ -118,28 +126,36 @@ public class BattleScene : BaseScene
         this.m_teamUser.AddTargetFromAttacker(charAttacker, eTarget);
     }
 
+    public void User_AddSummonObj(uint summonID, CharacterStat stat)
+    {
+        this.m_teamUser.AddSummonObject(summonID, stat);
+    }
+
+    public void User_RemoveSummonObj(Character_SummonObj summonObj)
+    {
+        this.m_teamUser.RemoveSummonObject(summonObj);
+    }
+#endregion
+
+#region Enemy
+    public void Enemy_NextAttack()
+    {
+        this.m_teamEnemy.CheckTurnFinish();
+    }
+
     public void Enemy_AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
     {
         this.m_teamEnemy.AddTargetFromAttacker(charAttacker, eTarget);
     }
 
-    public void RemoveEnemy(Character_Enemy charEnemy)
+    public void Enemy_RemoveChar(Character_Enemy charEnemy)
     {
         this.m_teamEnemy.RemoveChar(charEnemy);
     }
+#endregion
 
-    public void SelectUserSkill(int nSkillIdx)
+    public void ActiveSummonSkill(uint summonID)
     {
-        this.m_teamUser.CharUser.SetCurrSkill(nSkillIdx);
-    }
-
-    public void AddUserSummonObj(uint summonID, CharacterStat stat)
-    {
-        this.m_teamUser.AddSummonObject(summonID, stat);
-    }
-
-    public void RemoveUserSummonObj(Character_SummonObj summonObj)
-    {
-        this.m_teamUser.RemoveSummonObject(summonObj);
+        this.m_summonSkill.Init(summonID);
     }
 }

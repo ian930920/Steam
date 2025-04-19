@@ -5,8 +5,8 @@ public class Character_Enemy : BaseCharacter
     public override void Init(uint charID)
     {
         TableData.TableData_Enemy dataEnemy = ProjectManager.Instance.Table.Enemy.GetData(charID);
-        base.m_stat = new CharacterStat(dataEnemy.hp, 0, dataEnemy.strength);
-        base.m_nCurrHP = base.m_stat.HP;
+        base.Stat = new CharacterStat(dataEnemy.hp, 0, dataEnemy.strength);
+        base.m_nCurrHP = base.Stat.HP;
 
         base.Init(charID);
         base.m_renderer.sprite = ProjectManager.Instance.Table.Enemy.GetSprite(base.CharID);
@@ -59,7 +59,7 @@ public class Character_Enemy : BaseCharacter
         base.death();
 
         //지우기
-        ProjectManager.Instance.BattleScene?.RemoveEnemy(this);
+        ProjectManager.Instance.BattleScene?.Enemy_RemoveChar(this);
     }
 
     private void OnMouseUp()

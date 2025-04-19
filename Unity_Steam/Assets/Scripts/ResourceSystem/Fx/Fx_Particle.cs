@@ -14,7 +14,7 @@ public class Fx_Particle : BaseFx
         {
             yield return Utility_Time.YieldInstructionCache.WaitForSeconds(this.m_particle.main.duration + this.m_particle.main.startLifetime.constantMax);
 
-            this.gameObject.SetActive(false);
+            base.Stop();
         }
     }
 }

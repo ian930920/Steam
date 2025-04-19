@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8968020220260304789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 219575463353297640}
+  - component: {fileID: 3227226142975860087}
+  m_Layer: 0
+  m_Name: Effect_Attack_Fire_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &219575463353297640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968020220260304789}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 95047201290400492}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3227226142975860087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968020220260304789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b72d41539e96e6345a67dee41e81e342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isLoop: 0
+  m_isPreset: 0
+  m_animationController: {fileID: 57028892355980076}
+--- !u!1001 &98966018991592156
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 219575463353297640}
+    m_Modifications:
+    - target: {fileID: 1000013520938028, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_Name
+      value: fire_column
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012611680752, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: animations.Array.data[0].delay
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012611680752, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+      propertyPath: animations.Array.data[1].delay
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+--- !u!114 &57028892355980076 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114000012611680752, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+  m_PrefabInstance: {fileID: 98966018991592156}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e9e1f8b010dc3429e52fb747c3c05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &95047201290400492 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4000010066403376, guid: 1298992ce1ea3c1468e6db394804f32c, type: 3}
+  m_PrefabInstance: {fileID: 98966018991592156}
+  m_PrefabAsset: {fileID: 0}

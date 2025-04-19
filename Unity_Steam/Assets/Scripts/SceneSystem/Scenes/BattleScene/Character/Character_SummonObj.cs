@@ -24,8 +24,8 @@ public class Character_SummonObj : BaseCharacter
     /// <param name="stat"></param>
     public void SetStat(CharacterStat stat)
     {
-        base.m_stat = stat;
-        base.m_nCurrHP = base.m_stat.HP;
+        base.Stat = stat;
+        base.m_nCurrHP = base.Stat.HP;
         this.m_nTurn = stat.Turn;
     }
 
@@ -59,7 +59,7 @@ public class Character_SummonObj : BaseCharacter
     protected override void death()
     {
         this.transform.SetParent(ProjectManager.Instance.BattleScene.TransRootObjectPool);
-        ProjectManager.Instance.BattleScene.RemoveUserSummonObj(this);
+        ProjectManager.Instance.BattleScene.User_RemoveSummonObj(this);
 
         base.death();
     }

@@ -15,7 +15,7 @@ public class Fx_Animation : BaseFx
         {
             yield return Utility_Time.YieldInstructionCache.WaitForSeconds(this.m_animClip.length);
 
-            this.gameObject.SetActive(false);
+            base.Stop();
         }
     }
 }

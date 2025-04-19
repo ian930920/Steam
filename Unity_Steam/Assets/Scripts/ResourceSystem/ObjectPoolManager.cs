@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ObjectPoolManager : BaseManager<ObjectPoolManager>
 {
@@ -174,13 +175,17 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
     }
 
     #region Effect
-    public void PlayEffect(TableData.TableObjectPool.eID eEffectID, Vector3 vecPos)
+    public void PlayEffect(uint resID, Vector3 vecPos, UnityAction funcOnFinish = null)
     {
-        uint resKey = (uint)eEffectID;
-        if(this.m_dicFx.ContainsKey(resKey) == false) return;
+        if(this.m_dicFx.ContainsKey(resID) == false) return;
 
         //재생
-        this.m_dicFx[resKey].GetObjectComponent<BaseFx>().Play(vecPos);
+        this.m_dicFx[resID].GetObjectComponent<BaseFx>().Play(vecPos, funcOnFinish);
+    }
+
+    public void PlayEffect(TableData.TableObjectPool.eID eEffectID, Vector3 vecPos, UnityAction funcOnFinish = null)
+    {
+        this.PlayEffect((uint)eEffectID, vecPos, funcOnFinish);
     }
 
     public void PlayItemDropEffect(int nItemID, Vector3 vecPos)

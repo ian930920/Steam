@@ -75,11 +75,16 @@ namespace TableData
 
             return false;
         }
+
+        public Sprite GetIcon(uint tableID)
+        {
+            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Skill_{tableID}");
+        }
     }
 
     public class TableData_Skill : iTableData
     {
-        //tableID type cooldown coe acc crit dur target buff debuff strID
+        //tableID type cooldown coe acc crit dur target buff debuff strID resID
         public uint tableID { get; set; }
         public uint type { get; set; }
         public uint cooldown { get; set; }
@@ -90,5 +95,6 @@ namespace TableData
         public uint target { get; set; }
         public List<uint> listStatusID { get; set; }
         public uint strID { get; set; }
+        public uint resID { get; set; }
     }
 }
