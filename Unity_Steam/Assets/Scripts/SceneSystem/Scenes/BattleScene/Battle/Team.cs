@@ -4,7 +4,7 @@ public abstract class Team : MonoBehaviour
 {
     public abstract void ResetTeam();
     public abstract void TurnStart();
-    protected abstract bool isTurnFinish();
+    public abstract bool IsTurnFinish();
     public abstract void CheckTurnFinish();
 
     protected void turnFinish()

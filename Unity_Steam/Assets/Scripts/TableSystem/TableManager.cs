@@ -21,6 +21,8 @@ public class TableManager : BaseManager<TableManager>
 	public TableSkill Skill { get; private set; } = null;
 	public TableSummon Summon { get; private set; } = null;
 	public TableSummonObj SummonObj { get; private set; } = null;
+	public TableStatus Status { get; private set; } = null;
+	public TableRune Rune { get; private set; } = null;
 	#endregion
 
 	protected override void init()
@@ -46,6 +48,7 @@ public class TableManager : BaseManager<TableManager>
 			$"{strPath}/StringData",
 			$"{strPath}/StringCharacterData",
 			$"{strPath}/StringStatusData",
+			$"{strPath}/StringItemData",
 		});
 
 		//Resource
@@ -63,6 +66,8 @@ public class TableManager : BaseManager<TableManager>
 		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
 		this.Summon = TableSummon.Instance.LoadTable($"{strPath}/SummonData");
 		this.SummonObj = TableSummonObj.Instance.LoadTable($"{strPath}/SummonObjData");
+		this.Status = TableStatus.Instance.LoadTable($"{strPath}/StatusData");
+		this.Rune = TableRune.Instance.LoadTable($"{strPath}/RuneData");
 
 #if UNITY_EDITOR
 		if(true)

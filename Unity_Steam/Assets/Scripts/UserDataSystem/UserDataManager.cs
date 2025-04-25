@@ -12,7 +12,7 @@ public class UserDataManager : BaseManager<UserDataManager>
         Setting,
         Inventory,
         Time,
-        Summon,
+        User,
     };
 
     private Dictionary<eID, BaseUserData> m_dicUser = new Dictionary<eID, BaseUserData>()
@@ -21,14 +21,14 @@ public class UserDataManager : BaseManager<UserDataManager>
         { eID.Setting, new UserData_Setting() },
         { eID.Inventory, new UserData_Inventory() },
         { eID.Time, new UserData_Time() },
-        { eID.Summon, new UserData_User() },
+        { eID.User, new UserData_User() },
     };
 
     public UserData_Account Account => this.m_dicUser[eID.Account] as UserData_Account;
     public UserData_Setting Setting => this.m_dicUser[eID.Setting] as UserData_Setting;
     public UserData_Inventory Inventory => this.m_dicUser[eID.Inventory] as UserData_Inventory;
     public UserData_Time Time => this.m_dicUser[eID.Time] as UserData_Time;
-    public UserData_User Summon => this.m_dicUser[eID.Summon] as UserData_User;
+    public UserData_User User => this.m_dicUser[eID.User] as UserData_User;
 
     public string BuildVersion { get; set; }
     public string PatchVersion { get; set; }

@@ -7,7 +7,7 @@ public class User : Team
     [SerializeField] private Transform m_transParent = null;
     [SerializeField] private Transform[] m_arrTransSummonObjParent = null;
 
-    [SerializeField] private SummonSkill m_summonSkill = null;
+    [SerializeField] private UI_SummonSkill m_summonSkill = null;
 
     public Character_User CharUser { get; private set; } = null;
 
@@ -29,6 +29,9 @@ public class User : Team
             this.m_listSummonObj[i].UpdateTurn();
         }
 
+        //유저 상태이상 업데이트
+        this.CharUser.UpdateStatus();
+
         //캐릭터 턴 세팅
         this.CharUser.SetMyTurn();
     }
@@ -39,19 +42,17 @@ public class User : Team
         this.CharUser = null;
     }
 
-    protected override bool isTurnFinish()
+    public override bool IsTurnFinish()
     {
-        //마나 체크
-        if(this.CharUser.IsFinishTurn() == false) return false;
-
         //TODO 사용할 소환수 있는 지 확인??
 
-        return true;
+        //마나 체크
+        return this.CharUser.IsFinishTurn();
     }
 
     public override void CheckTurnFinish()
     {
-        if(this.isTurnFinish() == false)
+        if(this.IsTurnFinish() == false)
         {
             //TODO 스킬 선택
             this.CharUser.SetMyTurn();

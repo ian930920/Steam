@@ -1,0 +1,19 @@
+{"Json":{
+  "1": { "strID":21001, "value":0.2, "statusID":0},
+  "2": { "strID":21002, "value":0.2, "statusID":0},
+  "3": { "strID":21003, "value":0.2, "statusID":0},
+  "4": { "strID":21004, "value":1, "statusID":0},
+  "5": { "strID":21005, "value":1, "statusID":0},
+  "6": { "strID":21006, "value":2, "statusID":2006},
+  "7": { "strID":21007, "value":2, "statusID":1006},
+  "8": { "strID":21008, "value":10, "statusID":0},
+  "9": { "strID":0, "value":0, "statusID":0},
+  "10": { "strID":0, "value":0, "statusID":0},
+  "11": { "strID":0, "value":0, "statusID":0},
+  "12": { "strID":0, "value":0, "statusID":0},
+  "13": { "strID":0, "value":0, "statusID":0},
+  "14": { "strID":0, "value":0, "statusID":0},
+  "15": { "strID":0, "value":0, "statusID":0},
+  "16": { "strID":0, "value":0, "statusID":0},
+  "17": { "strID":0, "value":0, "statusID":0}
+}}

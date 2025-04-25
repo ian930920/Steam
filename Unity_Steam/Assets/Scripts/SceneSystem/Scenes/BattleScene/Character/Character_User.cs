@@ -21,10 +21,10 @@ public class Character_User : BaseCharacter
 
         //소환수 저장
         this.m_listSummon.Clear();
-        List<UserData_User.SummonData> listSummon = ProjectManager.Instance.UserData.Summon.GetSummonDataByList();
+        List<UserData_User.SummonData> listSummon = ProjectManager.Instance.UserData.User.GetSummonDataByList();
         for(int i = 0, nMax = listSummon.Count; i < nMax; ++i)
         {
-            this.m_listSummon.Add(new Summon(listSummon[i].SummonID));
+            this.m_listSummon.Add(new Summon(listSummon[i].SummonID, base.getStatus));
         }
 
         //소환수 스킬이 내 스킬
@@ -42,33 +42,38 @@ public class Character_User : BaseCharacter
     public bool IsFinishTurn()
     {
         if(this.m_nCurrMana == 0) return true;
-        if(this.m_listSummon.Any(summon => summon.Skill.IsUseable(base.m_nCurrMana)) == false) return true;
-        
-        return false;
+        if(base.getStatus(TableData.TableStatus.eID.Fainting) != null) return true;
+
+        bool hasUsableSkill = false;
+        for(int i = 0; i < this.m_listSummon.Count; i++)
+        {
+            if(this.m_listSummon[i].Skill.IsUseable(base.m_nCurrMana) == false) continue;
+
+            hasUsableSkill = true;
+            break;
+        }
+        return hasUsableSkill == false;
     }
 
-    protected override void checkFinishTurn()
+    /*TODO Delete
+    public override void CheckFinishTurn()
     {
         //코스트 확인~
-        if(this.IsFinishTurn() == false)
-        {
-            //스킬 사용할 수 있다고 세팅
-            ProjectManager.Instance.BattleScene?.User_SetClickable(true);
-            return;
-        }
+        if(this.IsFinishTurn() == true) return;
 
-        //턴 바꾸기~
-        this.TurnFinish();
+        //아직 안끝났다면 스킬 사용할 수 있다고 세팅
+        ProjectManager.Instance.BattleScene?.User_SetClickable(true);
     }
+    */
 
     protected override void useCurrSkill()
     {
         base.useCurrSkill();
 
         //스킬 이펙트
-        ProjectManager.Instance.BattleScene?.ActiveSummonSkill(this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx].Data.tableID);
+        ProjectManager.Instance.BattleScene?.HUD.ActiveSummonSkill(this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx].Data.tableID);
 
-        this.m_nCurrMana -= base.m_currSkill.Cost;
+        this.UseMana(base.m_currSkill.Cost);
         ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
     }
 

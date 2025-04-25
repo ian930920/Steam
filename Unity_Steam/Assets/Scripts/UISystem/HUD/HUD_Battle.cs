@@ -1,14 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class HUD_Battle : BaseHUD
 {
+    [Space(5)][Header("소환수")]
     [SerializeField] private UI_Summon m_uiSummon = null;
+    [SerializeField] private UI_SummonSkill m_uiSummonSkill = null;
+    [SerializeField] private UI_RuneInfo m_uiRuneInfo = null;
+
+    [Space(5)][Header("전투 정보")]
     [SerializeField] private UI_Mana m_uiMana = null;
+    [SerializeField] private UI_TurnInfo m_uiTurnInfo = null;
+    [SerializeField] private UI_StatusInfo m_uiStatusInfo = null;
 
     public int SelectedSkillIdx => this.m_uiSummon.SelectedIdx;
+
+    public override void Init()
+    {
+        base.Init();
+    }
 
     public override void RefreshUI()
     {
@@ -38,5 +49,35 @@ public class HUD_Battle : BaseHUD
     public void RefreshMana(ulong nCurrMana)
     {
         this.m_uiMana.Refresh(nCurrMana);
+    }
+
+    public void OpenStatusInfo(uint statusID, Vector3 vecPos)
+    {
+        this.m_uiStatusInfo.Open(statusID, vecPos);
+    }
+
+    public void CloseStatusInfo()
+    {
+        this.m_uiStatusInfo.Close();
+    }
+
+    public void ActiveSummonSkill(uint summonID)
+    {
+        this.m_uiSummonSkill.Init(summonID);
+    }
+
+    public void SetTurn(bool isPlayerTurn)
+    {
+        this.m_uiTurnInfo.SetTurn(isPlayerTurn);
+    }
+
+    public void OpenRuneInfo(uint runeID, Vector3 vecPos)
+    {
+        this.m_uiRuneInfo.Open(runeID, vecPos);
+    }
+
+    public void CloseRuneInfo()
+    {
+        this.m_uiRuneInfo.Close();
     }
 }

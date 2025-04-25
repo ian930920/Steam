@@ -14,7 +14,7 @@ public class Character_Enemy : BaseCharacter
         base.m_listSkill.Clear();
         for(int i = 0, nMax = dataEnemy.listSkillID.Count; i < nMax; ++i)
         {
-            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], 0, base.getStat));
+            base.m_listSkill.Add(new Skill(dataEnemy.listSkillID[i], 0, base.getStat, base.getStatus));
         }
     }
 
@@ -48,11 +48,13 @@ public class Character_Enemy : BaseCharacter
         }
     }
 
-    protected override void checkFinishTurn()
+    /* TODO Delete
+    public override void CheckFinishTurn()
     {
         //턴 바꾸기~
-        ProjectManager.Instance.BattleScene?.Enemy_NextAttack();
+        ProjectManager.Instance.BattleScene?.CheckTurnFinish();
     }
+    */
 
     protected override void death()
     {

@@ -6,12 +6,14 @@ public class BattleScene : BaseScene
 {
     [SerializeField] private User m_teamUser = null;
     [SerializeField] private Enemy m_teamEnemy = null;
-    [SerializeField] private SummonSkill m_summonSkill = null;
 
     public bool IsUserTurn { get; private set; }  = true;
     public bool IsUserClickable { get; private set; }  = true;
 
     public HUD_Battle HUD => base.BaseHUD as HUD_Battle;
+
+    //텀용 이벤트
+    private List<BaseCharacter> m_listTurnEvent = new List<BaseCharacter>();
 
     public override void OnSceneStart()
     {
@@ -24,7 +26,13 @@ public class BattleScene : BaseScene
         Dictionary<uint, TableData.TableData_Summon>.Enumerator enumSummon = ProjectManager.Instance.Table.Summon.GetEnumerator();
         while(enumSummon.MoveNext())
         {
-            ProjectManager.Instance.UserData.Summon.AddSummon(enumSummon.Current.Key);
+            ProjectManager.Instance.UserData.User.AddSummon(enumSummon.Current.Key);
+        }
+
+        //TODO Delete
+        for(int i = 0; i < 3; ++i)
+        {
+            ProjectManager.Instance.UserData.User.AddRune(1, (uint)(i + 4));
         }
 
         //스테이지 리셋
@@ -39,6 +47,8 @@ public class BattleScene : BaseScene
 
         //적 초기화
         this.m_teamEnemy.ResetTeam();
+
+        this.m_listTurnEvent.Clear();
 
         //스테이지 세팅
         this.InitStage();
@@ -72,14 +82,33 @@ public class BattleScene : BaseScene
         this.resetStage();
     }
     #endregion
+
+#region TurnEvent
     public void ChangeTurn()
     {
-        StartCoroutine("coChangeTurn");
-    }
+        //아직 공격중이라면 ㄴㄴ
+        if(this.m_listTurnEvent.Count > 0) return;
 
-    private IEnumerator coChangeTurn()
-    {
-        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
+        if(this.IsUserTurn == true) //유저턴이 라면
+        {
+            //턴이 안끝났다면
+            if(this.m_teamUser.IsTurnFinish() == false)
+            {
+                //스킬 사용할 수 있다고 세팅
+                this.User_SetClickable(true);
+                return;
+            }
+        }
+        else //적 턴이라면
+        { 
+            //턴이 안끝났다면
+            if(this.m_teamEnemy.IsTurnFinish() == false)
+            {
+                //다음 적이 공격
+                this.m_teamEnemy.CheckTurnFinish();
+                return;
+            }
+        }
 
         this.setTurn(!this.IsUserTurn);
     }
@@ -90,19 +119,43 @@ public class BattleScene : BaseScene
         if(this.IsUserTurn == true)
         {
             this.m_teamUser.TurnStart();
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("유저 턴");
         }
         else
         {
             this.m_teamEnemy.TurnStart();
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("상대 턴");
         }
+
+        //UI 갱신
+        this.HUD.SetTurn(this.IsUserTurn);
     }
+
+    public void AddTurnEvent(BaseCharacter character)
+    {
+        //이미 있으면 ㄴㄴ
+        if(this.m_listTurnEvent.Contains(character) == true) return;
+
+        //추가
+        this.m_listTurnEvent.Add(character);
+    }
+
+    public void RemoveTurnEvent(BaseCharacter character)
+    {
+        //없으면 ㄴㄴ
+        if(this.m_listTurnEvent.Contains(character) == false) return;
+
+        //추가
+        this.m_listTurnEvent.Remove(character);
+
+        this.ChangeTurn();
+    }
+#endregion
 
 #region User
     public void User_SetClickable(bool isClickable)
     {
         this.IsUserClickable = isClickable;
+
+        if(this.IsUserClickable == true) this.User_SelectSkill(this.HUD.SelectedSkillIdx);
     }
 
     public void User_SelectSkill(int nSkillIdx)
@@ -138,10 +191,12 @@ public class BattleScene : BaseScene
 #endregion
 
 #region Enemy
+    /*TODO Delete
     public void Enemy_NextAttack()
     {
         this.m_teamEnemy.CheckTurnFinish();
     }
+    */
 
     public void Enemy_AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
     {
@@ -153,9 +208,4 @@ public class BattleScene : BaseScene
         this.m_teamEnemy.RemoveChar(charEnemy);
     }
 #endregion
-
-    public void ActiveSummonSkill(uint summonID)
-    {
-        this.m_summonSkill.Init(summonID);
-    }
 }

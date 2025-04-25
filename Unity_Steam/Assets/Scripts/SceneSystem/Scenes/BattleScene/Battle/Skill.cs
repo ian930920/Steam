@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 public class Skill
 {
@@ -29,36 +30,42 @@ public class Skill
         }
     }
 
-    private CharacterStat m_status = null;
     private Func<CharacterStat> m_funcGetStat = null;
+    private Func<TableData.TableStatus.eID, Status> m_funcGetStatus = null;
     public ulong Cost { get; private set; } = 0;
 
     public uint RemainTurn { get; private set; } = 0;
 
-    public Skill(uint skillID, ulong cost, Func<CharacterStat> funcGetStat)
+    public Skill(uint skillID, ulong cost, Func<CharacterStat> funcGetStat, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.Data = ProjectManager.Instance.Table.Skill.GetData(skillID);
         this.Cost = cost;
         this.m_funcGetStat = funcGetStat;
+        this.m_funcGetStatus = funcGetStatus;
         this.RemainTurn = 0;
     }
 
     public ulong GetDefaultDamage()
     {
-        this.m_status = this.m_funcGetStat.Invoke();
-        return (ulong)(this.Data.coe * this.m_status.Strength);
+        var stat = this.m_funcGetStat.Invoke();
+        return (ulong)(this.Data.coe * stat.Strength);
     }
 
     private stDamage getDamage()
     {
-        this.m_status = this.m_funcGetStat.Invoke();
+        var stat = this.m_funcGetStat.Invoke();
         stDamage damage = new stDamage();
 
+        float fAcc = 1.0f;
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Weakened_Hit) != null) fAcc *= 0.5f;
+
         //명중률 확인
-        if(UnityEngine.Random.Range(0, 1.0f) <= this.Data.acc)
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Dark) == null && UnityEngine.Random.Range(0, 1.0f) <= this.Data.acc)
         {
             //치명타
             damage.IsCritical = UnityEngine.Random.Range(0, 1.0f) <= this.Data.crit;
+            if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Rage) != null) damage.IsCritical = true;
+
             float fCritical = 1.0f;
             if(damage.IsCritical) fCritical = 1.5f; //TODO 치명타 값
 
@@ -77,7 +84,6 @@ public class Skill
                 break;
             }
         }
-
         return damage;
     }
 
@@ -114,6 +120,7 @@ public class Skill
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
                     var target = listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
                     ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Damaged(this.getDamage()));
                 }
             }
@@ -124,12 +131,22 @@ public class Skill
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
                     var target = listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
                     ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Heal(this.getDamage()));
                 }
             }
             break;
 
             case TableData.TableSkill.eTYPE.Status:
+            {
+                //TODO 쉴드 ..?
+                for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
+                {
+                    var target = listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.AddShield(this.GetDefaultDamage()));
+                }
+            }
             break;
 
             case TableData.TableSkill.eTYPE.Summon:
@@ -137,6 +154,7 @@ public class Skill
                 //TODO 유저만 사용가능한 스킬인지 확인
                 //생성!
                 ProjectManager.Instance.BattleScene?.User_AddSummonObj(2001, new CharacterStat(this.GetDefaultDamage(), 0, 0, this.Data.dur));
+                ProjectManager.Instance.BattleScene.ChangeTurn();
             }
             break;
         }

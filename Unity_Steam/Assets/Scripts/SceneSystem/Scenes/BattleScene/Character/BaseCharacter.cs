@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class BaseCharacter : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public CharacterStat Stat { get; protected set; } = null;
     protected ulong m_nCurrHP = 0;
     protected ulong m_nCurrMana = 0;
+    protected ulong m_nCurrShield = 0;
     protected bool IsDead { get; private set; } = false;
 
     protected List<Skill> m_listSkill = new List<Skill>();
@@ -89,9 +91,10 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public virtual void UseSkill()
     {
-        if(this.m_currSkill.IsUseable(this.m_nCurrMana) == false)
+        if(this.m_currSkill.IsUseable(this.m_nCurrMana) == false || this.getStatus(TableData.TableStatus.eID.Fainting) != null)
         {
-            this.checkFinishTurn();
+            ProjectManager.Instance.BattleScene?.ChangeTurn();
+            //this.CheckFinishTurn(); TODO Delete
             return;
         }
 
@@ -107,10 +110,12 @@ public abstract class BaseCharacter : MonoBehaviour
 
         this.useCurrSkill();
 
+        /* TODO Delete
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(2.0f);
 
         //턴 바꾸기~
         this.checkFinishTurn();
+        */
     }
 
     public void UpdateRemainTurn()
@@ -119,22 +124,34 @@ public abstract class BaseCharacter : MonoBehaviour
         {
             this.m_listSkill[i].UpdateTurn();
         }
+    }
 
+    public void UpdateStatus()
+    {
         this.m_listStatus = this.m_dicStatus.Values.ToList();
         for(int i = this.m_listStatus.Count - 1; i >= 0; --i)
         {
             this.m_listStatus[i].UpdateTurn();
-            if(this.m_listStatus[i].RemainTurn == 0) this.m_dicStatus.Remove((uint)this.m_listStatus[i].eStatusID);
+            
+            //실행
+            this.m_listStatus[i].DoStatus(this);
+
+            //죽어버리면 ㄴㄴ 그만
+            if(this.gameObject.activeSelf == false) return;
+         
+            bool isRemove = this.m_uiStatusBar.UpdateStatus((uint)this.m_listStatus[i].eStatusID, this.m_listStatus[i].RemainTurn);
+            if(isRemove == true) this.m_dicStatus.Remove((uint)this.m_listStatus[i].eStatusID);
         }
     }
 
-    protected abstract void checkFinishTurn();
-
+    /* TODO Delete
+    //public abstract void CheckFinishTurn();
     public void TurnFinish()
     {
         //턴 바꾸기~
-        ProjectManager.Instance.BattleScene?.ChangeTurn();
+        //ProjectManager.Instance.BattleScene?.ChangeTurn();
     }
+    */
 
     protected virtual void useCurrSkill()
     {
@@ -143,11 +160,17 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public void Damaged(stDamage stDamage)
     {
+        //턴끝
+        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+
         if(this.IsDead == true)
         {
-            ProjectManager.Instance.LogError("죽었는데 딜 왜 들어오냐?");
+            ProjectManager.Instance.LogWarning("죽었는데 딜 왜 들어오냐?");
             return;
         }
+
+        //TODO 다른 상태이상이랑 중첩 되는지
+
 
         if(stDamage.Damage < 1)
         {
@@ -155,22 +178,35 @@ public abstract class BaseCharacter : MonoBehaviour
             return;
         }
 
-        if(this.m_nCurrHP <= stDamage.Damage) stDamage.Damage = this.m_nCurrHP;
-        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
-        this.m_nCurrHP -= stDamage.Damage;
+        if(this.getStatus(TableData.TableStatus.eID.Weakened_Def) != null) stDamage.Damage = (ulong)(stDamage.Damage * 1.5f);
+        if(this.getStatus(TableData.TableStatus.eID.Attack_Enhancement) != null) stDamage.Damage = (ulong)(stDamage.Damage * 1.5f);
+        if(this.getStatus(TableData.TableStatus.eID.Weakened_Atk) != null) stDamage.Damage = (ulong)(stDamage.Damage * 0.5f);
+        if(this.getStatus(TableData.TableStatus.eID.Defense_Enhancement) != null) stDamage.Damage = (ulong)(stDamage.Damage * 0.5f);
+
+        if(this.m_nCurrShield > stDamage.Damage) this.m_nCurrShield -= stDamage.Damage;
+        else
+        {
+            ulong damage = stDamage.Damage -= this.m_nCurrShield;
+            if(this.m_nCurrHP <= damage) damage = this.m_nCurrHP;
+            ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+            this.m_nCurrHP -= damage;
        
-        this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
+            this.m_uiStatusBar.RefreshGauge(this.m_nCurrHP);
         
-        this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
+            this.m_animator.SetTrigger(STR_ANIM_TRIGGER[(int)eSTATE.Damaged]);
+        }
 
         if(this.m_nCurrHP < 1) this.death();
     }
 
     public void Heal(stDamage stDamage)
     {
+        //턴끝
+        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+
         if(this.IsDead == true)
         {
-            ProjectManager.Instance.LogError("죽었는데 힐 왜 들어오냐?");
+            ProjectManager.Instance.LogWarning("죽었는데 힐 왜 들어오냐?");
             return;
         }
 
@@ -180,16 +216,32 @@ public abstract class BaseCharacter : MonoBehaviour
         ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
     }
 
+    public void AddShield(ulong value)
+    {
+        this.m_nCurrShield += value;
+
+        //턴끝
+        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+    }
+
+    public void ResetShield()
+    {
+        this.m_nCurrShield = 0;
+    }
+
     public void AddStatus(uint statusID, ulong turn)
     {
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {
             this.m_dicStatus.Add(statusID, new Status(statusID, turn));
+            //this.m_dicStatus[statusID].AddStatus(turn);
         }
         else
         {
             this.m_dicStatus[statusID].AddTurn(turn);
         }
+
+        this.m_uiStatusBar.UpdateStatus(statusID, this.m_dicStatus[statusID].RemainTurn);
     }
 
     protected virtual void death()
@@ -210,5 +262,23 @@ public abstract class BaseCharacter : MonoBehaviour
     protected CharacterStat getStat()
     {
         return this.Stat;
+    }
+
+    protected Status getStatus(TableData.TableStatus.eID eStatusID)
+    {
+        uint statusID = (uint)eStatusID;
+        if(this.m_dicStatus.ContainsKey(statusID) == false) return null;
+
+        return this.m_dicStatus[statusID];
+    }
+
+    public void AddMana(ulong cost)
+    {
+        this.m_nCurrMana += cost;
+    }
+
+    public void UseMana(ulong cost)
+    {
+        this.m_nCurrMana -= cost;
     }
 }

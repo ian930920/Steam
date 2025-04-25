@@ -76,6 +76,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1072597254781470195, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b4d4344879ce3ef4d9d3ebf48b3a6494, type: 3}
+    - target: {fileID: 1072597254781470195, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072597254781470195, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072597254781470195, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1828523868144180057, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -156,9 +172,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4530903758451703066, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c20abcca02a7ab40bc3cdd761e87e1a, type: 3}
+    - target: {fileID: 4530903758451703066, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.a
+      value: 0.4862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530903758451703066, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530903758451703066, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530903758451703066, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3301887
+      objectReference: {fileID: 0}
     - target: {fileID: 5191462561138239320, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
       propertyPath: m_Name
       value: UI_Gauge
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660856487835787376, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: dddaf1ec1a846154ba7e0ce0e38e1d29, type: 3}
+    - target: {fileID: 7233655290036015579, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
+      propertyPath: m_Value
+      value: 0.754
       objectReference: {fileID: 0}
     - target: {fileID: 7233655290036015579, guid: e5796676d72e3374fa4e120014fc78a0, type: 3}
       propertyPath: m_Interactable

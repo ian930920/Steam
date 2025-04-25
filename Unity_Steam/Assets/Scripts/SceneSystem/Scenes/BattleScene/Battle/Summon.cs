@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Summon
@@ -9,12 +10,12 @@ public class Summon
 
     public uint RemainTurn => this.Skill.RemainTurn;
 
-    public Summon(uint summonID)
+    public Summon(uint summonID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.m_summonID = summonID;
 
         this.Data = ProjectManager.Instance.Table.Summon.GetData(this.m_summonID);
-        this.Skill = new Skill(this.Data.skillID, this.Data.cost, this.getStat);
+        this.Skill = new Skill(this.Data.skillID, this.Data.cost, this.getStat, funcGetStatus);
         this.m_stat = new CharacterStat();
     }
 

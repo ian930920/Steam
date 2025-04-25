@@ -75,11 +75,6 @@ namespace TableData
 
             return false;
         }
-
-        public Sprite GetIcon(uint tableID)
-        {
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Skill_{tableID}");
-        }
     }
 
     public class TableData_Skill : iTableData

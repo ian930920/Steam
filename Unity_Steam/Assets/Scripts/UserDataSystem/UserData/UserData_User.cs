@@ -49,12 +49,19 @@ public class UserData_User : UserData<JsonData_User>
 	}
 
 #region Rune
+	public List<uint> GetRune(uint summonID)
+	{
+		if(base.Data.DicSummon.ContainsKey(summonID) == false) return new List<uint>();
+
+		return base.Data.DicSummon[summonID].ListRuneID;
+	}
+
     public void AddRune(uint summonID, uint runeID)
 	{
 		if(base.Data.DicSummon.ContainsKey(summonID) == false) return;
 
 		base.Data.DicSummon[summonID].AddRune(runeID);
-		base.SaveClientData();
+		//TODO 살리기 base.SaveClientData();
 	}
 
 	public void RemoveRune(uint summonID, uint runeID)
@@ -62,7 +69,7 @@ public class UserData_User : UserData<JsonData_User>
 		if(base.Data.DicSummon.ContainsKey(summonID) == false) return;
 
 		base.Data.DicSummon[summonID].RemoveRune(runeID);
-		base.SaveClientData();
+		//TODO 살리기 base.SaveClientData();
 	}
 #endregion
 #endregion

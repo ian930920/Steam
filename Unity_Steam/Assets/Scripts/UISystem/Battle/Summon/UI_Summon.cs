@@ -6,6 +6,9 @@ public class UI_Summon : MonoBehaviour
 {
     [SerializeField] private UI_SummonSlot[] m_arrSlot = null;
     [SerializeField] private UI_ManaSlot[] m_arrManaSlot = null;
+    [SerializeField] private UI_Rune m_uiRune = null;
+    [SerializeField] private LayoutUpdater m_layoutUpdater = null;
+
     [SerializeField] private TextMeshProUGUI m_textTitle = null;
     [SerializeField] private TextMeshProUGUI m_textDesc = null;
     [SerializeField] private TextMeshProUGUI m_textTurn = null;
@@ -67,6 +70,10 @@ public class UI_Summon : MonoBehaviour
         {
             this.m_arrManaSlot[i].gameObject.SetActive(i < nCost);
         }
+        this.m_layoutUpdater.Refresh();
+
+        //룬 표기
+        this.m_uiRune.Init(this.m_currSummon.Data.tableID);
 
         //유저 스킬 저장
         ProjectManager.Instance.BattleScene?.User_SelectSkill(this.SelectedIdx);

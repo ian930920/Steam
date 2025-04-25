@@ -29,10 +29,12 @@ public class Character_SummonObj : BaseCharacter
         this.m_nTurn = stat.Turn;
     }
 
-    protected override void checkFinishTurn()
+    /* TODO Delete
+    public override void CheckFinishTurn()
     {
 
     }
+    */
 
     protected override void setTarget()
     {

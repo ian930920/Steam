@@ -35,6 +35,12 @@ public class Enemy : Team
 
     public override void TurnStart()
     {
+        //상태이상 업데이트
+        for(int i = this.ListChar.Count - 1; i >= 0; --i)
+        {
+            this.ListChar[i].UpdateStatus();
+        }
+
         //맨 처음 적이 공격
         this.m_nCurrAttackerIdx = 0;
         StartCoroutine("coAttack");
@@ -48,14 +54,14 @@ public class Enemy : Team
         this.ListChar[this.m_nCurrAttackerIdx].UseSkill();
     }
 
-    protected override bool isTurnFinish()
+    public override bool IsTurnFinish()
     {
         return this.m_nCurrAttackerIdx == this.ListChar.Count - 1;
     }
 
     public override void CheckTurnFinish()
     {
-        if(this.isTurnFinish() == false)
+        if(this.IsTurnFinish() == false)
         {
             //다음 공격
             this.m_nCurrAttackerIdx++;
