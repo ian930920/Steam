@@ -7,8 +7,6 @@ public class User : Team
     [SerializeField] private Transform m_transParent = null;
     [SerializeField] private Transform[] m_arrTransSummonObjParent = null;
 
-    [SerializeField] private UI_SummonSkill m_summonSkill = null;
-
     public Character_User CharUser { get; private set; } = null;
 
     private List<Character_SummonObj> m_listSummonObj = new List<Character_SummonObj>();

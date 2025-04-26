@@ -1,6 +1,5 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 public class Character_User : BaseCharacter
 {
@@ -36,7 +35,7 @@ public class Character_User : BaseCharacter
         
         //UI 세팅
         ProjectManager.Instance.BattleScene?.HUD.InitSummonUI(this.m_listSummon);
-        ProjectManager.Instance.BattleScene?.HUD.InitManaUI(this.m_nCurrMana);
+        ProjectManager.Instance.BattleScene?.HUD.SetMaxMana(this.m_nCurrMana);
     }
 
     public bool IsFinishTurn()
@@ -68,13 +67,19 @@ public class Character_User : BaseCharacter
 
     protected override void useCurrSkill()
     {
-        base.useCurrSkill();
-
+        StartCoroutine("coUseSkill");
+    }
+    
+    private IEnumerator coUseSkill()
+    {
         //스킬 이펙트
-        ProjectManager.Instance.BattleScene?.HUD.ActiveSummonSkill(this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx].Data.tableID);
+        float fDuration = ProjectManager.Instance.BattleScene.HUD.ActiveSummonSkill(this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSkillIdx].Data.tableID);
 
         this.UseMana(base.m_currSkill.Cost);
-        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
+
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(fDuration);
+
+        base.useCurrSkill();
     }
 
     protected override void death()

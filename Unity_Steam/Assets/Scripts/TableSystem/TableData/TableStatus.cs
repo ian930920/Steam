@@ -24,6 +24,15 @@ namespace TableData
             Defense_Enhancement,    //받는 피해 50% 감소
             Attack_Enhancement,     //최종 피해 50% 증가
             Summon_Protection,      //다른 아군에 의해 보호받는 상태. 받는 피해를 보호 시전자에게 이전
+            Add_Mana,               //사용 즉시 마나 2 회복
+        }
+
+        public float GetValue(eID eTableID)
+        {
+            uint tableID = (uint)eTableID;
+            if(base.ContainsKey(tableID) == false) return 0;
+
+            return base.GetData(tableID).value;
         }
 
         public Sprite GetIcon(uint tableID)

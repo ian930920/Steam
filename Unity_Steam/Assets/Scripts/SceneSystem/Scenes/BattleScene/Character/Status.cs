@@ -29,7 +29,7 @@ public class Status
         ProjectManager.Instance.Log($"{eStatusID} 실행!");
     }
 
-    public void AddStatus(BaseCharacter character, ulong value)
+    public void AddStatus(BaseCharacter character)
     {
         switch(eStatusID)
         {
@@ -46,24 +46,32 @@ public class Status
                 //이번 턴 동안 소환수 소환에 필요한 모든 마나 비용 1 감소. 비용은 최소 1까지만 감소할 수 있음
             }
             break;
+
+            case TableData.TableStatus.eID.Add_Mana:
+            {
+                //사용 즉시 마나 2 회복
+                character.AddMana(2);
+            }
+            break;
         }
     }
 
     public void DoStatus(BaseCharacter character)
     {
+        float fValue = ProjectManager.Instance.Table.Status.GetValue(this.eStatusID);
         switch(eStatusID)
         {
             case TableData.TableStatus.eID.Burn:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.Stat.HP * 0.1f), false));
+                character.Damaged(new stDamage((ulong)(character.Stat.HP * fValue), false));
             }
             break;
 
             case TableData.TableStatus.eID.Bleeding:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.Stat.HP * 0.1f), false));
+                character.Damaged(new stDamage((ulong)(character.Stat.HP * fValue), false));
             }
             break;
 
@@ -84,7 +92,7 @@ public class Status
             case TableData.TableStatus.eID.Curse:
             {
                 //매 턴 시작 시 회복되는 마나 1 감소
-                character.UseMana(1);
+                character.UseMana((ulong)fValue);
             }
             break;
 
@@ -112,7 +120,7 @@ public class Status
             case TableData.TableStatus.eID.Regeneration:
             {
                 //매 턴 시작 시 최대 체력의 10% 회복
-                character.Heal(new stDamage((ulong)(character.Stat.HP * 0.1f), false));
+                character.Heal(new stDamage((ulong)(character.Stat.HP * fValue), false));
             }
             break;
 
@@ -140,7 +148,7 @@ public class Status
             case TableData.TableStatus.eID.Blessing:
             {
                 //매 턴 시작 시 회복되는 마나 1 증가
-                character.AddMana(1);
+                character.AddMana((ulong)fValue);
             }
             break;
 

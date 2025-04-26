@@ -41,9 +41,9 @@ public class HUD_Battle : BaseHUD
         this.m_uiSummon.RefreshSlot();
     }
 
-    public void InitManaUI(ulong nMaxMana)
+    public void SetMaxMana(ulong nMaxMana)
     {
-        this.m_uiMana.Init(nMaxMana);
+        this.m_uiMana.SetMaxMana(nMaxMana);
     }
 
     public void RefreshMana(ulong nCurrMana)
@@ -61,9 +61,9 @@ public class HUD_Battle : BaseHUD
         this.m_uiStatusInfo.Close();
     }
 
-    public void ActiveSummonSkill(uint summonID)
+    public float ActiveSummonSkill(uint summonID)
     {
-        this.m_uiSummonSkill.Init(summonID);
+        return this.m_uiSummonSkill.Init(summonID);
     }
 
     public void SetTurn(bool isPlayerTurn)

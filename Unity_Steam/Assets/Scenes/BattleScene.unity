@@ -735,7 +735,6 @@ MonoBehaviour:
   - {fileID: 400630381}
   - {fileID: 1023022387}
   - {fileID: 438510912}
-  m_summonSkill: {fileID: 0}
 --- !u!1 &173655983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,7 +2159,7 @@ GameObject:
   - component: {fileID: 519117848}
   - component: {fileID: 519117847}
   m_Layer: 5
-  m_Name: Panel_Summon
+  m_Name: Panel_SummonSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

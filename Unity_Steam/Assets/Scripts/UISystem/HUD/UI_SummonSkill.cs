@@ -11,12 +11,14 @@ public class UI_SummonSkill : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void Init(uint summonID)
+    public float Init(uint summonID)
     {
         this.gameObject.SetActive(true);
 
         this.m_imgSummon.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
         this.m_animation.Play();
+
+        return this.m_animation.clip.length;
     }
 
     public void InactiveGameOjbect()

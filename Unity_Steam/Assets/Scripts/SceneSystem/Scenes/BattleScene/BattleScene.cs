@@ -110,7 +110,15 @@ public class BattleScene : BaseScene
             }
         }
 
-        this.setTurn(!this.IsUserTurn);
+        StartCoroutine("coSetTurn", !this.IsUserTurn);
+    }
+
+    private IEnumerator coSetTurn(bool isUserTuren)
+    {
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1.0f);
+
+        //턴 바꾸기
+        this.setTurn(isUserTuren);
     }
 
     private void setTurn(bool isUserTuren)

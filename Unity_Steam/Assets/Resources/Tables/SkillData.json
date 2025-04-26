@@ -8,6 +8,6 @@
   "2001": { "type":1, "cooldown":0, "coe":15, "acc":0.6, "crit":0.2, "dur":1, "target":5, "listStatusID":[1000], "strID":32002, "resID":3008},
   "2002": { "type":3, "cooldown":0, "coe":30, "acc":1, "crit":0, "dur":1, "target":10, "listStatusID":[2002], "strID":32003, "resID":3002},
   "2003": { "type":4, "cooldown":0, "coe":20, "acc":1, "crit":0, "dur":2, "target":0, "listStatusID":[2008], "strID":32004, "resID":3017},
-  "2004": { "type":2, "cooldown":3, "coe":15, "acc":1, "crit":0.2, "dur":0, "target":10, "listStatusID":[], "strID":32005, "resID":3004},
+  "2004": { "type":2, "cooldown":3, "coe":15, "acc":1, "crit":0.2, "dur":0, "target":10, "listStatusID":[2009], "strID":32005, "resID":3004},
   "2005": { "type":2, "cooldown":2, "coe":5, "acc":1, "crit":0.2, "dur":3, "target":10, "listStatusID":[2001], "strID":32006, "resID":3004}
 }}

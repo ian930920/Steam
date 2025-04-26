@@ -35,7 +35,6 @@ public abstract class BaseCharacter : MonoBehaviour
 
     //Key : statusID, Status
     private Dictionary<uint, Status> m_dicStatus = new Dictionary<uint, Status>();
-    private List<Status> m_listStatus = new List<Status>();
 
     private UI_CharacterStatusBar m_uiStatusBar = null;
 
@@ -128,19 +127,19 @@ public abstract class BaseCharacter : MonoBehaviour
 
     public void UpdateStatus()
     {
-        this.m_listStatus = this.m_dicStatus.Values.ToList();
-        for(int i = this.m_listStatus.Count - 1; i >= 0; --i)
+        var listStatus = this.m_dicStatus.Values.ToList();
+        for(int i = listStatus.Count - 1; i >= 0; --i)
         {
-            this.m_listStatus[i].UpdateTurn();
+            listStatus[i].UpdateTurn();
             
             //실행
-            this.m_listStatus[i].DoStatus(this);
+            listStatus[i].DoStatus(this);
 
             //죽어버리면 ㄴㄴ 그만
             if(this.gameObject.activeSelf == false) return;
          
-            bool isRemove = this.m_uiStatusBar.UpdateStatus((uint)this.m_listStatus[i].eStatusID, this.m_listStatus[i].RemainTurn);
-            if(isRemove == true) this.m_dicStatus.Remove((uint)this.m_listStatus[i].eStatusID);
+            bool isRemove = this.m_uiStatusBar.UpdateStatus((uint)listStatus[i].eStatusID, listStatus[i].RemainTurn);
+            if(isRemove == true) this.m_dicStatus.Remove((uint)listStatus[i].eStatusID);
         }
     }
 
@@ -234,7 +233,7 @@ public abstract class BaseCharacter : MonoBehaviour
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {
             this.m_dicStatus.Add(statusID, new Status(statusID, turn));
-            //this.m_dicStatus[statusID].AddStatus(turn);
+            this.m_dicStatus[statusID].AddStatus(this);
         }
         else
         {
@@ -275,10 +274,13 @@ public abstract class BaseCharacter : MonoBehaviour
     public void AddMana(ulong cost)
     {
         this.m_nCurrMana += cost;
+        if(this.m_nCurrMana > this.Stat.MP) ProjectManager.Instance.BattleScene?.HUD.SetMaxMana(this.m_nCurrMana);
+        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
     }
 
     public void UseMana(ulong cost)
     {
         this.m_nCurrMana -= cost;
+        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.m_nCurrMana);
     }
 }
