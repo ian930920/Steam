@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,7 +23,7 @@ public abstract class BaseFx : MonoBehaviour
     virtual public void Play(Vector3 vecPos, UnityAction funcOnFinish = null)
     {
         this.transform.position = vecPos;
-        this.m_funcOnFinish = funcOnFinish;
+        if(funcOnFinish != null) this.m_funcOnFinish = funcOnFinish;
 
         this.Play();
     }

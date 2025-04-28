@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Playables;
 using UnityEngine;
 
 namespace TableData
@@ -24,11 +23,6 @@ namespace TableData
             Friendly_Select_1 = 11,     //11: 선택한 아군 1
             Friendly_Random_1 = 14,     //14: 무작위 아군 2
             Friendly_All = 15,          //15: 모든 아군
-        }
-
-        public enum eID
-        {
-
         }
 
         public string GetString_Title(uint tableID)
@@ -74,6 +68,13 @@ namespace TableData
             }
 
             return false;
+        }
+
+        public eTARGET_TYPE GetTargetType(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return eTARGET_TYPE.Enemy_Select_1;
+
+            return (eTARGET_TYPE)base.GetData(tableID).target;
         }
     }
 

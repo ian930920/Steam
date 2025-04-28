@@ -7,7 +7,7 @@ public class UI_Rune : MonoBehaviour
 
     public void Init(uint summonID)
     {
-        var listRune = ProjectManager.Instance.UserData.User.GetRune(summonID);
+        var listRune = ProjectManager.Instance.UserData.User.GetRuneList(summonID);
         for(int i = 0, nMax = this.m_arrSlot.Length; i < nMax; ++i)
         {
             if(i >= listRune.Count)

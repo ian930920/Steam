@@ -58,14 +58,14 @@ public class UI_Summon : MonoBehaviour
         this.m_currSummon = this.m_arrSlot[this.SelectedIdx].Summon;
 
         //설명
-        this.m_textTitle.text = ProjectManager.Instance.Table.Skill.GetString_Title(this.m_currSummon.Data.skillID);
-        this.m_textDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(this.m_currSummon.Data.skillID, this.m_currSummon.Skill.GetDefaultDamage());
+        this.m_textTitle.text = ProjectManager.Instance.Table.Skill.GetString_Title(this.m_currSummon.Skill.SkillID);
+        this.m_textDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(this.m_currSummon.Skill.SkillID, this.m_currSummon.Damage);
         
         //쿨타임
-        this.m_textTurn.text = $"{ProjectManager.Instance.Table.Skill.GetData(this.m_currSummon.Data.skillID).cooldown}";
+        this.m_textTurn.text = $"{ProjectManager.Instance.Table.Skill.GetData(this.m_currSummon.Skill.SkillID).cooldown}";
 
         //마나 비용
-        int nCost = (int)this.m_currSummon.Data.cost;
+        int nCost = (int)this.m_currSummon.Cost;
         for(int i = 0, nMax = this.m_arrManaSlot.Length; i < nMax; ++i)
         {
             this.m_arrManaSlot[i].gameObject.SetActive(i < nCost);
@@ -73,9 +73,9 @@ public class UI_Summon : MonoBehaviour
         this.m_layoutUpdater.Refresh();
 
         //룬 표기
-        this.m_uiRune.Init(this.m_currSummon.Data.tableID);
+        this.m_uiRune.Init(this.m_currSummon.SummonID);
 
         //유저 스킬 저장
-        ProjectManager.Instance.BattleScene?.User_SelectSkill(this.SelectedIdx);
+        ProjectManager.Instance.BattleScene?.User_SelectSkill();
     }
 }

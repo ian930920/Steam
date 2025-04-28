@@ -49,11 +49,18 @@ public class UserData_User : UserData<JsonData_User>
 	}
 
 #region Rune
-	public List<uint> GetRune(uint summonID)
+	public List<uint> GetRuneList(uint summonID)
 	{
 		if(base.Data.DicSummon.ContainsKey(summonID) == false) return new List<uint>();
 
 		return base.Data.DicSummon[summonID].ListRuneID;
+	}
+
+	public bool IsContainsRune(uint summonID, uint runeID)
+	{
+		if(base.Data.DicSummon.ContainsKey(summonID) == false) return false;
+		
+		return base.Data.DicSummon[summonID].ListRuneID.Contains(runeID);
 	}
 
     public void AddRune(uint summonID, uint runeID)

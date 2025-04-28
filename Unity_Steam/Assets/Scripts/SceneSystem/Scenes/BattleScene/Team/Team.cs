@@ -12,6 +12,5 @@ public abstract class Team : MonoBehaviour
         ProjectManager.Instance.BattleScene?.ChangeTurn();
     }
     
-    public abstract void AddTarget(BaseCharacter charTarget);
-    public abstract void AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget);
+    public abstract void AddTarget(BaseUnit charTarget);
 }

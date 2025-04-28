@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.TextCore.Text;
 
 public class Status
 {
@@ -29,7 +28,7 @@ public class Status
         ProjectManager.Instance.Log($"{eStatusID} 실행!");
     }
 
-    public void AddStatus(BaseCharacter character)
+    public void AddStatus(BaseUnit character)
     {
         switch(eStatusID)
         {
@@ -56,7 +55,7 @@ public class Status
         }
     }
 
-    public void DoStatus(BaseCharacter character)
+    public void DoStatus(BaseUnit character)
     {
         float fValue = ProjectManager.Instance.Table.Status.GetValue(this.eStatusID);
         switch(eStatusID)
@@ -64,14 +63,14 @@ public class Status
             case TableData.TableStatus.eID.Burn:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.Stat.HP * fValue), false));
+                character.Damaged(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 
             case TableData.TableStatus.eID.Bleeding:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.Stat.HP * fValue), false));
+                character.Damaged(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 
@@ -120,7 +119,7 @@ public class Status
             case TableData.TableStatus.eID.Regeneration:
             {
                 //매 턴 시작 시 최대 체력의 10% 회복
-                character.Heal(new stDamage((ulong)(character.Stat.HP * fValue), false));
+                character.Heal(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 

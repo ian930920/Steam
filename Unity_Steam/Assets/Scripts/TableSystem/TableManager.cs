@@ -72,7 +72,8 @@ public class TableManager : BaseManager<TableManager>
 #if UNITY_EDITOR
 		if(true)
 #else
-		if(NativeManager.Instance.RemoteConfigSystem.IsRemoteTable == true)
+		if(true)
+		//if(NativeManager.Instance.RemoteConfigSystem.IsRemoteTable == true)
 #endif
 		{
 			//ex) this.Cat = TableCat.Instance.LoadTable($"{strPath}/Remote/CatData");
@@ -88,7 +89,8 @@ public class TableManager : BaseManager<TableManager>
 #if UNITY_EDITOR
 		if(false)
 #else
-		if(NativeManager.Instance.RemoteConfigSystem.IsRemoteTable == false)
+		if(false)
+		//if(NativeManager.Instance.RemoteConfigSystem.IsRemoteTable == false)
 #endif
 		{
 			//TODO Delete

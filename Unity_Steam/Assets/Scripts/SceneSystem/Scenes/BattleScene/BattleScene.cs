@@ -13,7 +13,7 @@ public class BattleScene : BaseScene
     public HUD_Battle HUD => base.BaseHUD as HUD_Battle;
 
     //텀용 이벤트
-    private List<BaseCharacter> m_listTurnEvent = new List<BaseCharacter>();
+    private List<BaseUnit> m_listTurnEvent = new List<BaseUnit>();
 
     public override void OnSceneStart()
     {
@@ -137,7 +137,7 @@ public class BattleScene : BaseScene
         this.HUD.SetTurn(this.IsUserTurn);
     }
 
-    public void AddTurnEvent(BaseCharacter character)
+    public void AddTurnEvent(BaseUnit character)
     {
         //이미 있으면 ㄴㄴ
         if(this.m_listTurnEvent.Contains(character) == true) return;
@@ -146,7 +146,7 @@ public class BattleScene : BaseScene
         this.m_listTurnEvent.Add(character);
     }
 
-    public void RemoveTurnEvent(BaseCharacter character)
+    public void RemoveTurnEvent(BaseUnit character)
     {
         //없으면 ㄴㄴ
         if(this.m_listTurnEvent.Contains(character) == false) return;
@@ -163,55 +163,38 @@ public class BattleScene : BaseScene
     {
         this.IsUserClickable = isClickable;
 
-        if(this.IsUserClickable == true) this.User_SelectSkill(this.HUD.SelectedSkillIdx);
+        if(this.IsUserClickable == true) this.m_teamUser.SelectSkill();
     }
 
-    public void User_SelectSkill(int nSkillIdx)
+    public void User_SelectSkill()
     {
-        this.m_teamUser.CharUser.SetCurrSkill(nSkillIdx);
+        this.m_teamUser.SelectSkill();
     }
 
-    public void User_AddTarget(BaseCharacter charTarget)
+    public void User_AddTarget(BaseUnit charTarget)
     {
         this.m_teamUser.AddTarget(charTarget);
         this.m_teamUser.UseSkill();
     }
 
-    public void User_AddFriendlyTarget()
+    public void User_Heal(stDamage stDamage)
     {
-        this.m_teamUser.AddFriendlyTarget();
-    }
-
-    public void User_AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
-    {
-        this.m_teamUser.AddTargetFromAttacker(charAttacker, eTarget);
-    }
-
-    public void User_AddSummonObj(uint summonID, CharacterStat stat)
-    {
-        this.m_teamUser.AddSummonObject(summonID, stat);
-    }
-
-    public void User_RemoveSummonObj(Character_SummonObj summonObj)
-    {
-        this.m_teamUser.RemoveSummonObject(summonObj);
+        this.m_teamUser.CharUser.Heal(stDamage);
     }
 #endregion
 
 #region Enemy
-    /*TODO Delete
-    public void Enemy_NextAttack()
+    public void Enemy_AddUser(BaseUnit charAttacker)
     {
-        this.m_teamEnemy.CheckTurnFinish();
+        charAttacker.AddTarget(this.m_teamUser.CharUser);
     }
-    */
 
-    public void Enemy_AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
+    public void Enemy_AddTargetFromAttacker(BaseUnit charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
     {
         this.m_teamEnemy.AddTargetFromAttacker(charAttacker, eTarget);
     }
 
-    public void Enemy_RemoveChar(Character_Enemy charEnemy)
+    public void Enemy_RemoveChar(Unit_Enemy charEnemy)
     {
         this.m_teamEnemy.RemoveChar(charEnemy);
     }

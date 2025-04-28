@@ -1,182 +1,68 @@
 using System;
 using System.Collections.Generic;
-using static UnityEngine.GraphicsBuffer;
 
 public class Skill
 {
-    public TableData.TableData_Skill Data { get; private set; } = null;
-    public TableData.TableSkill.eTARGET_TYPE TargetType => (TableData.TableSkill.eTARGET_TYPE)this.Data.target;
-    public int TargetCount
-    {
-        get
-        {
-            switch((TableData.TableSkill.eTARGET_TYPE)this.Data.target)
-            {
-                case TableData.TableSkill.eTARGET_TYPE.Self:
-                case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
-                case TableData.TableSkill.eTARGET_TYPE.Friendly_Select_1:
-                return 1;
-                
-                case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
-                case TableData.TableSkill.eTARGET_TYPE.Friendly_Random_1:
-                return 2;
+    private static readonly float CRITICAL_DMG = 2.0f;
 
-                case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
-                case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
-                return 3;
-            }
+    public uint SkillID { get; private set; } = 0;
+    private TableData.TableData_Skill m_data = null;
 
-            return 1;
-        }
-    }
-
-    private Func<CharacterStat> m_funcGetStat = null;
+    private List<BaseUnit> m_listTarget = new List<BaseUnit>();
+    
     private Func<TableData.TableStatus.eID, Status> m_funcGetStatus = null;
-    public ulong Cost { get; private set; } = 0;
 
     public uint RemainTurn { get; private set; } = 0;
 
-    public Skill(uint skillID, ulong cost, Func<CharacterStat> funcGetStat, Func<TableData.TableStatus.eID, Status> funcGetStatus)
+    public Skill(uint skillID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
-        this.Data = ProjectManager.Instance.Table.Skill.GetData(skillID);
-        this.Cost = cost;
-        this.m_funcGetStat = funcGetStat;
+        this.SkillID = skillID;
+        this.m_data = ProjectManager.Instance.Table.Skill.GetData(this.SkillID);
         this.m_funcGetStatus = funcGetStatus;
-        this.RemainTurn = 0;
     }
 
-    public ulong GetDefaultDamage()
+    public void ResetTarget()
     {
-        var stat = this.m_funcGetStat.Invoke();
-        return (ulong)(this.Data.coe * stat.Strength);
+        this.m_listTarget.Clear();
     }
 
-    private stDamage getDamage()
+    public void AddTarget(BaseUnit target)
     {
-        var stat = this.m_funcGetStat.Invoke();
-        stDamage damage = new stDamage();
+        if(this.isTargetAddable() == false) return;
+        if(this.m_listTarget.Contains(target) == true) return;
 
-        float fAcc = 1.0f;
-        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Weakened_Hit) != null) fAcc *= 0.5f;
+        this.m_listTarget.Add(target);
+    }
 
-        //명중률 확인
-        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Dark) == null && UnityEngine.Random.Range(0, 1.0f) <= this.Data.acc)
+    private bool isTargetAddable()
+    {
+        int nTargetCount = 0;
+        switch(ProjectManager.Instance.Table.Skill.GetTargetType(this.SkillID))
         {
-            //치명타
-            damage.IsCritical = UnityEngine.Random.Range(0, 1.0f) <= this.Data.crit;
-            if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Rage) != null) damage.IsCritical = true;
-
-            float fCritical = 1.0f;
-            if(damage.IsCritical) fCritical = 1.5f; //TODO 치명타 값
-
-            switch((TableData.TableSkill.eTYPE)this.Data.type)
+            case TableData.TableSkill.eTARGET_TYPE.Self:
+            case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
+            case TableData.TableSkill.eTARGET_TYPE.Friendly_Select_1:
             {
-                case TableData.TableSkill.eTYPE.Attack:
-                case TableData.TableSkill.eTYPE.Heal:
-                {
-                    damage.Damage = (ulong)(this.GetDefaultDamage() * fCritical);
-                }
-                break;
-
-                case TableData.TableSkill.eTYPE.Status:
-                break;
-                case TableData.TableSkill.eTYPE.Summon:
-                break;
-            }
-        }
-        return damage;
-    }
-
-    public bool isValiedTatget(BaseCharacter charTarget)
-    {
-        //TODO 아군 적군 확인
-
-        return true;
-    }
-
-    public bool IsUseable(ulong nCurrMana)
-    {
-        if(this.RemainTurn > 0)
-        {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("쿨타임");
-            return false;
-        }
-
-        if(this.Cost > nCurrMana)
-        {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("마나 부족");
-            return false;
-        }
-
-        return true;
-    }
-
-    public bool UseSkill(List<BaseCharacter> listTarget)
-    {
-        switch((TableData.TableSkill.eTYPE)this.Data.type)
-        {
-            case TableData.TableSkill.eTYPE.Attack:
-            {
-                for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
-                {
-                    var target = listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Damaged(this.getDamage()));
-                }
+                nTargetCount = 1;
             }
             break;
 
-            case TableData.TableSkill.eTYPE.Heal:
+            case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
+            case TableData.TableSkill.eTARGET_TYPE.Friendly_Random_1:
             {
-                for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
-                {
-                    var target = listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.Heal(this.getDamage()));
-                }
+                nTargetCount = 2;
             }
             break;
 
-            case TableData.TableSkill.eTYPE.Status:
+            case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
+            case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
             {
-                //TODO 쉴드 ..?
-                for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
-                {
-                    var target = listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.Data.resID, target.transform.position, () => target.AddShield(this.GetDefaultDamage()));
-                }
-            }
-            break;
-
-            case TableData.TableSkill.eTYPE.Summon:
-            {
-                //TODO 유저만 사용가능한 스킬인지 확인
-                //생성!
-                ProjectManager.Instance.BattleScene?.User_AddSummonObj(2001, new CharacterStat(this.GetDefaultDamage(), 0, 0, this.Data.dur));
-                ProjectManager.Instance.BattleScene.ChangeTurn();
+                nTargetCount = 3;
             }
             break;
         }
 
-        //상태이상 추가
-        if(this.Data.listStatusID.Count > 0)
-        {
-            for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
-            {
-                for(int j = 0, nStatusMax = this.Data.listStatusID.Count; j < nStatusMax; ++j)
-                {
-                    listTarget[i].AddStatus(this.Data.listStatusID[j], this.Data.dur);
-                }
-            }
-        }
-
-        this.RemainTurn = this.Data.cooldown;
-
-        //슬롯 갱신
-        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonSlot();
-
-        return true;
+        return nTargetCount > this.m_listTarget.Count;
     }
 
     public void UpdateTurn()
@@ -188,19 +74,127 @@ public class Skill
         //슬롯 갱신
         ProjectManager.Instance.BattleScene?.HUD.RefreshSummonUI();
     }
-}
 
-public struct stDamage
-{
-    public ulong Damage;
-    public bool IsCritical;
-    public bool IsHeal;
-    public bool IsMiss => this.Damage == 0;
-
-    public stDamage(ulong damage, bool isCritical)
+    private bool isHit(Stat_Additional statAdditional)
     {
-        this.Damage = damage;
-        this.IsCritical = isCritical;
-        this.IsHeal = false;
+        //상태이상 확인
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Dark) != null) return false;
+
+        //스킬 기본 명중률
+        float acc = this.m_data.acc;
+
+        //상태이상 적용
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Dark) != null) acc -= 0.5f;
+
+        //룬 적용
+        acc += statAdditional.GetStat(Stat_Additional.eTYPE.Acc);
+
+        return acc >= UnityEngine.Random.Range(0, 1.0f);
+    }
+
+    private bool isCritical(Stat_Additional statAdditional)
+    {
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Rage) != null) return true;
+
+        //스킬 기본 치명타율
+        float crit = this.m_data.crit;
+
+        //룬 적용
+        crit += statAdditional.GetStat(Stat_Additional.eTYPE.Crit);
+
+        return UnityEngine.Random.Range(0, 1.0f) <= crit;
+    }
+
+    public ulong GetDefaultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
+    {
+        var coe = this.m_data.coe;
+        if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) > 0) coe *= statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
+        return (ulong)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
+    }
+
+    public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
+    {
+        stDamage stDamage = new stDamage(this.GetDefaultDamage(statDefault, statAdditional));
+
+        if(this.isCritical(statAdditional) == true)
+        {
+            stDamage.IsCritical = true;
+            stDamage.Value = (ulong)(stDamage.Value * CRITICAL_DMG);
+        }
+
+        if(this.isHit(statAdditional) == false)
+        {
+            stDamage.IsCritical = false;
+            stDamage.eSkillType = stDamage.eSKILL_TYPE.Miss;
+            stDamage.Value = 0;
+        }
+
+        return stDamage;
+    }
+
+    public void UseSkill(Stat_Character statDefault, Stat_Additional statAdditional)
+    {
+        switch((TableData.TableSkill.eTYPE)this.m_data.type)
+        {
+            case TableData.TableSkill.eTYPE.Attack:
+            {
+                for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
+                {
+                    var target = this.m_listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.Damaged(this.GetResultDamage(statDefault, statAdditional)));
+                }
+            }
+            break;
+
+            case TableData.TableSkill.eTYPE.Heal:
+            {
+                for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
+                {
+                    var target = this.m_listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.Heal(this.GetResultDamage(statDefault, statAdditional)));
+                }
+            }
+            break;
+
+            case TableData.TableSkill.eTYPE.Status:
+            {
+                //TODO 쉴드 ..?
+                for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
+                {
+                    var target = this.m_listTarget[i];
+                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
+                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value));
+                }
+            }
+            break;
+
+            case TableData.TableSkill.eTYPE.Summon:
+            {
+                //TODO 생성!
+                //ProjectManager.Instance.BattleScene?.User_AddSummonObj(1001, new Stat_Default(stDamage.Value, 0, 0, this.m_data.dur));
+                ProjectManager.Instance.BattleScene.ChangeTurn();
+            }
+            break;
+        }
+
+        //상태이상 추가
+        if(this.m_data.listStatusID.Count > 0)
+        {
+            for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
+            {
+                for(int j = 0, nStatusMax = this.m_data.listStatusID.Count; j < nStatusMax; ++j)
+                {
+                    this.m_listTarget[i].AddStatus(this.m_data.listStatusID[j], this.m_data.dur);
+                }
+            }
+        }
+
+        //쿨타임 추가
+        this.RemainTurn = this.m_data.cooldown;
+
+        //타겟 다 지우기
+        this.m_listTarget.Clear();
     }
 }

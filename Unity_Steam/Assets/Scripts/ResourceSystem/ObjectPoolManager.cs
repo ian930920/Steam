@@ -196,17 +196,6 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
         //재생
         this.m_dicFx[resKey].GetObjectComponent<Fx_Particle_Item>().SetItem(nItemID, vecPos);
     }
-    
-    /*TODO Delete
-    public void PlayCountEffectByBigInt(System.Numerics.BigInteger nValue, Vector3 vecPos)
-    {
-        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count;
-        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
-
-        //재생
-        this.m_dicObjectPool[resKey].GetObjectComponent<Fx_Animation_Count>().Init(nValue, vecPos);
-    }
-    */
 
     public void PlayCountEffectByUlong(stDamage damage, Vector3 vecPos)
     {

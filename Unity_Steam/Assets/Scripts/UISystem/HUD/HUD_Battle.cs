@@ -14,7 +14,7 @@ public class HUD_Battle : BaseHUD
     [SerializeField] private UI_TurnInfo m_uiTurnInfo = null;
     [SerializeField] private UI_StatusInfo m_uiStatusInfo = null;
 
-    public int SelectedSkillIdx => this.m_uiSummon.SelectedIdx;
+    public int SelectedSummonIdx => this.m_uiSummon.SelectedIdx;
 
     public override void Init()
     {

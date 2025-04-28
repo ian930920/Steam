@@ -8,7 +8,7 @@ public class Enemy : Team
 {
     [SerializeField] private Transform[] m_arrTransParent = null;
 
-    public List<Character_Enemy> ListChar { get; private set; } = new List<Character_Enemy>();
+    public List<Unit_Enemy> ListChar { get; private set; } = new List<Unit_Enemy>();
     private int m_nCurrAttackerIdx = 0;
 
     public void InitStage(int nCount)
@@ -18,7 +18,7 @@ public class Enemy : Team
         //TODO 스테이지 데이터로
         for(int i = 0; i < nCount; ++i)
         {
-            this.ListChar.Add(ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Character_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
+            this.ListChar.Add(ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Unit_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
             this.ListChar[i].transform.SetParent(this.m_arrTransParent[i]);
             this.ListChar[i].Init((uint)(TableData.TableEnemy.eID.Enemy_1 + i));
         }
@@ -51,7 +51,6 @@ public class Enemy : Team
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
 
         this.ListChar[this.m_nCurrAttackerIdx].SetMyTurn();
-        this.ListChar[this.m_nCurrAttackerIdx].UseSkill();
     }
 
     public override bool IsTurnFinish()
@@ -73,12 +72,12 @@ public class Enemy : Team
         this.turnFinish();
     }
 
-    public override void AddTarget(BaseCharacter charTarget)
+    public override void AddTarget(BaseUnit charTarget)
     {
         this.ListChar[this.m_nCurrAttackerIdx].AddTarget(charTarget);
     }
 
-    public void RemoveChar(Character_Enemy charEnemy)
+    public void RemoveChar(Unit_Enemy charEnemy)
     {
         if(this.ListChar.Contains(charEnemy) == false) return;
 
@@ -87,7 +86,7 @@ public class Enemy : Team
         if(this.ListChar.Count == 0) ProjectManager.Instance.BattleScene?.StageWin();
     }
 
-    public override void AddTargetFromAttacker(BaseCharacter charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
+    public void AddTargetFromAttacker(BaseUnit charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
     {
         switch(eTarget)
         {
@@ -95,7 +94,7 @@ public class Enemy : Team
             {
                 int nCount = 2;
                 if(this.ListChar.Count < nCount) nCount = this.ListChar.Count;
-                BaseCharacter[] listTarget = this.ListChar.OrderBy(g => Guid.NewGuid()).Take(nCount).ToArray();
+                BaseUnit[] listTarget = this.ListChar.OrderBy(g => Guid.NewGuid()).Take(nCount).ToArray();
                 for(int i = 0; i < nCount; ++i)
                 {
                     charAttacker.AddTarget(listTarget[i]);
