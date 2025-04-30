@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TitleScene : BaseScene
 {
+    [SerializeField] private TextMeshProUGUI m_textVer = null;
+
     public override void OnSceneStart()
     {
         ProjectManager.Instance.InitInTitleScene();
 
         base.OnSceneStart();
 
-        this.OnGameStartClicked();
-    }
-
-    public void OnGameStartClicked()
-    {
-        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Battle);
+        ProjectManager.Instance.Scene.CurrScene.BaseHUD.RefreshUI();
     }
 }

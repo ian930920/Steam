@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +7,9 @@ public enum ePOPUP_ID
 {
     System = 40001,
     System_Timer,
-    System_Confirm_Text,
+    System_Confirm,
+
+    SummonSelect = 41001,
     End
 }
 
@@ -199,7 +201,7 @@ public class PopupSystem
 
     public void OpenSystemConfirmPopup(string strDesc, UnityAction onConfirm, UnityAction onClose = null)
     {
-        this.OpenAndGetPopup<Popup_System_Confirm_Text>(ePOPUP_ID.System_Confirm_Text, onClose).SetConfirm(strDesc, onConfirm);
+        this.OpenAndGetPopup<Popup_System_Confirm>(ePOPUP_ID.System_Confirm, onClose).SetConfirm(strDesc, onConfirm);
     }
 
     public void OpenSystemTimerPopup(TableData.TableString.eID eStringID, UnityAction onClosed = null)

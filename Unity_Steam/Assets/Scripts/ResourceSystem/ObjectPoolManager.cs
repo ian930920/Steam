@@ -2,6 +2,9 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
+using Unity.VisualScripting;
+using DamageNumbersPro;
 
 public class ObjectPoolManager : BaseManager<ObjectPoolManager>
 {
@@ -204,6 +207,24 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
 
         //재생
         this.m_dicObjectPool[resKey].GetObjectComponent<Fx_Animation_Count>().Init(damage, vecPos);
+    }
+
+    public void PlayCountEffect_Damage(stDamage damage, Vector3 vecPos)
+    {
+        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count_Damage;
+        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
+
+        //재생
+        this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos, damage.Value);
+    }
+
+    public void PlayCountEffect_Heal(stDamage damage, Vector3 vecPos)
+    {
+        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count_Heal;
+        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
+
+        //재생
+        this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos + new Vector3(0, 0.5f), damage.Value);
     }
     #endregion
 

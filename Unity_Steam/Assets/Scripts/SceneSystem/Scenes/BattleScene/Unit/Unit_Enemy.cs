@@ -19,6 +19,13 @@ public class Unit_Enemy : BaseUnit
         base.Init(charID);
     }
 
+    protected override void initStatusBar()
+    {
+        //캐릭터 상태바 세팅
+        if(base.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_Unit_StatusBar);
+        base.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
+    }
+
     protected override void initStat(uint charID)
     {
         var dataEnemy = ProjectManager.Instance.Table.Enemy.GetData(charID);
@@ -74,13 +81,17 @@ public class Unit_Enemy : BaseUnit
             case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
             case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
             {
-                ProjectManager.Instance.BattleScene?.Enemy_AddUser(this);
+                this.AddTarget(ProjectManager.Instance.BattleScene.UnitUser);
             }
             break;
 
             default:
             {
-                ProjectManager.Instance.BattleScene?.Enemy_AddTargetFromAttacker(this, targetType);
+                var listTarget = ProjectManager.Instance.BattleScene?.Enemy_GetTargetList(targetType);
+                for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
+                {
+                    this.AddTarget(listTarget[i]);
+                }
             }
             break;
         }

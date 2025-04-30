@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.GraphicsBuffer;
+using Unity.VisualScripting;
 
 public abstract class BaseUnit : MonoBehaviour
 {
@@ -32,7 +34,7 @@ public abstract class BaseUnit : MonoBehaviour
     //Key : statusID, Status
     private Dictionary<uint, Status> m_dicStatus = new Dictionary<uint, Status>();
 
-    private UI_CharacterStatusBar m_uiStatusBar = null;
+    protected UI_CharacterStatusBar m_uiStatusBar = null;
 
     public virtual void Init(uint charID)
     {
@@ -43,11 +45,12 @@ public abstract class BaseUnit : MonoBehaviour
         this.m_dicStatus.Clear();
 
         //캐릭터 상태바 세팅
-        if(this.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_CharaterStatusBar);
-        this.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
+        this.initStatusBar();
 
         this.playAnim(eSTATE.Idle);
     }
+
+    abstract protected void initStatusBar();
 
     protected void playAnim(eSTATE eState)
     {
@@ -134,8 +137,8 @@ public abstract class BaseUnit : MonoBehaviour
             this.CurrStat.SetStat(Stat_Character.eTYPE.HP, currHP - damage);
         }
 
-        //애니
-        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+        //데미지
+        ProjectManager.Instance.ObjectPool.PlayCountEffect_Damage(stDamage, this.transform.position);
         
         //피격 애니
         this.playAnim(eSTATE.Damaged);
@@ -160,7 +163,7 @@ public abstract class BaseUnit : MonoBehaviour
         var currHP = this.CurrStat.GetStat(Stat_Character.eTYPE.HP);
         this.CurrStat.SetStat(Stat_Character.eTYPE.HP, (ulong)Mathf.Clamp(stDamage.Value + currHP, currHP, this.DefaultStat.GetStat(Stat_Character.eTYPE.HP)));
         this.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP));
-        ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+        ProjectManager.Instance.ObjectPool.PlayCountEffect_Heal(stDamage, this.transform.position);
     }
 
     public void AddShield(ulong value)

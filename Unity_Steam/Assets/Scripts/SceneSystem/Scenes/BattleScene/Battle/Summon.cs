@@ -88,10 +88,18 @@ public class Summon
             break;
 
             case TableData.TableRune.eID.Bonding:
+            {
+                //정령 소환 시 { value } 턴 동안 내 캐릭터에게 방어력 증가를 부여합니다.
+                var statusID = ProjectManager.Instance.Table.Rune.GetData(runeID).statusID;
+                this.m_statAdditional.AddStatus(statusID, new stStatus(stStatus.eTARGET_TYPE.User, (ulong)value));
+            }
+            break;
+
             case TableData.TableRune.eID.Disgust:
             {
+                //정령 소환 시 { value } 턴 동안 모든 적에게 방어력 약화를 부여합니다.
                 var statusID = ProjectManager.Instance.Table.Rune.GetData(runeID).statusID;
-                this.m_statAdditional.AddStatus(statusID, (ulong)value);
+                this.m_statAdditional.AddStatus(statusID, new stStatus(stStatus.eTARGET_TYPE.EnemyAll, (ulong)value));
             }
             break;
 

@@ -18,7 +18,7 @@ public class ResourceManager : BaseManager<ResourceManager>
 
     #region Resource path
     //리소스 경로 관련
-    static readonly public string PATH_ANI_BUTTON = "Animations/UI/Button/Ani_Button";
+    static readonly public string PATH_ANI_BUTTON = "Animations/UI/Button/Anim_Button";
     static readonly public string PATH_ANI_POPUP = "Animations/UI/Popup/Popup";
     static readonly public string PATH_ANI_AUDIOSORCE = "Prefabs/Audio";
     #endregion

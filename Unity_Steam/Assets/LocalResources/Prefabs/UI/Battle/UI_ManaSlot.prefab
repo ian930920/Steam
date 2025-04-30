@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_imgIcon: {fileID: 3401402881141049137}
-  m_sprUsed: {fileID: 21300000, guid: edc5dbb357081e04388e154e47e97755, type: 3}
-  m_sprUsable: {fileID: 21300000, guid: 42c92b9a086ece042852a26b58a3039e, type: 3}
+  m_sprUsed: {fileID: 21300000, guid: ed488dd945fa52f479465570da491b2b, type: 3}
+  m_sprUsable: {fileID: 21300000, guid: e048d125abe3745859169fbbbc7ea3fe, type: 3}
 --- !u!114 &4814581169979153475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2174447064578705226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 42c92b9a086ece042852a26b58a3039e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e048d125abe3745859169fbbbc7ea3fe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

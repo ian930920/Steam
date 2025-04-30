@@ -9,7 +9,9 @@ public class UI_SummonSlot : MonoBehaviour
 
     [SerializeField] private Image m_imgIcon = null;
     [SerializeField] private Image m_imgSelect = null;
-    [SerializeField] private Image m_imgTurn = null;
+    [SerializeField] private Image m_imgCooldown = null;
+
+    [SerializeField] private GameObject m_gobjTurn = null;
     [SerializeField] private TextMeshProUGUI m_textTurn = null;
 
     public void Init(Summon summon)
@@ -26,8 +28,9 @@ public class UI_SummonSlot : MonoBehaviour
     public void RefreshSlot()
     {
         bool isCoolTime = this.Summon.RemainTurn > 0;
-        this.m_textTurn.text = isCoolTime ? this.Summon.RemainTurn.ToString(): "";
-        this.m_imgTurn.enabled = isCoolTime;
+        this.m_gobjTurn.SetActive(isCoolTime);
+        this.m_textTurn.text = this.Summon.RemainTurn.ToString();
+        this.m_imgCooldown.enabled = isCoolTime;
     }
 
     public void SetSelect(bool bSelect)

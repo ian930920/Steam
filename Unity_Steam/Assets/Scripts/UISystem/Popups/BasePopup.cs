@@ -97,7 +97,7 @@ abstract public class BasePopup : MonoBehaviour
     }
 }
 
-public class ScrollPopup : BasePopup
+public abstract class ScrollPopup : BasePopup
 {
 	[SerializeField] private ScrollUI[] m_arrScroller = null;
 	[SerializeField] protected TabGroup m_tabGroup = null;

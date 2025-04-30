@@ -191,6 +191,41 @@ public class Skill
             }
         }
 
+        //룬의 상태이상도 추가
+        if(statAdditional.DicStatus.Count > 0)
+        {
+            var enumStatus = statAdditional.DicStatus.GetEnumerator();
+            while(enumStatus.MoveNext())
+            {
+                var status = enumStatus.Current.Value;
+                switch(status.eTargetType)
+                {
+                    case stStatus.eTARGET_TYPE.User:
+                    {
+                        ProjectManager.Instance.BattleScene?.UnitUser.AddStatus(enumStatus.Current.Key, status.Turn);
+                    }
+                    break;
+                    case stStatus.eTARGET_TYPE.Enemy:
+                    {
+                        for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
+                        {
+                            this.m_listTarget[i].AddStatus(enumStatus.Current.Key, status.Turn);
+                        }
+                    }
+                    break;
+                    case stStatus.eTARGET_TYPE.EnemyAll:
+                    {
+                        var listTarget = ProjectManager.Instance.BattleScene?.Enemy_GetTargetList(TableData.TableSkill.eTARGET_TYPE.Enemy_All);
+                        for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
+                        {
+                            listTarget[i].AddStatus(enumStatus.Current.Key, status.Turn);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
         //쿨타임 추가
         this.RemainTurn = this.m_data.cooldown;
 

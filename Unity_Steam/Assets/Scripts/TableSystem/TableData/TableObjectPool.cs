@@ -11,11 +11,14 @@ namespace TableData
             Char_User = 1001,           //유저
             Char_Enemy,                 //적
             Char_SummonObj,             //소환물
+            Effect_Count_Damage,        //데미지
+            Effect_Count_Heal,          //힐
 
             ReactiveUI_Button = 2001,   //반응형 버튼
             ReactiveUI_Gauge,           //일반 게이지
-            UI_CharaterStatusBar,       //캐릭터 상태바
+            UI_User_StatusBar,          //유저 상태바
             Effect_Count,               //카운트
+            UI_Unit_StatusBar,          //캐릭터 상태바
 
             Effect_ItemDrop = 3001,     //아이템 드랍 이펙트
             Effect_Defence,             //방어 이펙트

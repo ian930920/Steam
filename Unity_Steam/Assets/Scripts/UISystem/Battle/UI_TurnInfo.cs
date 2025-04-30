@@ -7,24 +7,18 @@ public class UI_TurnInfo : MonoBehaviour
     private enum eTURN
     {
         Player,
-        Enemy
+        Enemy,
+        End
     }
 
-    private static readonly string[] STR_ARR_TITLE =
-    {
-        "내 턴",
-        "적 턴",
-    };
-
-    [SerializeField] private Image m_imgBack = null;
-    [SerializeField] private Sprite[] m_arrSprite = null;
-
-    [SerializeField] private TextMeshProUGUI m_textTitle = null;
+    [SerializeField] private GameObject[] m_arrGobj = null;
 
     public void SetTurn(bool isPlayerTurn)
     {
         eTURN eTurn = isPlayerTurn == true ? eTURN.Player : eTURN.Enemy;
-        this.m_imgBack.sprite = this.m_arrSprite[(int)eTurn];
-        this.m_textTitle.text = STR_ARR_TITLE[(int)eTurn];
+        for(int i = 0, nMax = (int)eTURN.End; i < nMax; ++i)
+        {
+            this.m_arrGobj[i].SetActive(i == (int)eTurn);
+        }
     }
 }

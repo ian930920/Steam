@@ -5,6 +5,8 @@ using UnityEngine;
 public class BattleScene : BaseScene
 {
     [SerializeField] private User m_teamUser = null;
+    public Unit_User UnitUser => this.m_teamUser.Unit;
+
     [SerializeField] private Enemy m_teamEnemy = null;
 
     public bool IsUserTurn { get; private set; }  = true;
@@ -32,7 +34,7 @@ public class BattleScene : BaseScene
         //TODO Delete
         for(int i = 0; i < 3; ++i)
         {
-            ProjectManager.Instance.UserData.User.AddRune(1, (uint)(i + 4));
+            ProjectManager.Instance.UserData.User.AddRune(1, (uint)(i + 6));
         }
 
         //스테이지 리셋
@@ -179,19 +181,28 @@ public class BattleScene : BaseScene
 
     public void User_Heal(stDamage stDamage)
     {
-        this.m_teamUser.CharUser.Heal(stDamage);
+        this.m_teamUser.Unit.Heal(stDamage);
     }
 #endregion
 
 #region Enemy
+    /* TODO Delete
     public void Enemy_AddUser(BaseUnit charAttacker)
     {
-        charAttacker.AddTarget(this.m_teamUser.CharUser);
+        charAttacker.AddTarget(this.m_teamUser.Unit);
     }
+    */
 
-    public void Enemy_AddTargetFromAttacker(BaseUnit charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
+    public List<Unit_Enemy> Enemy_GetTargetList(TableData.TableSkill.eTARGET_TYPE eTarget)
     {
-        this.m_teamEnemy.AddTargetFromAttacker(charAttacker, eTarget);
+        return this.m_teamEnemy.GetTargetList(eTarget);
+        //TODO Delete
+        /*
+        for(int i = 0, nMax = listEnemy.Count; i < nMax; ++i)
+        {
+            charAttacker.AddTarget(listEnemy[i]);
+        }
+        */
     }
 
     public void Enemy_RemoveChar(Unit_Enemy charEnemy)

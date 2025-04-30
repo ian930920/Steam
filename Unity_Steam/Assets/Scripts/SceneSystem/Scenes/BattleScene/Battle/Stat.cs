@@ -52,7 +52,7 @@ public class Stat_Additional
     private Dictionary<eTYPE, float> m_dicStat = new Dictionary<eTYPE, float>();
 
     //Key : statusID, Value : turn
-    private Dictionary<uint, ulong> m_dicStatus = new Dictionary<uint, ulong>();
+    public Dictionary<uint, stStatus> DicStatus { get; private set; } = new Dictionary<uint, stStatus>();
 
     public void Reset()
     {
@@ -73,11 +73,11 @@ public class Stat_Additional
         return this.m_dicStat[eStatType];
     }
 
-    public void AddStatus(uint statusID, ulong turn)
+    public void AddStatus(uint statusID, stStatus status)
     {
-        if(this.m_dicStatus.ContainsKey(statusID) == true) return;
+        if(this.DicStatus.ContainsKey(statusID) == true) return;
 
-        this.m_dicStatus.Add(statusID, turn);
+        this.DicStatus.Add(statusID, status);
     }
 }
 
@@ -100,5 +100,24 @@ public struct stDamage
         this.eSkillType = eSKILL_TYPE.Attack; //기본은 공격
         this.Value = damage;
         this.IsCritical = false;
+    }
+}
+
+public struct stStatus
+{
+    public enum eTARGET_TYPE
+    {
+        User,
+        Enemy,
+        EnemyAll,
+    }
+
+    public eTARGET_TYPE eTargetType;
+    public ulong Turn;
+
+    public stStatus(eTARGET_TYPE eTargetType, ulong turn)
+    {
+        this.eTargetType = eTargetType;
+        this.Turn = turn;
     }
 }
