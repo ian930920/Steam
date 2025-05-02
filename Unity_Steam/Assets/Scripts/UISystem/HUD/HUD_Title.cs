@@ -14,7 +14,7 @@ public class HUD_Title : BaseHUD
 
     public void OnGameStartClicked()
     {
-        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Battle);
+        ProjectManager.Instance.UI.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
     }
 
     public void OnOptionClicked()

@@ -76,6 +76,15 @@ namespace TableData
 
             return (eTARGET_TYPE)base.GetData(tableID).target;
         }
+
+        public ulong GetDefaultDamage(uint tableID, Stat_Character statDefault, Stat_Additional statAdditional)
+        {
+            if(base.ContainsKey(tableID) == false) return 0;
+
+            var coe = base.GetData(tableID).coe;
+            if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) > 0) coe *= statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
+            return (ulong)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
+        }
     }
 
     public class TableData_Skill : iTableData

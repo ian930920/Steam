@@ -105,16 +105,9 @@ public class Skill
         return UnityEngine.Random.Range(0, 1.0f) <= crit;
     }
 
-    public ulong GetDefaultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
-    {
-        var coe = this.m_data.coe;
-        if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) > 0) coe *= statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
-        return (ulong)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
-    }
-
     public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
     {
-        stDamage stDamage = new stDamage(this.GetDefaultDamage(statDefault, statAdditional));
+        stDamage stDamage = new stDamage(ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, statDefault, statAdditional));
 
         if(this.isCritical(statAdditional) == true)
         {

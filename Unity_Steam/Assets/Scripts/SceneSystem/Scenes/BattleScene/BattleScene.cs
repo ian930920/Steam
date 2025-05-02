@@ -24,13 +24,6 @@ public class BattleScene : BaseScene
         //세팅~
         ProjectManager.Instance.InitInBattleScene();
 
-        //일단 소환수 모두 추가
-        Dictionary<uint, TableData.TableData_Summon>.Enumerator enumSummon = ProjectManager.Instance.Table.Summon.GetEnumerator();
-        while(enumSummon.MoveNext())
-        {
-            ProjectManager.Instance.UserData.User.AddSummon(enumSummon.Current.Key);
-        }
-
         //TODO Delete
         for(int i = 0; i < 3; ++i)
         {

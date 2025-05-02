@@ -15,4 +15,9 @@ public class TitleScene : BaseScene
 
         ProjectManager.Instance.Scene.CurrScene.BaseHUD.RefreshUI();
     }
+
+    public void GameStart()
+    {
+        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Battle);
+    }
 }

@@ -1,4 +1,7 @@
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace TableData
 {
@@ -25,12 +28,27 @@ namespace TableData
 
             return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
         }
+
+        public List<TableData_Summon> GetRandomList(int nCount)
+        {
+            return base.m_listData.OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
+        }
+
+        public string GetString_SkillDesc(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return "없는 정령";
+
+            TableData_Summon dataSummon = base.GetData(tableID);
+            TableData_Skill dataSkill = ProjectManager.Instance.Table.Skill.GetData(base.GetData(tableID).skillID);
+            return string.Format(ProjectManager.Instance.Table.String.GetString(dataSkill.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(dataSkill.coe), dataSkill.dur);
+        }
     }
 
     public class TableData_Summon : iTableData
     {
-        //tableID rarity cost skillID resID
+        //tableID strID rarity cost skillID resID
         public uint tableID { get; set; }
+        public uint strID { get; set; }
         public uint rarity { get; set; }
         public uint cost { get; set; }
         public uint skillID { get; set; }
