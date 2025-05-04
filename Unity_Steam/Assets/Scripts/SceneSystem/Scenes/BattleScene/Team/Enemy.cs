@@ -86,42 +86,6 @@ public class Enemy : Team
         if(this.m_listChar.Count == 0) ProjectManager.Instance.BattleScene?.StageWin();
     }
 
-    /* TODO Delete
-    public void AddTargetFromAttacker(BaseUnit charAttacker, TableData.TableSkill.eTARGET_TYPE eTarget)
-    {
-        switch(eTarget)
-        {
-            case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
-            {
-                int nCount = 2;
-                if(this.m_listChar.Count < nCount) nCount = this.m_listChar.Count;
-                var listTarget = this.m_listChar.OrderBy(g => Guid.NewGuid()).Take(nCount).ToArray();
-                for(int i = 0; i < nCount; ++i)
-                {
-                    charAttacker.AddTarget(listTarget[i]);
-                }
-            }
-            break;
-
-            case TableData.TableSkill.eTARGET_TYPE.Friendly_Random_1:
-            {
-                charAttacker.AddTarget(this.m_listChar.OrderBy(g => Guid.NewGuid()).Take(1).First());
-            }
-            break;
-
-            case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
-            case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
-            {
-                for(int i = 0, nMax = this.m_listChar.Count; i < nMax; ++i)
-                {
-                    charAttacker.AddTarget(this.m_listChar[i]);
-                }
-            }
-            break;
-        }
-    }
-    */
-
     public List<Unit_Enemy> GetTargetList(TableData.TableSkill.eTARGET_TYPE eTarget)
     {
         switch(eTarget)

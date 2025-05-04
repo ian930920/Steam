@@ -10,6 +10,10 @@ public enum ePOPUP_ID
     System_Confirm,
 
     SummonSelect = 41001,
+    Summon,
+    RuneEquip,
+
+    StatusInfo = 42001,
     End
 }
 
@@ -29,11 +33,9 @@ public class PopupSystem
 
     private void createPopup(uint popupID)
     {
-        //GameObject gobjPopup = ResourceManager.Instance.InstantiatePopup(popupID, GameSceneManager.Instance.CurrScene.UIRoot);
         GameObject gobjPopup = ProjectManager.Instance.Resource.InstantiatePopup(popupID, ProjectManager.Instance.transform);
-        BasePopup popup = gobjPopup.GetComponent<BasePopup>();
-        popup.InitPopup();
-        this.m_dicPopup.Add(popupID, popup);
+        this.m_dicPopup.Add(popupID, gobjPopup.GetComponent<BasePopup>());
+        this.m_dicPopup[popupID].InitPopup();
     }
 
     private bool isContainPopup(uint popupID)
@@ -214,4 +216,9 @@ public class PopupSystem
         this.OpenAndGetPopup<Popup_System_Timer>(ePOPUP_ID.System_Timer, onClosed).SetDescription(strDesc);
     }
     #endregion
+
+    public void OpenStatusPopup(uint statusID, Vector3 vecPos)
+    {
+        this.OpenAndGetPopup<Popup_StatusInfo>(ePOPUP_ID.StatusInfo).SetStatusInfo(statusID, vecPos);
+    }
 }

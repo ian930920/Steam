@@ -12,7 +12,6 @@ public class HUD_Battle : BaseHUD
     [Space(5)][Header("전투 정보")]
     [SerializeField] private UI_Mana m_uiMana = null;
     [SerializeField] private UI_TurnInfo m_uiTurnInfo = null;
-    [SerializeField] private UI_StatusInfo m_uiStatusInfo = null;
 
     public int SelectedSummonIdx => this.m_uiSummon.SelectedIdx;
 
@@ -50,17 +49,6 @@ public class HUD_Battle : BaseHUD
     {
         this.m_uiMana.Refresh(nCurrMana);
     }
-
-    public void OpenStatusInfo(uint statusID, Vector3 vecPos)
-    {
-        this.m_uiStatusInfo.Open(statusID, vecPos);
-    }
-
-    public void CloseStatusInfo()
-    {
-        this.m_uiStatusInfo.Close();
-    }
-
     public float ActiveSummonSkill(uint summonID)
     {
         return this.m_uiSummonSkill.Init(summonID);

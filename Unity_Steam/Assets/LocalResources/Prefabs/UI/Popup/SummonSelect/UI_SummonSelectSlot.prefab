@@ -603,6 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 247928325689568233}
   - component: {fileID: 7619445457440231170}
+  - component: {fileID: 4220912582832490680}
   - component: {fileID: 9069339856997579092}
   m_Layer: 5
   m_Name: Text_Desc
@@ -638,6 +639,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3622055658089837975}
   m_CullTransparentMesh: 0
+--- !u!114 &4220912582832490680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622055658089837975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106b43d3766938049bf81d79115873b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9069339856997579092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +671,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Text Description
+  m_text: "\uC2A4\uD0AC \uC124\uBA85"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ef36b3226e696b84482e8717cfbb9f60, type: 2}
   m_sharedMaterial: {fileID: -6624372157664641303, guid: ef36b3226e696b84482e8717cfbb9f60, type: 2}
@@ -1001,6 +1014,7 @@ MonoBehaviour:
   - {fileID: 5292649693468423222}
   - {fileID: 4920996588787002842}
   m_gobjSelect: {fileID: 4471418830416332191}
+  m_tmpHandler: {fileID: 4220912582832490680}
 --- !u!1 &6025997847140245953
 GameObject:
   m_ObjectHideFlags: 0

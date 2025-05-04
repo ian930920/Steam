@@ -67,6 +67,8 @@ public class ProjectManager : MonoBehaviour
 
         //항상 초기화 해야하는 Manager or System
         this.Table = TableManager.Init(this.gameObject);
+        this.Table.LoadClientTables();
+
         this.UI = UIManager.Init(this.gameObject);
         this.Scene = SceneManager.Init(this.gameObject);
         this.Time = TimeManager.Init(this.gameObject);
@@ -78,7 +80,6 @@ public class ProjectManager : MonoBehaviour
     public void InitInTitleScene()
     {
         //타이틀 씬에서만 생성 및 초기화하는 Manager or System
-        this.Table.LoadClientTables();
         this.Resource.LoadResByTable();
     }
 

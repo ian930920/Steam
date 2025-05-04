@@ -2,5 +2,8 @@
   "40001": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System"},
   "40002": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System_Timer"},
   "40003": { "type":4, "path":"Prefabs/UI/Popups/System/Popup_System_Confirm"},
-  "41001": { "type":4, "path":"Prefabs/UI/Popups/Popup_SummonSelect"}
+  "41001": { "type":4, "path":"Prefabs/UI/Popups/Popup_SummonSelect"},
+  "41002": { "type":4, "path":"Prefabs/UI/Popups/Popup_Summon"},
+  "41003": { "type":4, "path":"Prefabs/UI/Popups/Popup_Rune"},
+  "42001": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_StatusInfo"}
 }}

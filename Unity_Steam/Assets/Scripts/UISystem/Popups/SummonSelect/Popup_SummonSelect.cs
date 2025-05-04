@@ -6,6 +6,7 @@ public class Popup_SummonSelect : BasePopup
 {
     [SerializeField] private UI_SummonSelectSlot[] m_arrSlot = null;
     [SerializeField] private Button_ChangeState m_csbtnSelect = null;
+    [SerializeField] private GameObject m_gobjMySummon = null;
 
     private List<TableData.TableData_Summon> m_listSummon = null;
 
@@ -24,6 +25,8 @@ public class Popup_SummonSelect : BasePopup
 
         //선택안했으니까 안했다고
         this.m_csbtnSelect.RefreshActive(false);
+
+        this.m_gobjMySummon.SetActive(ProjectManager.Instance.UserData.User.SummonCount > 0);
         
         return this;
     }
@@ -61,5 +64,10 @@ public class Popup_SummonSelect : BasePopup
     public void OnInactiveClicked()
     {
         ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("캐릭터를 선택하세요");
+    }
+
+    public void OnMySummonClicked()
+    {
+        ProjectManager.Instance.UI.PopupSystem.OpenPopup(ePOPUP_ID.Summon);
     }
 }

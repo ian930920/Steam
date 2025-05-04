@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 namespace EnhancedUI.EnhancedScroller
 {
@@ -72,11 +73,6 @@ namespace EnhancedUI.EnhancedScroller
     public class EnhancedScroller : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         #region Public
-
-        #region "Simple"
-        [SerializeField] private bool m_bUseLayoutElement = true;
-        #endregion
-
         /// <summary>
         /// The direction this scroller is handling
         /// </summary>
@@ -1663,20 +1659,15 @@ namespace EnhancedUI.EnhancedScroller
             cellView.transform.SetParent(_container, false);
             cellView.transform.localScale = Vector3.one;
 
-            //Simple팀
-            if(this.m_bUseLayoutElement == true)
-            {
-                // add a layout element to the cellView
-                LayoutElement layoutElement = cellView.GetComponent<LayoutElement>();
-                if (layoutElement == null) layoutElement = cellView.gameObject.AddComponent<LayoutElement>();
+            //Dev이안 여기부터
+            float spacing = (cellIndex > 0) ? _layoutGroup.spacing : 0f;
+            float size = _cellViewSizeArray[cellIndex] - spacing;
 
-                // set the size of the layout element
-                if (scrollDirection == ScrollDirectionEnum.Vertical)
-                    layoutElement.minHeight = _cellViewSizeArray[cellIndex] - (cellIndex > 0 ? _layoutGroup.spacing : 0);
-                else
-                    layoutElement.minWidth = _cellViewSizeArray[cellIndex] - (cellIndex > 0 ? _layoutGroup.spacing : 0);
-            }
+            var layoutElement = cellView.GetComponent<LayoutElement>() ?? cellView.gameObject.AddComponent<LayoutElement>();
 
+            if(scrollDirection == ScrollDirectionEnum.Vertical) layoutElement.minHeight = size;
+            else layoutElement.minWidth = size;
+            //Dev이안 여기까지
 
             // add the cell to the active list
             if (listPosition == ListPositionEnum.First)
@@ -2089,9 +2080,6 @@ namespace EnhancedUI.EnhancedScroller
 
             // fire the scroller snapped delegate
             if (scrollerSnapped != null) scrollerSnapped(this, _snapCellViewIndex, _snapDataIndex, cellView);
-
-            //추가
-            if(this.m_onSnapComplete != null) this.m_onSnapComplete.Invoke();
         }
 
         #endregion
@@ -2548,15 +2536,39 @@ namespace EnhancedUI.EnhancedScroller
 
         #endregion
 
-        #region 추가 기능
-        public void SetPivot(Vector2 pivot)
+        #region Edit - Dev이안
+        // 외부에서 접근 가능한 현재 스크롤 가능 여부 및 방향 상태
+        public enum ScrollState
         {
-            _container.pivot = pivot;
+            NotScrollable,
+            ScrollableLeft,
+            ScrollableRight,
+            ScrollableBoth
         }
 
-        //스냅기능
-        [SerializeField] private UnityEvent m_onSnapComplete = null;
+        /// <summary>
+        /// 현재 스크롤 방향 상태를 반환
+        /// </summary>
+        public ScrollState GetHorizontalScrollState()
+        {
+            if (scrollDirection != ScrollDirectionEnum.Horizontal)
+            {
+                Debug.LogWarning("GetScrollState는 Horizontal 방향에서만 사용됩니다.");
+                return ScrollState.NotScrollable;
+            }
 
+            float scrollSize = ScrollSize;
+            if(scrollSize <= 0.01f) return ScrollState.NotScrollable;
+
+            float currentPos = ScrollPosition;
+            bool canScrollLeft = currentPos > 1f; // 약간의 오차 허용
+            bool canScrollRight = currentPos < scrollSize - 1f;
+
+            if(canScrollLeft && canScrollRight) return ScrollState.ScrollableBoth;
+            else if(canScrollLeft) return ScrollState.ScrollableLeft;
+            else if(canScrollRight) return ScrollState.ScrollableRight;
+            else return ScrollState.NotScrollable;
+        }
         #endregion
     }
 }

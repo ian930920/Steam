@@ -26,7 +26,7 @@ abstract public class ScrollItem<D> : BaseScrollItem
 {
     protected D Data { get; private set; }
 
-    public virtual void InitData(D data)
+    public virtual void SetData(D data)
     {
         //데이터 저장하고
         this.Data = data;

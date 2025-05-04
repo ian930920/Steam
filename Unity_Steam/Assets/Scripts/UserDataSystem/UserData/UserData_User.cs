@@ -111,6 +111,8 @@ public class UserData_User : UserData<JsonData_User>
 
 	protected override string StrKey => "User";
 
+	public int SummonCount => base.Data.DicSummon.Count;
+
 	protected override void dataProcessing()
 	{
 	}
@@ -126,12 +128,12 @@ public class UserData_User : UserData<JsonData_User>
 
 	public SummonData GetSummon(uint summonID)
 	{
-		if(base.Data.DicSummon.ContainsKey(summonID) == true) return null;
+		if(base.Data.DicSummon.ContainsKey(summonID) == false) return null;
 
 		return base.Data.DicSummon[summonID];
 	}
 
-	public List<SummonData> GetSummonDataByList()
+	public List<SummonData> GetSummonDataList()
 	{
 		return base.Data.DicSummon.Values.ToList();
 	}

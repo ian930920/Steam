@@ -24,12 +24,6 @@ public class BattleScene : BaseScene
         //세팅~
         ProjectManager.Instance.InitInBattleScene();
 
-        //TODO Delete
-        for(int i = 0; i < 3; ++i)
-        {
-            ProjectManager.Instance.UserData.User.AddRune(1, (uint)(i + 6));
-        }
-
         //스테이지 리셋
         this.resetStage();
     }
@@ -179,23 +173,9 @@ public class BattleScene : BaseScene
 #endregion
 
 #region Enemy
-    /* TODO Delete
-    public void Enemy_AddUser(BaseUnit charAttacker)
-    {
-        charAttacker.AddTarget(this.m_teamUser.Unit);
-    }
-    */
-
     public List<Unit_Enemy> Enemy_GetTargetList(TableData.TableSkill.eTARGET_TYPE eTarget)
     {
         return this.m_teamEnemy.GetTargetList(eTarget);
-        //TODO Delete
-        /*
-        for(int i = 0, nMax = listEnemy.Count; i < nMax; ++i)
-        {
-            charAttacker.AddTarget(listEnemy[i]);
-        }
-        */
     }
 
     public void Enemy_RemoveChar(Unit_Enemy charEnemy)

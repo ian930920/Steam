@@ -1,3 +1,4 @@
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,13 +16,8 @@ public class UI_SummonSelectSlot : MonoBehaviour
 
     [SerializeField] private GameObject m_gobjSelect = null;
 
-    //private uint m_summonID = 0;
-
     public void RefreshSlot(TableData.TableData_Summon dataSummon)
     {
-        //this.m_summonID = summonID;
-        //var summonData = ProjectManager.Instance.Table.Summon.GetData(data.sum);
-        
         this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(dataSummon.tableID);
         this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
         
@@ -46,7 +42,7 @@ public class UI_SummonSelectSlot : MonoBehaviour
         this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
         
         this.m_textSkillName.text = ProjectManager.Instance.Table.Skill.GetString_Title(dataSummon.skillID);
-        //this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.tableID);
+        this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.skillID, userData.Damage);
 
         var dataSkill = ProjectManager.Instance.Table.Skill.GetData(dataSummon.skillID);
         this.m_textSkillTurn.text = dataSkill.cooldown.ToString();

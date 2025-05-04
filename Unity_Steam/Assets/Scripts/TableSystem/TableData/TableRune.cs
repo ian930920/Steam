@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace TableData
 {
@@ -33,14 +32,22 @@ namespace TableData
             TableData_Rune data = base.GetData(tableID);
             return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID, TableString.eTYPE.Description), data.value);
         }
+
+        public Sprite GetIcon(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return null;
+
+            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strIcon);
+        }
     }
 
     public class TableData_Rune : iTableData
     {
-        //tableID strID value statusID
+        //tableID strID value statusID strIcon
         public uint tableID { get; set; }
         public uint strID { get; set; }
         public float value { get; set; }
         public uint statusID { get; set; }
+        public string strIcon { get; set; }
     }
 }

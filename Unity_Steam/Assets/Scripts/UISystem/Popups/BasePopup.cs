@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using EnhancedUI.EnhancedScroller;
+using static EnhancedUI.EnhancedScroller.EnhancedScroller;
 
 [RequireComponent(typeof(Canvas))]
 abstract public class BasePopup : MonoBehaviour
@@ -322,6 +323,13 @@ public class ScrollUI : MonoBehaviour, IEnhancedScrollerDelegate
 		if(this.isValuableScroller() == false) return;
 
 		this.m_scroller.ScrollPosition = 0;
+	}
+
+	public ScrollState GetHorizontalScrollState()
+	{
+		if(this.isValuableScroller() == false) return ScrollState.NotScrollable;
+
+		return this.m_scroller.GetHorizontalScrollState();
 	}
 
 	public float GetCellViewSize(int nScrollIdx = 0)

@@ -30,7 +30,7 @@ public class User : Team
     {
         //소환수 저장
         this.m_listSummon.Clear();
-        List<UserData_User.SummonData> listSummon = ProjectManager.Instance.UserData.User.GetSummonDataByList();
+        var listSummon = ProjectManager.Instance.UserData.User.GetSummonDataList();
         for(int i = 0, nMax = listSummon.Count; i < nMax; ++i)
         {
             this.m_listSummon.Add(new Summon(listSummon[i].SummonID, this.Unit.GetStatus));

@@ -8,9 +8,6 @@ public class Summon
     public Skill Skill { get; private set; } = null;
 
     private UserData_User.SummonData m_data = null;
-    //TODO Delete
-    //private Stat_Character m_statDefault = new Stat_Character();
-    //private Stat_Additional m_statAdditional = new Stat_Additional();
 
     public uint RemainTurn => this.Skill.RemainTurn;
     public ulong Cost => this.m_data.StatDefault.GetStat(Stat_Character.eTYPE.Mana);

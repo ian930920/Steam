@@ -1,21 +1,15 @@
 using UnityEngine;
-using UnityEngine.Events;
+using static EnhancedUI.EnhancedScroller.EnhancedScroller;
 
-public class Popup_Summon : BasePopup
+public class Popup_Summon : ScrollPopup
 {
-    [SerializeField] private UI_SummonSelectSlot[] m_arrSlot = null;
+    [SerializeField] private GameObject m_gobjArrowLeft = null;
+    [SerializeField] private GameObject m_gobjArrowRight = null;
 
-    public override BasePopup OpenPopup(int nOreder, UnityAction funcClose = null)
+    public void OnScrolled()
     {
-        base.OpenPopup(nOreder, funcClose);
-
-        var listSummon = ProjectManager.Instance.UserData.User.GetSummonDataByList();
-        for(int i = 0, nMax = this.m_arrSlot.Length; i < nMax; ++i)
-        {
-           // this.m_arrSlot[i].RefreshSlot(listSummon[i].SummonID);
-            this.m_arrSlot[i].RefreshSelect(false);
-        }
-
-        return this;
+        ScrollState eScrollState = this.GetScroller().GetHorizontalScrollState();
+        this.m_gobjArrowLeft.SetActive(eScrollState == ScrollState.ScrollableBoth || eScrollState == ScrollState.ScrollableLeft);
+        this.m_gobjArrowRight.SetActive(eScrollState == ScrollState.ScrollableBoth || eScrollState == ScrollState.ScrollableRight);
     }
 }
