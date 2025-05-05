@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
 using UnityEngine.Events;
 
 public class UserDataManager : BaseManager<UserDataManager>
@@ -12,7 +9,7 @@ public class UserDataManager : BaseManager<UserDataManager>
         Setting,
         Inventory,
         Time,
-        User,
+        Summon,
     };
 
     private Dictionary<eID, BaseUserData> m_dicUser = new Dictionary<eID, BaseUserData>()
@@ -21,14 +18,14 @@ public class UserDataManager : BaseManager<UserDataManager>
         { eID.Setting, new UserData_Setting() },
         { eID.Inventory, new UserData_Inventory() },
         { eID.Time, new UserData_Time() },
-        { eID.User, new UserData_User() },
+        { eID.Summon, new UserData_Summon() },
     };
 
     public UserData_Account Account => this.m_dicUser[eID.Account] as UserData_Account;
     public UserData_Setting Setting => this.m_dicUser[eID.Setting] as UserData_Setting;
     public UserData_Inventory Inventory => this.m_dicUser[eID.Inventory] as UserData_Inventory;
     public UserData_Time Time => this.m_dicUser[eID.Time] as UserData_Time;
-    public UserData_User User => this.m_dicUser[eID.User] as UserData_User;
+    public UserData_Summon Summon => this.m_dicUser[eID.Summon] as UserData_Summon;
 
     public string BuildVersion { get; set; }
     public string PatchVersion { get; set; }
@@ -185,6 +182,15 @@ public class UserDataManager : BaseManager<UserDataManager>
         }
     }
     #endregion
+
+    public void EquipRune(uint summonID, uint runeID)
+    {
+        if(this.Summon.IsContainsSummon(summonID) == false) return;
+
+        if(this.Inventory.IsContainsItem(summonID) == false) return;
+
+        this.Summon.AddRune(summonID, runeID);
+    }
 
     #region Debug
     public void Debug_Cheat()

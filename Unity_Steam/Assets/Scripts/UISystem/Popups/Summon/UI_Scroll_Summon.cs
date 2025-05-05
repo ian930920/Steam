@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_Scroll_Summon : ScrollUI
 {
-    [SerializeField] private List<UserData_User.SummonData> m_listSummonData = new List<UserData_User.SummonData>();
+    [SerializeField] private List<UserData_Summon.SummonData> m_listSummonData = new List<UserData_Summon.SummonData>();
     
     protected override int DataCount { get => this.m_listSummonData.Count; }
 
@@ -12,7 +12,7 @@ public class UI_Scroll_Summon : ScrollUI
     {
         base.UpdateData();
 
-        this.m_listSummonData = ProjectManager.Instance.UserData.User.GetSummonDataList();
+        this.m_listSummonData = ProjectManager.Instance.UserData.Summon.GetSummonDataList();
     }
 
     public override EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)

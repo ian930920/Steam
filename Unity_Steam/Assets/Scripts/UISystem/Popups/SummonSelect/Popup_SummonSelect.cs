@@ -26,7 +26,7 @@ public class Popup_SummonSelect : BasePopup
         //선택안했으니까 안했다고
         this.m_csbtnSelect.RefreshActive(false);
 
-        this.m_gobjMySummon.SetActive(ProjectManager.Instance.UserData.User.SummonCount > 0);
+        this.m_gobjMySummon.SetActive(ProjectManager.Instance.UserData.Summon.SummonCount > 0);
         
         return this;
     }
@@ -50,7 +50,7 @@ public class Popup_SummonSelect : BasePopup
         }
 
         //ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("저장하고 게임 시작");
-        ProjectManager.Instance.UserData.User.AddSummon(this.m_listSummon[this.m_nSelectIdx].tableID);
+        ProjectManager.Instance.UserData.Summon.AddSummon(this.m_listSummon[this.m_nSelectIdx].tableID);
 
         //팝업닫기
         this.OnCloseClicked();

@@ -5,7 +5,7 @@ using System.Xml;
 public class UI_SummonInfo : MonoBehaviour
 {
     [SerializeField] private UI_ManaSlot[] m_arrManaSlot = null;
-    [SerializeField] private UI_Rune m_uiRune = null;
+    [SerializeField] private UI_RuneGroup m_uiRune = null;
 
     [SerializeField] private TextMeshProUGUI m_textTitle = null;
     [SerializeField] private TextMeshProUGUI m_textDesc = null;

@@ -13,6 +13,7 @@ public class UI_SummonSelectSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_textSkillTurn = null;
 
     [SerializeField] private UI_ManaSlot[] m_arrMana = null;
+    [SerializeField] private UI_RuneGroup m_uiRuneGroup = null;
 
     [SerializeField] private GameObject m_gobjSelect = null;
 
@@ -31,9 +32,11 @@ public class UI_SummonSelectSlot : MonoBehaviour
         {
             this.m_arrMana[i].gameObject.SetActive(dataSummon.cost > i);
         }
+
+        this.m_uiRuneGroup.Init(dataSummon.tableID);
     }
 
-    public void RefreshSlot(UserData_User.SummonData userData)
+    public void RefreshSlot(UserData_Summon.SummonData userData)
     {
         this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(userData.SummonID);
 

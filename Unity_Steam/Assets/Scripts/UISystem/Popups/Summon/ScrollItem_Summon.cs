@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollItem_Summon : ScrollItem<UserData_User.SummonData>
+public class ScrollItem_Summon : ScrollItem<UserData_Summon.SummonData>
 {
     [SerializeField] private Image m_imgChar = null;
     [SerializeField] private TextMeshProUGUI m_textSummonName = null;

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class UserData_User : UserData<JsonData_User>
+public class UserData_Summon : UserData<JsonData_User>
 {
 	public class SummonData
 	{
@@ -118,9 +117,14 @@ public class UserData_User : UserData<JsonData_User>
 	}
 
 #region Summon
-    public void AddSummon(uint summonID)
+	public bool IsContainsSummon(uint summonID)
 	{
-		if(base.Data.DicSummon.ContainsKey(summonID) == true) return;
+		return base.Data.DicSummon.ContainsKey(summonID);
+	}
+
+	public void AddSummon(uint summonID)
+	{
+		if(this.IsContainsSummon(summonID) == true) return;
 
 		base.Data.DicSummon.Add(summonID, new SummonData(summonID));
 		base.SaveClientData();
@@ -128,7 +132,7 @@ public class UserData_User : UserData<JsonData_User>
 
 	public SummonData GetSummon(uint summonID)
 	{
-		if(base.Data.DicSummon.ContainsKey(summonID) == false) return null;
+		if(this.IsContainsSummon(summonID) == false) return null;
 
 		return base.Data.DicSummon[summonID];
 	}
@@ -146,7 +150,7 @@ public class UserData_User : UserData<JsonData_User>
 		return base.Data.DicSummon[summonID].ListRuneID;
 	}
 
-	public bool IsContainsRune(uint summonID, uint runeID)
+	public bool IsEquipRune(uint summonID, uint runeID)
 	{
 		if(base.Data.DicSummon.ContainsKey(summonID) == false) return false;
 		
@@ -168,8 +172,25 @@ public class UserData_User : UserData<JsonData_User>
 		base.Data.DicSummon[summonID].RemoveRune(runeID);
 		//TODO 살리기 base.SaveClientData();
 	}
-#endregion
-#endregion
+    #endregion
+    #endregion
+
+#region Debug
+	public void Debug_AddSummon()
+	{
+		var enumData = ProjectManager.Instance.Table.Summon.GetEnumerator();
+		while(enumData.MoveNext())
+        {
+			this.AddSummon(enumData.Current.Key);
+        }
+	}
+
+	public void Debug_RemoveSummon()
+	{
+		base.Data.DicSummon.Clear();
+		base.SaveClientData();
+	}
+	#endregion
 }
 
 public class JsonData_User : BaseJsonData
@@ -178,5 +199,5 @@ public class JsonData_User : BaseJsonData
 	//TODO 유물
 
 	//Key : InvenType, Value : <Key : ItemID, Value : Value>
-	public Dictionary<uint, UserData_User.SummonData> DicSummon = new Dictionary<uint, UserData_User.SummonData>();
+	public Dictionary<uint, UserData_Summon.SummonData> DicSummon = new Dictionary<uint, UserData_Summon.SummonData>();
 }

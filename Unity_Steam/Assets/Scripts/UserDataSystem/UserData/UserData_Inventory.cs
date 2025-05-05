@@ -112,7 +112,25 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
     {
 
 	}
-    #endregion
+
+	public void Debug_AddRune()
+	{
+		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
+		while(enumData.MoveNext())
+		{
+			this.AddItem(enumData.Current.Key, 1);
+		}
+	}
+
+	public void Debug_RemoveRune()
+	{
+		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
+		while(enumData.MoveNext())
+		{
+			this.UseItem(enumData.Current.Key, 1);
+		}
+	}
+	#endregion
 }
 
 public class JsonData_Inventory : BaseJsonData

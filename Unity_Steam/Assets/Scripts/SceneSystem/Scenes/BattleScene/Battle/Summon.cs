@@ -7,7 +7,7 @@ public class Summon
 
     public Skill Skill { get; private set; } = null;
 
-    private UserData_User.SummonData m_data = null;
+    private UserData_Summon.SummonData m_data = null;
 
     public uint RemainTurn => this.Skill.RemainTurn;
     public ulong Cost => this.m_data.StatDefault.GetStat(Stat_Character.eTYPE.Mana);
@@ -16,7 +16,7 @@ public class Summon
     public Summon(uint summonID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.SummonID = summonID;
-        this.m_data = ProjectManager.Instance.UserData.User.GetSummon(this.SummonID);
+        this.m_data = ProjectManager.Instance.UserData.Summon.GetSummon(this.SummonID);
         this.Skill = new Skill(this.m_data.SkillID, funcGetStatus);
     }
 
@@ -35,7 +35,7 @@ public class Summon
         this.Skill.UseSkill(this.m_data.StatDefault, this.m_data.StatAdditional);
 
         //룬 효과 있으면 사용
-        if(ProjectManager.Instance.UserData.User.IsContainsRune(this.SummonID, (uint)TableData.TableRune.eID.Comfort) == true) this.doRune(TableData.TableRune.eID.Comfort);
+        if(ProjectManager.Instance.UserData.Summon.IsEquipRune(this.SummonID, (uint)TableData.TableRune.eID.Comfort) == true) this.doRune(TableData.TableRune.eID.Comfort);
     }
 
     private void doRune(TableData.TableRune.eID eRuneID)

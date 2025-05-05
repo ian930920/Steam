@@ -26,4 +26,26 @@ public class UI_Debug : MonoBehaviour
     {
         this.OnDebugActiveClicked(false);
     }
+
+#region TitleScene
+    public void AddSummon()
+    {
+        ProjectManager.Instance.UserData.Summon.Debug_AddSummon();
+    }
+
+    public void RemoveSummon()
+    {
+        ProjectManager.Instance.UserData.Summon.Debug_RemoveSummon();
+    }
+
+    public void AddRune()
+    {
+        ProjectManager.Instance.UserData.Inventory.Debug_AddRune();
+    }
+
+    public void RemoveRune()
+    {
+        ProjectManager.Instance.UserData.Inventory.Debug_RemoveRune();
+    }
+    #endregion
 }

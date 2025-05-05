@@ -6,7 +6,7 @@ public class UI_Summon : MonoBehaviour
 {
     [SerializeField] private UI_SummonSlot[] m_arrSlot = null;
 
-    [SerializeField] private UI_Rune m_uiRune = null;
+    [SerializeField] private UI_RuneGroup m_uiRune = null;
     [SerializeField] private UI_SummonInfo m_uiInfo = null;
 
     public int SelectedIdx { get; private set; } = 0;

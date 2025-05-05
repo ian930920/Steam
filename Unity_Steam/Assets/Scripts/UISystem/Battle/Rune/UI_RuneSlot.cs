@@ -10,11 +10,13 @@ public class UI_RuneSlot : MonoBehaviour
     public void Init(uint runeID)
     {
         this.m_runeID = runeID;
+        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Rune.GetIcon(this.m_runeID);
+        this.m_imgIcon.enabled = true;
+    }
 
-        //TODO RuneTable
-        //this.m_imgIcon.sprite = 
-
-        this.gameObject.SetActive(true);
+    public void Inactive()
+    {
+        this.m_imgIcon.enabled = false;
     }
 
     public void OnDetailClicked()

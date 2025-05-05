@@ -38,17 +38,17 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return "없는 정령";
 
-            TableData_Summon dataSummon = base.GetData(tableID);
-            TableData_Skill dataSkill = ProjectManager.Instance.Table.Skill.GetData(base.GetData(tableID).skillID);
+            var dataSkill = ProjectManager.Instance.Table.Skill.GetData(base.GetData(tableID).skillID);
             return string.Format(ProjectManager.Instance.Table.String.GetString(dataSkill.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(dataSkill.coe), dataSkill.dur);
         }
     }
 
     public class TableData_Summon : iTableData
     {
-        //tableID strID rarity cost skillID resID
+        //tableID strID maxRune rarity cost skillID resID
         public uint tableID { get; set; }
         public uint strID { get; set; }
+        public int maxRune { get; set; }
         public uint rarity { get; set; }
         public uint cost { get; set; }
         public uint skillID { get; set; }
