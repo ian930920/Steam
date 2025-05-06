@@ -5,12 +5,11 @@ using UnityEngine;
 public class HUD_Battle : BaseHUD
 {
     [Space(5)][Header("소환수")]
-    [SerializeField] private UI_Summon m_uiSummon = null;
+    [SerializeField] private UI_Battle_SummonGroup m_uiSummon = null;
     [SerializeField] private UI_SummonSkill m_uiSummonSkill = null;
-    [SerializeField] private UI_RuneInfo m_uiRuneInfo = null;
 
     [Space(5)][Header("전투 정보")]
-    [SerializeField] private UI_Mana m_uiMana = null;
+    [SerializeField] private UI_ManaGroup m_uiMana = null;
     [SerializeField] private UI_TurnInfo m_uiTurnInfo = null;
 
     public int SelectedSummonIdx => this.m_uiSummon.SelectedIdx;
@@ -57,15 +56,5 @@ public class HUD_Battle : BaseHUD
     public void SetTurn(bool isPlayerTurn)
     {
         this.m_uiTurnInfo.SetTurn(isPlayerTurn);
-    }
-
-    public void OpenRuneInfo(uint runeID, Vector3 vecPos)
-    {
-        this.m_uiRuneInfo.Open(runeID, vecPos);
-    }
-
-    public void CloseRuneInfo()
-    {
-        this.m_uiRuneInfo.Close();
     }
 }

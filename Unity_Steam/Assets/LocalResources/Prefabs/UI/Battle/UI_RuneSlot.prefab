@@ -73,14 +73,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0.85882354}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7ce4be33ad89b474cbad4bdafdb8a85c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 53bf4234a3e697a4fa1d100cf44e4c95, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb4812ce3882ce048a14280c1ae7b2b0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7ce4be33ad89b474cbad4bdafdb8a85c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -179,13 +179,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 4
+  - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3596849025633305015}
           m_TargetAssemblyTypeName: UI_RuneSlot, Assembly-CSharp
-          m_MethodName: OnDetailClicked
+          m_MethodName: CloseDetail
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -195,13 +195,13 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 1
+  - eventID: 0
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3596849025633305015}
           m_TargetAssemblyTypeName: UI_RuneSlot, Assembly-CSharp
-          m_MethodName: CloseDetail
+          m_MethodName: OnDetailClicked
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

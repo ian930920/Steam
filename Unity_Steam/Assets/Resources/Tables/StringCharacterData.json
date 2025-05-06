@@ -33,23 +33,23 @@
   },
   "31003": {
     "title": "강타",
-    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1002\">기절</link> 디버프 부여"
+    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1002\"><color=yellow>기절</color></link> 디버프 부여"
   },
   "31004": {
     "title": "비열한 급습",
-    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1005\">방어력 약화</link> 디버프 부여"
+    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1005\"><color=yellow>방어력 약화</color></link> 디버프 부여"
   },
   "31005": {
     "title": "저며내기",
-    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1001\">출혈</link> 디버프 부여"
+    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1001\"><color=yellow>출혈</color></link> 디버프 부여"
   },
   "32001": {
     "title": "화염구",
-    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1000\">화상</link> 디버프 부여"
+    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
   },
   "32002": {
     "title": "화염 폭풍",
-    "desc": "모든 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 모든 적에게 {1}턴동안 <link=\"1000\">화상</link> 디버프 부여"
+    "desc": "모든 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 모든 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
   },
   "32003": {
     "title": "방벽",
@@ -65,6 +65,6 @@
   },
   "32006": {
     "title": "재생의 바람",
-    "desc": "자신에게 <color=red>{0:P0}</color>만큼 회복. 자신에게 <color=red>{0:P0}</color>만큼 지속되는 재생 버프 부여"
+    "desc": "자신에게 <color=red>{0:P0}</color>만큼 회복. 자신에게 <color=red>{0:P0}</color>만큼 지속되는<link=\"2001\"><color=yellow>재생</color></link> 버프 부여"
   }
 }}

@@ -14,6 +14,7 @@ public enum ePOPUP_ID
     RuneEquip,
 
     StatusInfo = 42001,
+    RuneInfo,
     End
 }
 
@@ -217,8 +218,18 @@ public class PopupSystem
     }
     #endregion
 
-    public void OpenStatusPopup(uint statusID, Vector3 vecPos)
+    public void OpenStatusInfoPopup(uint statusID, Vector3 vecPos)
     {
         this.OpenAndGetPopup<Popup_StatusInfo>(ePOPUP_ID.StatusInfo).SetStatusInfo(statusID, vecPos);
+    }
+
+    public void OpenRuneInfoPopup(uint runeID, Vector3 vecPos)
+    {
+        this.OpenAndGetPopup<Popup_RuneInfo>(ePOPUP_ID.RuneInfo).SetRuneInfo(runeID, vecPos);
+    }
+
+    public void OpenRuneEquipPopup(uint summonID)
+    {
+        this.OpenAndGetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).SetSummon(summonID);
     }
 }

@@ -7,14 +7,14 @@ abstract public class BaseScrollItem : EnhancedScrollerCellView
     private void Awake()
     {
         //버튼 세팅
-        BaseButton[] arrBtn = this.GetComponentsInChildren<BaseButton>(true);
+        var arrBtn = this.GetComponentsInChildren<BaseButton>(true);
         for(int i = 0; i < arrBtn.Length; ++i)
         {
             arrBtn[i].InitButton();
         }
 
         //String 세팅
-        Text_StringData[] arrString = this.GetComponentsInChildren<Text_StringData>(true);
+        var arrString = this.GetComponentsInChildren<Text_StringData>(true);
         for(int i = 0; i < arrString.Length; ++i)
         {
             arrString[i].Init();
@@ -79,14 +79,14 @@ abstract public class BaseSlot<D> : MonoBehaviour
         this.m_isInit = true;
 
         //버튼 세팅
-        BaseButton[] arrBtn = this.GetComponentsInChildren<BaseButton>(true);
+        var arrBtn = this.GetComponentsInChildren<BaseButton>(true);
         for(int i = 0; i < arrBtn.Length; ++i)
         {
             arrBtn[i].InitButton();
         }
 
         //String 세팅
-        Text_StringData[] arrString = this.GetComponentsInChildren<Text_StringData>(true);
+        var arrString = this.GetComponentsInChildren<Text_StringData>(true);
         for(int i = 0; i < arrString.Length; ++i)
         {
             arrString[i].Init();

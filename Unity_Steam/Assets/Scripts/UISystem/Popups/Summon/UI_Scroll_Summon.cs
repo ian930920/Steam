@@ -19,7 +19,7 @@ public class UI_Scroll_Summon : ScrollUI
     {
         var item = scroller.GetCellView(base.m_arrCellItem[0]) as ScrollItem_Summon;
         item.name = $"Item_{cellIndex}";
-        item.SetData(this.m_listSummonData[dataIndex]);
+        item.SetData(this.m_listSummonData[dataIndex].SummonID);
         return item;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class UserData_Inventory : UserData<JsonData_Inventory>
 {
@@ -107,8 +108,43 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		return base.Data.DicInventory[eInvenType].Count;
     }
 
+#region Rune
+	public void AddRune(uint runeID)
+	{
+		var uniqueRuneID = base.Data.UniqueRuneID;
+
+		//룬에 추가
+		base.Data.DicRune.Add(uniqueRuneID, new Item_Rune(uniqueRuneID, runeID));
+
+		//룬 ID 증가
+		base.Data.UniqueRuneID++;
+		this.SaveClientData();
+	}
+
+	public void EquipRune(uint uniqueRuneID, uint summonID)
+	{
+		if(base.Data.DicRune.ContainsKey(uniqueRuneID) == false) return;
+
+		base.Data.DicRune[uniqueRuneID].SummonID = summonID;
+		this.SaveClientData();
+	}
+
+	public void UnequipRune(uint uniqueRuneID)
+	{
+		if(base.Data.DicRune.ContainsKey(uniqueRuneID) == false) return;
+
+		base.Data.DicRune[uniqueRuneID].SummonID = 0;
+		this.SaveClientData();
+	}
+
+	public List<Item_Rune> GetRuneList()
+	{
+		return base.Data.DicRune.Values.ToList();
+	}
+#endregion
+
     #region Cheat
-	public void Cheat_AddItem()
+    public void Cheat_AddItem()
     {
 
 	}
@@ -118,16 +154,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
 		while(enumData.MoveNext())
 		{
-			this.AddItem(enumData.Current.Key, 1);
-		}
-	}
-
-	public void Debug_RemoveRune()
-	{
-		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
-		while(enumData.MoveNext())
-		{
-			this.UseItem(enumData.Current.Key, 1);
+			this.AddRune(enumData.Current.Key);
 		}
 	}
 	#endregion
@@ -137,4 +164,26 @@ public class JsonData_Inventory : BaseJsonData
 {
 	//Key : InvenType, Value : <Key : ItemID, Value : Value>
 	public Dictionary<int, Dictionary<uint, uint>> DicInventory = new Dictionary<int, Dictionary<uint, uint>>();
+
+	//Key : UniqueRuneID, Value : Item_Rune
+	public Dictionary<uint, Item_Rune> DicRune = new Dictionary<uint, Item_Rune>();
+	public uint UniqueRuneID = 0;
+}
+
+public class Item_Rune
+{
+	public uint UniqueRuneID;
+	public uint RuneID;
+
+	/// <summary>
+	/// 장착중인 소환수 ID, 0이면 장착 안하고있음
+	/// </summary>
+	public uint SummonID;
+
+	public Item_Rune(uint uniqueRuneID, uint runeID)
+	{
+		this.UniqueRuneID = uniqueRuneID;
+		this.RuneID = runeID;
+		this.SummonID = 0;
+	}
 }

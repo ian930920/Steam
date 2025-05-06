@@ -19,7 +19,7 @@ public class Popup_SummonSelect : BasePopup
         this.m_listSummon = ProjectManager.Instance.Table.Summon.GetRandomList(this.m_arrSlot.Length);
         for(int i = 0, nMax = this.m_arrSlot.Length; i < nMax; ++i)
         {
-            this.m_arrSlot[i].RefreshSlot(this.m_listSummon[i]);
+            this.m_arrSlot[i].RefreshSlot(this.m_listSummon[i].tableID);
             this.m_arrSlot[i].RefreshSelect(false);
         }
 
@@ -49,7 +49,7 @@ public class Popup_SummonSelect : BasePopup
             return;
         }
 
-        //ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("저장하고 게임 시작");
+        //선택 소환수 저장
         ProjectManager.Instance.UserData.Summon.AddSummon(this.m_listSummon[this.m_nSelectIdx].tableID);
 
         //팝업닫기
@@ -57,8 +57,6 @@ public class Popup_SummonSelect : BasePopup
 
         //게임 시작
         ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().GameStart();
-        //유저 데이터에 저장
-        //ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().
     }
 
     public void OnInactiveClicked()

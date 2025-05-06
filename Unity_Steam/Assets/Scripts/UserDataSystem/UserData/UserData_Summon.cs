@@ -1,7 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
-public class UserData_Summon : UserData<JsonData_User>
+public class UserData_Summon : UserData<JsonData_Summon>
 {
 	public class SummonData
 	{
@@ -14,6 +15,9 @@ public class UserData_Summon : UserData<JsonData_User>
 		public Stat_Additional StatAdditional { get; private set; } = new Stat_Additional();
 		public ulong Damage => ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, this.StatDefault, this.StatAdditional);
 
+		public SummonData() { }
+
+		[JsonConstructor]
 		public SummonData(uint summonID)
 		{
 			this.SummonID = summonID;
@@ -32,6 +36,17 @@ public class UserData_Summon : UserData<JsonData_User>
 			}
 		}
 
+		public SummonData(SummonData org)
+		{
+			this.SummonID = org.SummonID;
+			this.SkillID = org.SkillID;
+
+			this.StatDefault = new Stat_Character(org.StatDefault);
+			this.StatAdditional = new Stat_Additional(org.StatAdditional);
+
+			this.ListRuneID = new List<uint>(org.ListRuneID);
+		}
+
 		public void AddRune(uint runeID)
 		{
 			//중복룬 가능?
@@ -45,6 +60,62 @@ public class UserData_Summon : UserData<JsonData_User>
 			if(this.ListRuneID.Contains(runeID) == false) return;
 
 			this.ListRuneID.Remove(runeID);
+
+			var data = ProjectManager.Instance.Table.Rune.GetData(runeID);
+			switch((TableData.TableRune.eID)runeID)
+			{
+				case TableData.TableRune.eID.Anger:
+				{
+					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Coe, data.value);
+				}
+				break;
+
+				case TableData.TableRune.eID.Focus:
+				{
+					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Acc, data.value);
+				}
+				break;
+
+				case TableData.TableRune.eID.Bold:
+				{
+					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Crit, data.value);
+				}
+				break;
+
+				case TableData.TableRune.eID.Vitality:
+				{
+					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Cooldown, data.value);
+				}
+				break;
+
+				case TableData.TableRune.eID.Calm:
+				{
+					this.StatDefault.AddStat(Stat_Character.eTYPE.Mana, (ulong)data.value);
+				}
+				break;
+
+				case TableData.TableRune.eID.Bonding:
+				{
+					//정령 소환 시 { value } 턴 동안 내 캐릭터에게 방어력 증가를 부여합니다.
+					var statusID = ProjectManager.Instance.Table.Rune.GetData(runeID).statusID;
+					this.StatAdditional.RemoveStatus(statusID);
+				}
+				break;
+
+				case TableData.TableRune.eID.Disgust:
+				{
+					//정령 소환 시 { value } 턴 동안 모든 적에게 방어력 약화를 부여합니다.
+					var statusID = ProjectManager.Instance.Table.Rune.GetData(runeID).statusID;
+					this.StatAdditional.RemoveStatus(statusID);
+				}
+				break;
+
+				case TableData.TableRune.eID.Comfort:
+				{
+					//행동형~
+				}
+				break;
+			}
 		}
 
 		private void addRuneStat(uint runeID)
@@ -78,8 +149,7 @@ public class UserData_Summon : UserData<JsonData_User>
 
 				case TableData.TableRune.eID.Calm:
 				{
-					var cost = this.StatDefault.GetStat(Stat_Character.eTYPE.Mana);
-					this.StatDefault.SetStat(Stat_Character.eTYPE.Mana, cost - (ulong)data.value);
+					this.StatDefault.RemoveStat(Stat_Character.eTYPE.Mana, (ulong)data.value);
 				}
 				break;
 
@@ -193,7 +263,7 @@ public class UserData_Summon : UserData<JsonData_User>
 	#endregion
 }
 
-public class JsonData_User : BaseJsonData
+public class JsonData_Summon : BaseJsonData
 {
 	//TODO 룬
 	//TODO 유물

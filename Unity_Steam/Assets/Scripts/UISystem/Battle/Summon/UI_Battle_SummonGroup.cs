@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class UI_Summon : MonoBehaviour
+public class UI_Battle_SummonGroup : MonoBehaviour
 {
-    [SerializeField] private UI_SummonSlot[] m_arrSlot = null;
+    [SerializeField] private UI_Battle_SummonSlot[] m_arrSlot = null;
 
     [SerializeField] private UI_RuneGroup m_uiRune = null;
-    [SerializeField] private UI_SummonInfo m_uiInfo = null;
+    [SerializeField] private UI_Battle_SummonInfo m_uiInfo = null;
 
     public int SelectedIdx { get; private set; } = 0;
 

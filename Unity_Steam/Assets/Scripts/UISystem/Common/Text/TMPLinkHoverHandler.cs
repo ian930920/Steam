@@ -18,7 +18,7 @@ public class TMPLinkHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointer
 
         this.onHoverEnter = (statusID, vecPos) =>
         {
-            ProjectManager.Instance.UI.PopupSystem.OpenStatusPopup(uint.Parse(statusID), vecPos);
+            ProjectManager.Instance.UI.PopupSystem.OpenStatusInfoPopup(uint.Parse(statusID), vecPos);
         };
 
         this.onHoverExit = () =>

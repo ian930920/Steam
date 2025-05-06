@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.Burst.Intrinsics;
 
-public class UI_SummonSlot : MonoBehaviour
+public class UI_Battle_SummonSlot : MonoBehaviour
 {
     public Summon Summon { get; private set; } = null;
 
@@ -11,8 +10,7 @@ public class UI_SummonSlot : MonoBehaviour
     [SerializeField] private Image m_imgSelect = null;
     [SerializeField] private Image m_imgCooldown = null;
 
-    [SerializeField] private GameObject m_gobjTurn = null;
-    [SerializeField] private TextMeshProUGUI m_textTurn = null;
+    [SerializeField] private UI_SkillTurn m_uiSkillTurn = null;
 
     public void Init(Summon summon)
     {
@@ -28,8 +26,7 @@ public class UI_SummonSlot : MonoBehaviour
     public void RefreshSlot()
     {
         bool isCoolTime = this.Summon.RemainTurn > 0;
-        this.m_gobjTurn.SetActive(isCoolTime);
-        this.m_textTurn.text = this.Summon.RemainTurn.ToString();
+        this.m_uiSkillTurn.RefreshTurn(this.Summon.RemainTurn);
         this.m_imgCooldown.enabled = isCoolTime;
     }
 

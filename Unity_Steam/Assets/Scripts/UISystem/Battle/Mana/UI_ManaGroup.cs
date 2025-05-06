@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UI_Mana : MonoBehaviour
+public class UI_ManaGroup : MonoBehaviour
 {
     [SerializeField] private UI_ManaSlot[] m_arrMana = null;
     [SerializeField] private LayoutUpdater m_layoutUpdater = null;

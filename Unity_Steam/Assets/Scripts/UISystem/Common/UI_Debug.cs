@@ -42,10 +42,5 @@ public class UI_Debug : MonoBehaviour
     {
         ProjectManager.Instance.UserData.Inventory.Debug_AddRune();
     }
-
-    public void RemoveRune()
-    {
-        ProjectManager.Instance.UserData.Inventory.Debug_RemoveRune();
-    }
     #endregion
 }

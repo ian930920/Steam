@@ -15,6 +15,15 @@ public class Stat_Character
 
     private Dictionary<eTYPE, ulong> m_dicStat = new Dictionary<eTYPE, ulong>();
 
+    public Stat_Character()
+    {
+    }
+
+    public Stat_Character(Stat_Character org)
+    {
+        this.m_dicStat = new Dictionary<eTYPE, ulong>(org.m_dicStat);
+    }
+
     public void Reset()
     {
         this.m_dicStat.Clear();
@@ -25,6 +34,20 @@ public class Stat_Character
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
         this.m_dicStat[eStatType] = value;
+    }
+
+    public void AddStat(eTYPE eStatType, ulong value)
+    {
+        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+
+        this.m_dicStat[eStatType] += value;
+    }
+
+    public void RemoveStat(eTYPE eStatType, ulong value)
+    {
+        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+
+        this.m_dicStat[eStatType] -= value;
     }
 
     public ulong GetStat(eTYPE eStatType)
@@ -54,6 +77,16 @@ public class Stat_Additional
     //Key : statusID, Value : turn
     public Dictionary<uint, stStatus> DicStatus { get; private set; } = new Dictionary<uint, stStatus>();
 
+    public Stat_Additional()
+    {
+    }
+
+    public Stat_Additional(Stat_Additional org)
+    {
+        this.m_dicStat = new Dictionary<eTYPE, float>(org.m_dicStat);
+        this.DicStatus = new Dictionary<uint, stStatus>(org.DicStatus);
+    }
+
     public void Reset()
     {
         this.m_dicStat.Clear();
@@ -64,6 +97,13 @@ public class Stat_Additional
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
         this.m_dicStat[eStatType] += fValue;
+    }
+
+    public void RemoveStat(eTYPE eStatType, float fValue)
+    {
+        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+
+        this.m_dicStat[eStatType] -= fValue;
     }
 
     public float GetStat(eTYPE eStatType)
@@ -78,6 +118,13 @@ public class Stat_Additional
         if(this.DicStatus.ContainsKey(statusID) == true) return;
 
         this.DicStatus.Add(statusID, status);
+    }
+
+    public void RemoveStatus(uint statusID)
+    {
+        if(this.DicStatus.ContainsKey(statusID) == false) return;
+
+        this.DicStatus.Remove(statusID);
     }
 }
 

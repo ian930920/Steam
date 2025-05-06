@@ -21,11 +21,11 @@ public class UI_RuneSlot : MonoBehaviour
 
     public void OnDetailClicked()
     {
-        ProjectManager.Instance.BattleScene?.HUD.OpenRuneInfo(this.m_runeID, this.transform.position);
+        ProjectManager.Instance.UI.PopupSystem.OpenRuneInfoPopup(this.m_runeID, this.transform.position);
     }
 
     public void CloseDetail()
     {
-        ProjectManager.Instance.BattleScene?.HUD.CloseRuneInfo();
+        ProjectManager.Instance.UI.PopupSystem.ClosePopup(ePOPUP_ID.RuneInfo);
     }
 }

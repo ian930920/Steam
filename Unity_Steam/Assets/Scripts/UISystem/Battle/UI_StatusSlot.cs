@@ -33,7 +33,7 @@ public class UI_StatusSlot : MonoBehaviour
 
     public void OnClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenStatusPopup(this.m_statusID, this.transform.position);
+        ProjectManager.Instance.UI.PopupSystem.OpenStatusInfoPopup(this.m_statusID, this.transform.position);
     }
 
     public void OnClickEnd()
