@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Stat_Character
 {
@@ -47,7 +48,7 @@ public class Stat_Character
     {
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
-        this.m_dicStat[eStatType] -= value;
+        this.m_dicStat[eStatType] = (ulong)Mathf.Clamp(this.m_dicStat[eStatType] - value, 0, this.m_dicStat[eStatType]);
     }
 
     public ulong GetStat(eTYPE eStatType)

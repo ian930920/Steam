@@ -5,7 +5,7 @@ public class UI_RuneGroup : MonoBehaviour
     [SerializeField] private UI_RuneSlot[] m_arrSlot = null;
     [SerializeField] private LayoutUpdater m_layoutUpdater = null;
 
-    public void Init(uint summonID)
+    public void Init(uint summonID, bool isDefault)
     {
         var maxRune = ProjectManager.Instance.Table.Summon.GetData(summonID).maxRune;
         var listRune = ProjectManager.Instance.UserData.Summon.GetRuneList(summonID);
@@ -17,7 +17,9 @@ public class UI_RuneGroup : MonoBehaviour
                 continue;
             }
 
-            if(i < listRune.Count) this.m_arrSlot[i].Init(listRune[i]);
+            if(this.m_arrSlot[i].gameObject.activeSelf == false) this.m_arrSlot[i].gameObject.SetActive(true);
+
+            if(isDefault == false && i < listRune.Count) this.m_arrSlot[i].Init(listRune[i].RuneID);
             else this.m_arrSlot[i].Inactive();
         }
 

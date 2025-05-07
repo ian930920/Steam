@@ -7,6 +7,6 @@ public class UI_CostInfo : MonoBehaviour
 
     public void Init(ulong cost)
     {
-        this.m_textCost.text = $"X{cost}";
+        this.m_textCost.text = $"X {cost}";
     }
 }

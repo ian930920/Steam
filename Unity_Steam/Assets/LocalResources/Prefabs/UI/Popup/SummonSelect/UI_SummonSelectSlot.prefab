@@ -1096,7 +1096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4712883913228730230}
   - component: {fileID: 8442892291300098375}
-  - component: {fileID: 9117677762197394853}
+  - component: {fileID: 2133103146116374300}
   m_Layer: 5
   m_Name: UI_SummonSelectSlot
   m_TagString: Untagged
@@ -1141,9 +1141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bb9340d4da9e54f9a89aebf8f171a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_summonInfo: {fileID: 9117677762197394853}
+  m_summonInfo: {fileID: 2133103146116374300}
   m_gobjSelect: {fileID: 4471418830416332191}
---- !u!114 &9117677762197394853
+--- !u!114 &2133103146116374300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1152,7 +1152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5516747916653386222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eaa72849775a7f4585f2cbf681c2826, type: 3}
+  m_Script: {fileID: 11500000, guid: f23764983a1cef746aa0f4ca637c2bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_imgChar: {fileID: 4291580295729157902}

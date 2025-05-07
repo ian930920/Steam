@@ -23,6 +23,6 @@ public class UI_Battle_SummonInfo : MonoBehaviour
         this.m_uiCostInfo.Init(summon.Cost);
 
         //룬 표기
-        this.m_uiRuneGroup.Init(summon.SummonID);
+        this.m_uiRuneGroup.Init(summon.SummonID, false);
     }
 }

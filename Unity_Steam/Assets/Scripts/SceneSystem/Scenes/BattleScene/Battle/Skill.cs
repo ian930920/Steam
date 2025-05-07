@@ -220,7 +220,7 @@ public class Skill
         }
 
         //쿨타임 추가
-        this.RemainTurn = this.m_data.cooldown;
+        this.RemainTurn = (uint)(UnityEngine.Mathf.Clamp(this.m_data.cooldown - statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown), 0, this.m_data.cooldown));
 
         //타겟 다 지우기
         this.m_listTarget.Clear();

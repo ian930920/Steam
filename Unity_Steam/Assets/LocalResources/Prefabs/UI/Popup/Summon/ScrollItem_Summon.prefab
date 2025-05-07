@@ -359,7 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4211981192231312980}
   - component: {fileID: 1147112275013512733}
-  - component: {fileID: 2186839454767648874}
+  - component: {fileID: 3184950212458161635}
   m_Layer: 5
   m_Name: ScrollItem_Summon
   m_TagString: Untagged
@@ -404,8 +404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellIdentifier: 
-  m_summonInfo: {fileID: 2186839454767648874}
---- !u!114 &2186839454767648874
+  m_summonInfo: {fileID: 3184950212458161635}
+--- !u!114 &3184950212458161635
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4006828620616317132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eaa72849775a7f4585f2cbf681c2826, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d51c8a39bd35c0408d712c7adbc22bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_imgChar: {fileID: 4655228794095072812}

@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class Summon
 {
@@ -7,7 +6,7 @@ public class Summon
 
     public Skill Skill { get; private set; } = null;
 
-    private UserData_Summon.SummonData m_data = null;
+    private UserData_Summon.MySummon m_data = null;
 
     public uint RemainTurn => this.Skill.RemainTurn;
     public ulong Cost => this.m_data.StatDefault.GetStat(Stat_Character.eTYPE.Mana);

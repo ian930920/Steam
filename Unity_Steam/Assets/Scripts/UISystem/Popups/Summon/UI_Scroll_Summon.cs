@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_Scroll_Summon : ScrollUI
 {
-    [SerializeField] private List<UserData_Summon.SummonData> m_listSummonData = new List<UserData_Summon.SummonData>();
+    [SerializeField] private List<UserData_Summon.MySummon> m_listSummonData = new List<UserData_Summon.MySummon>();
     
     protected override int DataCount { get => this.m_listSummonData.Count; }
 

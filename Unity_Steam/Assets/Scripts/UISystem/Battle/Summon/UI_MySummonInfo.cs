@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_SummonInfo : MonoBehaviour
+public class UI_MySummonInfo : MonoBehaviour
 {
     [SerializeField] private Image m_imgChar = null;
     [SerializeField] private TextMeshProUGUI m_textSummonName = null;
@@ -16,22 +16,18 @@ public class UI_SummonInfo : MonoBehaviour
 
     public void Refresh(uint summonID)
     {
-        this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
-
         var dataSummon = ProjectManager.Instance.Table.Summon.GetData(summonID);
+        var userSummon = ProjectManager.Instance.UserData.Summon.GetSummon(summonID);
+
+        this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
 
         this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
         
         this.m_textSkillName.text = ProjectManager.Instance.Table.Skill.GetString_Title(dataSummon.skillID);
+        this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.skillID, userSummon.Damage);
 
-        var userData = ProjectManager.Instance.UserData.Summon.GetSummon(summonID);
-        if(userData == null) this.m_textSkillDesc.text = ProjectManager.Instance.Table.Summon.GetString_SkillDesc(dataSummon.tableID);
-        else this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.skillID, userData.Damage);
-
-        var dataSkill = ProjectManager.Instance.Table.Skill.GetData(dataSummon.skillID);
-        this.m_uiSkillTurn.RefreshTurn(dataSkill.cooldown, true);
-
-        this.m_uiCostInfo.Init(dataSummon.cost);
-        this.m_uiRuneGroup.Init(dataSummon.tableID);
+        this.m_uiSkillTurn.RefreshTurn(userSummon.Cooldown, true);
+        this.m_uiCostInfo.Init(userSummon.StatDefault.GetStat(Stat_Character.eTYPE.Mana));
+        this.m_uiRuneGroup.Init(dataSummon.tableID, false);
     }
 }

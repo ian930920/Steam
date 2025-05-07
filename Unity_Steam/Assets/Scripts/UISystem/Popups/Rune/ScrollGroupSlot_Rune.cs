@@ -28,6 +28,6 @@ public class ScrollGroupSlot_Rune : BaseSlot<Item_Rune>
 
     public void OnClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data.UniqueRuneID, base.Data.RuneID);
+        ProjectManager.Instance.UI.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data);
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ScrollItem_Summon : ScrollItem<uint>
 {
-    [SerializeField] private UI_SummonInfo m_summonInfo = null;
+    [SerializeField] private UI_MySummonInfo m_summonInfo = null;
 
     public override void RefreshCellView()
     {

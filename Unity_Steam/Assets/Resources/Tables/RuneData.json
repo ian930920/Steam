@@ -7,13 +7,5 @@
   "6": { "strID":21006, "value":2, "statusID":2006, "strIcon":"RuneIcon0_Damage"},
   "7": { "strID":21007, "value":2, "statusID":1006, "strIcon":"RuneIcon0_Debuff"},
   "8": { "strID":21008, "value":10, "statusID":0, "strIcon":"RuneIcon0_Ball_Health"},
-  "9": { "strID":21009, "value":1, "statusID":0, "strIcon":"RuneIcon0_Buff"},
-  "10": { "strID":0, "value":0, "statusID":0, "strIcon":"RuneIcon0_Get_Score"},
-  "11": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "12": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "13": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "14": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "15": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "16": { "strID":0, "value":0, "statusID":0, "strIcon":""},
-  "17": { "strID":0, "value":0, "statusID":0, "strIcon":""}
+  "9": { "strID":21009, "value":1, "statusID":0, "strIcon":"RuneIcon0_Buff"}
 }}

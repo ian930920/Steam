@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UI_SummonSelectSlot : MonoBehaviour
 {
-    [SerializeField] private UI_SummonInfo m_summonInfo = null;
+    [SerializeField] private UI_DefaultSummonInfo m_summonInfo = null;
 
     [SerializeField] private GameObject m_gobjSelect = null;
 

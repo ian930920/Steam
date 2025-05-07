@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class UserData_Inventory : UserData<JsonData_Inventory>
 {
@@ -109,6 +110,13 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
     }
 
 #region Rune
+	public Item_Rune GetRune(uint uniqueRuneID)
+	{
+		if(base.Data.DicRune.ContainsKey(uniqueRuneID) == false) return null;
+
+		return base.Data.DicRune[uniqueRuneID];
+	}
+
 	public void AddRune(uint runeID)
 	{
 		var uniqueRuneID = base.Data.UniqueRuneID;
@@ -143,12 +151,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 	}
 #endregion
 
-    #region Cheat
-    public void Cheat_AddItem()
-    {
-
-	}
-
+#region Debug
 	public void Debug_AddRune()
 	{
 		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
@@ -157,7 +160,23 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 			this.AddRune(enumData.Current.Key);
 		}
 	}
-	#endregion
+
+	public void Debug_RemoveRune()
+	{
+		base.Data.DicRune.Clear();
+		this.SaveClientData();
+	}
+
+	public void Debug_RemoveRuneSummonID()
+	{
+		var enumData = base.Data.DicRune.GetEnumerator();
+		while(enumData.MoveNext())
+		{
+			enumData.Current.Value.SummonID = 0;
+		}
+		this.SaveClientData();
+	}
+#endregion
 }
 
 public class JsonData_Inventory : BaseJsonData

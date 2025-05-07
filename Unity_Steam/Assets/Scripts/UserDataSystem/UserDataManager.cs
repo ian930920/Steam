@@ -183,14 +183,35 @@ public class UserDataManager : BaseManager<UserDataManager>
     }
     #endregion
 
-    public void EquipRune(uint summonID, uint runeID)
+    #region Rune
+    public void EquipRune(uint summonID, Item_Rune rune)
     {
-        if(this.Summon.IsContainsSummon(summonID) == false) return;
-
-        if(this.Inventory.IsContainsItem(summonID) == false) return;
-
-        this.Summon.AddRune(summonID, runeID);
+        this.Inventory.EquipRune(rune.UniqueRuneID, summonID);
+        this.Summon.AddRune(summonID, rune);
     }
+
+    public void UnequipRune(uint summonID, Item_Rune rune)
+    {
+        this.Summon.RemoveRune(summonID, rune);
+        this.Inventory.UnequipRune(rune.UniqueRuneID);
+    }
+
+    public void ChangeRune(uint summonID, Item_Rune rune)
+    {
+        //다른 소환수가 장착중인거 장착 해제하고
+        if(rune.SummonID != 0) this.UnequipRune(rune.SummonID, rune);
+
+        //지금 장착중인 제일 앞에 룬 해제
+        if(this.Summon.GetSummon(summonID).ListRune.Count > 0)
+        {
+            var prevRune = this.Summon.GetSummon(summonID).ListRune[0];
+            this.UnequipRune(summonID, prevRune);
+        }
+
+        //새로 장착
+        this.EquipRune(summonID, rune);
+    }
+    #endregion
 
     #region Debug
     public void Debug_Cheat()
