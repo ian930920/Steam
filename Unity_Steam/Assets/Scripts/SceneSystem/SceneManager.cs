@@ -9,6 +9,7 @@ public class SceneManager : BaseManager<SceneManager>
         Title,
         Station,
         Battle,
+        Scenario,
     }
 
     private string[] m_arrSceneName =
@@ -16,6 +17,7 @@ public class SceneManager : BaseManager<SceneManager>
         "TitleScene",
         "StationScene",
         "BattleScene",
+        "ScenarioScene",
     };
 
 	private eSCENE_ID m_reserveSceneID { get; set; }

@@ -55,8 +55,11 @@ public class Popup_SummonSelect : BasePopup
         //팝업닫기
         this.OnCloseClicked();
 
-        //게임 시작
-        ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().GameStart();
+        //저장하고
+        ProjectManager.Instance.UserData.Session.SetSessionType(eSESSION_TYPE.Station);
+
+        //역으로 이동~
+        ProjectManager.Instance.Scene.ChangeScene(SceneManager.eSCENE_ID.Station);
     }
 
     public void OnInactiveClicked()

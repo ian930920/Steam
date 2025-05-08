@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
+using static Unity.Collections.Unicode;
 
 public class UserDataManager : BaseManager<UserDataManager>
 {
@@ -10,6 +11,7 @@ public class UserDataManager : BaseManager<UserDataManager>
         Inventory,
         Time,
         Summon,
+        Session,
     };
 
     private Dictionary<eID, BaseUserData> m_dicUser = new Dictionary<eID, BaseUserData>()
@@ -19,6 +21,7 @@ public class UserDataManager : BaseManager<UserDataManager>
         { eID.Inventory, new UserData_Inventory() },
         { eID.Time, new UserData_Time() },
         { eID.Summon, new UserData_Summon() },
+        { eID.Session, new UserData_Session() },
     };
 
     public UserData_Account Account => this.m_dicUser[eID.Account] as UserData_Account;
@@ -26,6 +29,7 @@ public class UserDataManager : BaseManager<UserDataManager>
     public UserData_Inventory Inventory => this.m_dicUser[eID.Inventory] as UserData_Inventory;
     public UserData_Time Time => this.m_dicUser[eID.Time] as UserData_Time;
     public UserData_Summon Summon => this.m_dicUser[eID.Summon] as UserData_Summon;
+    public UserData_Session Session => this.m_dicUser[eID.Session] as UserData_Session;
 
     public string BuildVersion { get; set; }
     public string PatchVersion { get; set; }
@@ -52,6 +56,13 @@ public class UserDataManager : BaseManager<UserDataManager>
         {
             enumUser.Current.Value.LoadClientData();
         }
+    }
+
+    public void StartSession()
+    {
+        this.Session.StartSession();
+        this.Inventory.Reset();
+        this.Summon.Reset();
     }
 
     #region Item

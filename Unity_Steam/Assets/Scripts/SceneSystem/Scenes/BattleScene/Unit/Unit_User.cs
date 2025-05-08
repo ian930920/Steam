@@ -23,10 +23,7 @@ public class Unit_User : BaseUnit
 
     protected override void initStat(uint charID)
     {
-        var dataChar = ProjectManager.Instance.Table.User.GetData(charID);
-        base.DefaultStat.Reset();
-        base.DefaultStat.SetStat(Stat_Character.eTYPE.HP, dataChar.hp);
-        base.DefaultStat.SetStat(Stat_Character.eTYPE.Mana, dataChar.maxMana);
+        base.DefaultStat = new Stat_Character(ProjectManager.Instance.UserData.Session.DefaultStat);
 
         base.CurrStat.Reset();
         base.CurrStat.SetStat(Stat_Character.eTYPE.HP, base.DefaultStat.GetStat(Stat_Character.eTYPE.HP));

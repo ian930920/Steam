@@ -14,7 +14,7 @@ public class HUD_Title : BaseHUD
 
     public void OnGameStartClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+        ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().CheckSession();
     }
 
     public void OnOptionClicked()

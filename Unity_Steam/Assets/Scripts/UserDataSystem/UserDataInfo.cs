@@ -68,6 +68,7 @@ abstract public class UserData<D> : BaseUserData where D : BaseJsonData, new()
     public override void Reset()
     {
 		this.Data = null;
+		base.SetStringData(this.StrKey, "");
 		this.createServerData();
 		this.LoadClientData();
     }

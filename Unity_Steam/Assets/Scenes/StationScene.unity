@@ -1565,8 +1565,8 @@ MonoBehaviour:
   m_colorStart: {r: 0, g: 0, b: 0, a: 1}
   m_fEndDuration: 0.3
   m_colorEnd: {r: 0, g: 0, b: 0, a: 1}
-  m_hud: {fileID: 0}
-  m_transRootObjectPool: {fileID: 0}
+  m_hud: {fileID: 8307849201410643990}
+  m_transRootObjectPool: {fileID: 819347117}
 --- !u!1 &1782237584
 GameObject:
   m_ObjectHideFlags: 0
