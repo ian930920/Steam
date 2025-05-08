@@ -1,28 +1,42 @@
+using System.Linq;
 using UnityEngine;
-using TMPro;
 
 public class UI_Battle_SummonInfo : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI m_textTitle = null;
-    [SerializeField] private TextMeshProUGUI m_textDesc = null;
+    [SerializeField] private UI_MySummonInfo m_uiSummonInfo = null;
+    [SerializeField] private UI_StatusInfo[] m_arrStatusInfo = null;
 
-    [SerializeField] private UI_CostInfo m_uiCostInfo = null;
-    [SerializeField] private UI_RuneGroup m_uiRuneGroup = null;
-    [SerializeField] private UI_SkillTurn m_uiSkillTurn = null;
-
-    public void RefreshUI(Summon summon)
+    public void Active(uint summonID)
     {
-        //설명
-        this.m_textTitle.text = ProjectManager.Instance.Table.Skill.GetString_Title(summon.Skill.SkillID);
-        this.m_textDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(summon.Skill.SkillID, summon.Damage);
+        this.gameObject.SetActive(true);
 
-        //쿨타임
-        this.m_uiSkillTurn.RefreshTurn(ProjectManager.Instance.Table.Skill.GetData(summon.Skill.SkillID).cooldown, true);
+        this.m_uiSummonInfo.Refresh(summonID);
 
-        //마나 비용
-        this.m_uiCostInfo.Init(summon.Cost);
+        //스킬에 상태이상이있다면 활성화
+        int nStatusIdx = 0;
+        var skillStatus = ProjectManager.Instance.Table.Skill.GetDataBySummonID(summonID).listStatusID;
+        for(int i = nStatusIdx, nMax = skillStatus.Count; i < nMax; ++i)
+        {
+            this.m_arrStatusInfo[i].SetStatusInfo(skillStatus[i]);
+        }
 
-        //룬 표기
-        this.m_uiRuneGroup.Init(summon.SummonID, false);
+        //룬에 상태이상이있다면 활성화
+        nStatusIdx = skillStatus.Count;
+        var summonRuneStatus = ProjectManager.Instance.UserData.Summon.GetSummon(summonID).StatAdditional.DicStatus.Keys.ToArray();
+        for(int i = 0, nMax = summonRuneStatus.Length; i < nMax; ++i)
+        {
+            this.m_arrStatusInfo[i + nStatusIdx].SetStatusInfo(summonRuneStatus[i]);
+        }
+    }
+
+    public void Inactive()
+    {
+        this.gameObject.SetActive(false);
+
+        //상태이상 모두 닫기
+        for(int i = 0, nMax = this.m_arrStatusInfo.Length; i < nMax; ++i)
+        {
+            this.m_arrStatusInfo[i].Inactive();
+        }
     }
 }

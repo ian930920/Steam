@@ -27,6 +27,13 @@ namespace TableData
             Add_Mana,               //사용 즉시 마나 2 회복
         }
 
+        public enum eEFFECT_TYPE
+        {
+            None,
+            Negative,
+            Positive,
+        }
+
         public float GetValue(eID eTableID)
         {
             uint tableID = (uint)eTableID;
@@ -39,12 +46,20 @@ namespace TableData
         {
             return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Status_{tableID}");
         }
+
+        public eEFFECT_TYPE GetType(uint tableID)
+        {
+            if(base.ContainsKey(tableID) == false) return eEFFECT_TYPE.None;
+
+            return (eEFFECT_TYPE)base.GetData(tableID).type;
+        }
     }
 
     public class TableData_Status : iTableData
     {
-        //tableID strID value
+        //tableID type strID value
         public uint tableID { get; set; }
+        public int type { get; set; }
         public uint strID { get; set; }
         public float value { get; set; }
     }

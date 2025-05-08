@@ -52,7 +52,7 @@ public class BattleScene : BaseScene
         this.m_teamUser.InitStage();
 
         //적 세팅
-        this.m_teamEnemy.InitStage(3);
+        this.m_teamEnemy.InitStage(5);
     }
 
     public void StageWin()

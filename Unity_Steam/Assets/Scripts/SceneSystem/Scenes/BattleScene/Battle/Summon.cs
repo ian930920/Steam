@@ -8,9 +8,10 @@ public class Summon
 
     private UserData_Summon.MySummon m_data = null;
 
-    public uint RemainTurn => this.Skill.RemainTurn;
-    public ulong Cost => this.m_data.StatDefault.GetStat(Stat_Character.eTYPE.Mana);
-    public ulong Damage => this.m_data.Damage;
+    public int RemainTurn => this.Skill.RemainTurn;
+    public int Cost => this.m_data.StatDefault.GetStat(Stat_Character.eTYPE.Mana);
+    public int Damage => this.m_data.Damage;
+    public int Cooldown => this.m_data.Cooldown;
 
     public Summon(uint summonID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
@@ -19,7 +20,7 @@ public class Summon
         this.Skill = new Skill(this.m_data.SkillID, funcGetStatus);
     }
 
-    public bool IsUseable(ulong currMana)
+    public bool IsUseable(int currMana)
     {
         //쿨타임인지 확인
         if(this.Skill.RemainTurn > 0) return false;
@@ -45,9 +46,19 @@ public class Summon
             case TableData.TableRune.eID.Comfort:
             {
                 //유저 캐릭터 힐~
-                ProjectManager.Instance.BattleScene?.User_Heal(new stDamage((ulong)value));
+                ProjectManager.Instance.BattleScene?.User_Heal(new stDamage((int)value));
             }
             break;
         }
+    }
+
+    public TableData.TableStatus.eEFFECT_TYPE GetStatEffectType(Stat_Character.eTYPE eStatType)
+    {
+        return this.m_data.StatDefault.GetEffectType(eStatType);
+    }
+
+    public TableData.TableStatus.eEFFECT_TYPE GetAdditionalStatEffectType(Stat_Additional.eTYPE eStatType)
+    {
+        return this.m_data.StatAdditional.GetEffectType(eStatType);
     }
 }

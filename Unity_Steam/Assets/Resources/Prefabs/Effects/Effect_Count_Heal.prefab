@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   permanent: 0
-  lifetime: 2
+  lifetime: 1
   unscaledTime: 0
   enable3DGame: 0
   faceCameraView: 1
@@ -506,7 +506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4249011280534025803
 RectTransform:
   m_ObjectHideFlags: 0
@@ -594,8 +594,7 @@ MonoBehaviour:
   m_text: +123
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c531f7132a5fa44a87992df50ab3582, type: 2}
-  m_sharedMaterial: {fileID: 7813419849211700074, guid: 9c531f7132a5fa44a87992df50ab3582,
-    type: 2}
+  m_sharedMaterial: {fileID: 7813419849211700074, guid: 9c531f7132a5fa44a87992df50ab3582, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -619,8 +618,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 6
+  m_fontSizeBase: 6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -641,7 +640,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

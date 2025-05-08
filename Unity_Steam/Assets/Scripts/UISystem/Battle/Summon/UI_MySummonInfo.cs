@@ -27,7 +27,11 @@ public class UI_MySummonInfo : MonoBehaviour
         this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.skillID, userSummon.Damage);
 
         this.m_uiSkillTurn.RefreshTurn(userSummon.Cooldown, true);
+        this.m_uiSkillTurn.SetTextColor(userSummon.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));
+
         this.m_uiCostInfo.Init(userSummon.StatDefault.GetStat(Stat_Character.eTYPE.Mana));
+        this.m_uiCostInfo.SetTextColor(userSummon.StatDefault.GetEffectType(Stat_Character.eTYPE.Mana));
+
         this.m_uiRuneGroup.Init(dataSummon.tableID, false);
     }
 }

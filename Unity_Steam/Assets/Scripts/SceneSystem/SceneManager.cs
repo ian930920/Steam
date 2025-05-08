@@ -7,14 +7,14 @@ public class SceneManager : BaseManager<SceneManager>
     public enum eSCENE_ID
     {
         Title,
-        //Main,
+        Station,
         Battle,
     }
 
     private string[] m_arrSceneName =
 	{
         "TitleScene",
-        //"MainScene",
+        "StationScene",
         "BattleScene",
     };
 
@@ -54,7 +54,7 @@ public class SceneManager : BaseManager<SceneManager>
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(this.m_arrSceneName[(int)this.m_reserveSceneID]);
 
-        //¾À ¹Ù²¼À¸¸é ÇØ´ç ¾ÀÀÇ Canvas¿¡ ¸Â°Ô ´Ù½Ã ¼¼ÆÃ
+        //ì”¬ ë°”ê¼ˆìœ¼ë©´ í•´ë‹¹ ì”¬ì˜ Canvasì— ë§ê²Œ ë‹¤ì‹œ ì„¸íŒ…
         this.m_fadeSystem.UpdateCanvasScaler();
     }
 

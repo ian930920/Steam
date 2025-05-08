@@ -1,6 +1,7 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Popup_RuneEquip : ScrollPopup
@@ -73,9 +74,12 @@ public class Popup_RuneEquip : ScrollPopup
 
         var defaultCooldown = ProjectManager.Instance.Table.Skill.GetData(this.m_summonData.SkillID).cooldown;
         var addCooldown = this.m_summonData.StatAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
-        this.m_uiSkillTurn.RefreshTurn((uint)(Mathf.Clamp(defaultCooldown - addCooldown, 0, defaultCooldown)), true);
+        this.m_uiSkillTurn.RefreshTurn((int)(Mathf.Clamp(defaultCooldown - addCooldown, 0, defaultCooldown)), true);
+        this.m_uiSkillTurn.SetTextColor(this.m_summonData.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));
 
         this.m_uiCostInfo.Init(this.m_summonData.StatDefault.GetStat(Stat_Character.eTYPE.Mana));
+        this.m_uiCostInfo.SetTextColor(this.m_summonData.StatDefault.GetEffectType(Stat_Character.eTYPE.Mana));
+
         this.m_uiRuneGroup.Init(this.m_summonData.SummonID, false);
     }
 

@@ -133,6 +133,6 @@ public class User : Team
         this.CurrSummon.UseSkill();
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonSlot();
+        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonGroupSlot();
     }
 }

@@ -22,7 +22,7 @@ public class UI_StatusSlot : MonoBehaviour
     /// </summary>
     /// <param name="turn"></param>
     /// <returns>지워지는지 여부</returns>
-    public bool UpdateTurn(ulong turn)
+    public bool UpdateTurn(int turn)
     {
         this.gameObject.SetActive(turn != 0);
 

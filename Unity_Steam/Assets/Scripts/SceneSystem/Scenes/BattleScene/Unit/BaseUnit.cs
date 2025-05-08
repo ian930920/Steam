@@ -119,10 +119,10 @@ public abstract class BaseUnit : MonoBehaviour
             return;
         }
 
-        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Def) != null) stDamage.Value = (ulong)(stDamage.Value * 1.5f);
-        if(this.GetStatus(TableData.TableStatus.eID.Attack_Enhancement) != null) stDamage.Value = (ulong)(stDamage.Value * 1.5f);
-        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Atk) != null) stDamage.Value = (ulong)(stDamage.Value * 0.5f);
-        if(this.GetStatus(TableData.TableStatus.eID.Defense_Enhancement) != null) stDamage.Value = (ulong)(stDamage.Value * 0.5f);
+        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Def) != null) stDamage.Value = (int)(stDamage.Value * 1.5f);
+        if(this.GetStatus(TableData.TableStatus.eID.Attack_Enhancement) != null) stDamage.Value = (int)(stDamage.Value * 1.5f);
+        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Atk) != null) stDamage.Value = (int)(stDamage.Value * 0.5f);
+        if(this.GetStatus(TableData.TableStatus.eID.Defense_Enhancement) != null) stDamage.Value = (int)(stDamage.Value * 0.5f);
 
         if(this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) > stDamage.Value)
         {
@@ -131,9 +131,8 @@ public abstract class BaseUnit : MonoBehaviour
         }
         else
         {
-            ulong damage = stDamage.Value -= this.CurrStat.GetStat(Stat_Character.eTYPE.Shield);
+            var damage = stDamage.Value -= this.CurrStat.GetStat(Stat_Character.eTYPE.Shield);
             var currHP = this.CurrStat.GetStat(Stat_Character.eTYPE.HP);
-            if(currHP <= damage) damage = currHP;
             this.CurrStat.SetStat(Stat_Character.eTYPE.HP, currHP - damage);
         }
 
@@ -143,7 +142,7 @@ public abstract class BaseUnit : MonoBehaviour
         //피격 애니
         this.playAnim(eSTATE.Damaged);
 
-        if(this.CurrStat.GetStat(Stat_Character.eTYPE.HP) < 1) this.death(); //죽음
+        if(this.CurrStat.GetStat(Stat_Character.eTYPE.HP) <= 0) this.death(); //죽음
         else this.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP)); //UI 갱신
     }
 
@@ -161,12 +160,12 @@ public abstract class BaseUnit : MonoBehaviour
         stDamage.eSkillType = stDamage.eSKILL_TYPE.Heal;
 
         var currHP = this.CurrStat.GetStat(Stat_Character.eTYPE.HP);
-        this.CurrStat.SetStat(Stat_Character.eTYPE.HP, (ulong)Mathf.Clamp(stDamage.Value + currHP, currHP, this.DefaultStat.GetStat(Stat_Character.eTYPE.HP)));
+        this.CurrStat.SetStat(Stat_Character.eTYPE.HP, Mathf.Clamp(stDamage.Value + currHP, currHP, this.DefaultStat.GetStat(Stat_Character.eTYPE.HP)));
         this.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP));
         ProjectManager.Instance.ObjectPool.PlayCountEffect_Heal(stDamage, this.transform.position);
     }
 
-    public void AddShield(ulong value)
+    public void AddShield(int value)
     {
         var shield = this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) + value;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, shield);
@@ -180,7 +179,7 @@ public abstract class BaseUnit : MonoBehaviour
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, 0);
     }
 
-    public void AddStatus(uint statusID, ulong turn)
+    public void AddStatus(uint statusID, int turn)
     {
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {
@@ -223,7 +222,7 @@ public abstract class BaseUnit : MonoBehaviour
         ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.CurrStat.GetStat(Stat_Character.eTYPE.Mana));
     }
 
-    public void AddMana(ulong cost)
+    public void AddMana(int cost)
     {
         var mana = this.CurrStat.GetStat(Stat_Character.eTYPE.Mana) + cost;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Mana, mana);
@@ -234,7 +233,7 @@ public abstract class BaseUnit : MonoBehaviour
         ProjectManager.Instance.BattleScene?.HUD.RefreshMana(mana);
     }
 
-    public void UseMana(ulong cost)
+    public void UseMana(int cost)
     {
         var mana = this.CurrStat.GetStat(Stat_Character.eTYPE.Mana) - cost;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Mana, mana);

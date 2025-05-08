@@ -12,7 +12,7 @@ public class Skill
     
     private Func<TableData.TableStatus.eID, Status> m_funcGetStatus = null;
 
-    public uint RemainTurn { get; private set; } = 0;
+    public int RemainTurn { get; private set; } = 0;
 
     public Skill(uint skillID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
@@ -57,7 +57,7 @@ public class Skill
             case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
             case TableData.TableSkill.eTARGET_TYPE.Friendly_All:
             {
-                nTargetCount = 3;
+                nTargetCount = 5;
             }
             break;
         }
@@ -72,7 +72,7 @@ public class Skill
         this.RemainTurn--;
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonUI();
+        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonGroupUI();
     }
 
     private bool isHit(Stat_Additional statAdditional)
@@ -112,7 +112,7 @@ public class Skill
         if(this.isCritical(statAdditional) == true)
         {
             stDamage.IsCritical = true;
-            stDamage.Value = (ulong)(stDamage.Value * CRITICAL_DMG);
+            stDamage.Value = (int)(stDamage.Value * CRITICAL_DMG);
         }
 
         if(this.isHit(statAdditional) == false)
@@ -220,7 +220,7 @@ public class Skill
         }
 
         //쿨타임 추가
-        this.RemainTurn = (uint)(UnityEngine.Mathf.Clamp(this.m_data.cooldown - statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown), 0, this.m_data.cooldown));
+        this.RemainTurn = (int)UnityEngine.Mathf.Clamp(this.m_data.cooldown - statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown), 0, this.m_data.cooldown);
 
         //타겟 다 지우기
         this.m_listTarget.Clear();

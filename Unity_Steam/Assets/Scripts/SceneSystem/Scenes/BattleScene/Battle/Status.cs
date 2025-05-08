@@ -5,15 +5,15 @@ public class Status
 {
     public TableData.TableStatus.eID eStatusID { get; private set; }
 
-    public ulong RemainTurn { get; private set; } = 0;
+    public int RemainTurn { get; private set; } = 0;
 
-    public Status(uint statusID, ulong turn)
+    public Status(uint statusID, int turn)
     {
         this.eStatusID = (TableData.TableStatus.eID)statusID;
         this.RemainTurn = turn;
     }
 
-    public void AddTurn(ulong turn)
+    public void AddTurn(int turn)
     {
         this.RemainTurn += turn;
     }
@@ -63,14 +63,14 @@ public class Status
             case TableData.TableStatus.eID.Burn:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
+                character.Damaged(new stDamage((int)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 
             case TableData.TableStatus.eID.Bleeding:
             {
                 //매 턴 시작 시 최대 체력의 10%의 피해를 받음
-                character.Damaged(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
+                character.Damaged(new stDamage((int)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 
@@ -91,7 +91,7 @@ public class Status
             case TableData.TableStatus.eID.Curse:
             {
                 //매 턴 시작 시 회복되는 마나 1 감소
-                character.UseMana((ulong)fValue);
+                character.UseMana((int)fValue);
             }
             break;
 
@@ -119,7 +119,7 @@ public class Status
             case TableData.TableStatus.eID.Regeneration:
             {
                 //매 턴 시작 시 최대 체력의 10% 회복
-                character.Heal(new stDamage((ulong)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
+                character.Heal(new stDamage((int)(character.DefaultStat.GetStat(Stat_Character.eTYPE.HP) * fValue)));
             }
             break;
 
@@ -147,7 +147,7 @@ public class Status
             case TableData.TableStatus.eID.Blessing:
             {
                 //매 턴 시작 시 회복되는 마나 1 증가
-                character.AddMana((ulong)fValue);
+                character.AddMana((int)fValue);
             }
             break;
 

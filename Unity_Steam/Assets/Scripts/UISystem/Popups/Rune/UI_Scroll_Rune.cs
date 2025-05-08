@@ -2,16 +2,11 @@ using System.Linq;
 
 public class UI_Scroll_Rune : ScrollGroupUI<Item_Rune, ScrollGroup_Rune>
 {
-    protected override void initData()
-    {
-        base.m_listData = ProjectManager.Instance.UserData.Inventory.GetRuneList();
-    }
-
     public override void UpdateData()
     {
         base.UpdateData();
 
-        base.m_listData = this.m_listData.OrderBy(data => this.sort(data)).ToList();
+        base.m_listData = ProjectManager.Instance.UserData.Inventory.GetRuneList().OrderBy(data => this.sort(data)).ToList();
     }
 
     public Item_Rune GetFirstRune()

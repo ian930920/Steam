@@ -27,7 +27,7 @@ namespace TableData
     public class TableData_Enemy : TableData_Character
     {
         //tableID hp strength listSkillID resID strSprite
-        public ulong strength { get; set; }
+        public int strength { get; set; }
         public List<uint> listSkillID { get; set; }
     }
 }

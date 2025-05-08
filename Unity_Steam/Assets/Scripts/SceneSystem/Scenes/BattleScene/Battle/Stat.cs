@@ -14,15 +14,14 @@ public class Stat_Character
         End,
     }
 
-    private Dictionary<eTYPE, ulong> m_dicStat = new Dictionary<eTYPE, ulong>();
+    private Dictionary<eTYPE, int> m_dicStat = new Dictionary<eTYPE, int>();
+    private Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE> m_dicEffectType = new Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE>();
 
-    public Stat_Character()
-    {
-    }
+    public Stat_Character() { }
 
     public Stat_Character(Stat_Character org)
     {
-        this.m_dicStat = new Dictionary<eTYPE, ulong>(org.m_dicStat);
+        this.m_dicStat = new Dictionary<eTYPE, int>(org.m_dicStat);
     }
 
     public void Reset()
@@ -30,32 +29,46 @@ public class Stat_Character
         this.m_dicStat.Clear();
     }
 
-    public void SetStat(eTYPE eStatType, ulong value)
+    public void SetStat(eTYPE eStatType, int value)
     {
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
         this.m_dicStat[eStatType] = value;
     }
 
-    public void AddStat(eTYPE eStatType, ulong value)
+    public void AddStat(eTYPE eStatType, int value)
     {
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
         this.m_dicStat[eStatType] += value;
     }
 
-    public void RemoveStat(eTYPE eStatType, ulong value)
+    public void RemoveStat(eTYPE eStatType, int value)
     {
         if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
 
-        this.m_dicStat[eStatType] = (ulong)Mathf.Clamp(this.m_dicStat[eStatType] - value, 0, this.m_dicStat[eStatType]);
+        this.m_dicStat[eStatType] = (int)Mathf.Clamp(this.m_dicStat[eStatType] - value, 0, this.m_dicStat[eStatType]);
     }
 
-    public ulong GetStat(eTYPE eStatType)
+    public int GetStat(eTYPE eStatType)
     {
         if(this.m_dicStat.ContainsKey(eStatType) == false) return 0;
 
         return this.m_dicStat[eStatType];
+    }
+
+    public void SetEffectType(eTYPE eStatType, TableData.TableStatus.eEFFECT_TYPE eType)
+    {
+        if(this.m_dicEffectType.ContainsKey(eStatType) == false) this.m_dicEffectType.Add(eStatType, TableData.TableStatus.eEFFECT_TYPE.None);
+
+        this.m_dicEffectType[eStatType] = eType;
+    }
+
+    public TableData.TableStatus.eEFFECT_TYPE GetEffectType(eTYPE eStatType)
+    {
+        if(this.m_dicEffectType.ContainsKey(eStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
+
+        return this.m_dicEffectType[eStatType];
     }
 }
 
@@ -74,13 +87,12 @@ public class Stat_Additional
     }
 
     private Dictionary<eTYPE, float> m_dicStat = new Dictionary<eTYPE, float>();
+    private Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE> m_dicEffectType = new Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE>();
 
     //Key : statusID, Value : turn
     public Dictionary<uint, stStatus> DicStatus { get; private set; } = new Dictionary<uint, stStatus>();
 
-    public Stat_Additional()
-    {
-    }
+    public Stat_Additional() { }
 
     public Stat_Additional(Stat_Additional org)
     {
@@ -127,6 +139,20 @@ public class Stat_Additional
 
         this.DicStatus.Remove(statusID);
     }
+
+    public void SetEffectType(eTYPE eStatType, TableData.TableStatus.eEFFECT_TYPE eType)
+    {
+        if(this.m_dicEffectType.ContainsKey(eStatType) == false) this.m_dicEffectType.Add(eStatType, TableData.TableStatus.eEFFECT_TYPE.None);
+
+        this.m_dicEffectType[eStatType] = eType;
+    }
+
+    public TableData.TableStatus.eEFFECT_TYPE GetEffectType(eTYPE eStatType)
+    {
+        if(this.m_dicStat.ContainsKey(eStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
+
+        return this.m_dicEffectType[eStatType];
+    }
 }
 
 public struct stDamage
@@ -140,10 +166,10 @@ public struct stDamage
     }
 
     public eSKILL_TYPE eSkillType;
-    public ulong Value;
+    public int Value;
     public bool IsCritical;
 
-    public stDamage(ulong damage)
+    public stDamage(int damage)
     {
         this.eSkillType = eSKILL_TYPE.Attack; //기본은 공격
         this.Value = damage;
@@ -161,9 +187,9 @@ public struct stStatus
     }
 
     public eTARGET_TYPE eTargetType;
-    public ulong Turn;
+    public int Turn;
 
-    public stStatus(eTARGET_TYPE eTargetType, ulong turn)
+    public stStatus(eTARGET_TYPE eTargetType, int turn)
     {
         this.eTargetType = eTargetType;
         this.Turn = turn;

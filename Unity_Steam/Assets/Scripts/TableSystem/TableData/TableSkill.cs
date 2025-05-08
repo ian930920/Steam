@@ -25,6 +25,13 @@ namespace TableData
             Friendly_All = 15,          //15: 모든 아군
         }
 
+        public TableData_Skill GetDataBySummonID(uint summonID)
+        {
+            if(ProjectManager.Instance.Table.Summon.ContainsKey(summonID) == false) return null;
+
+            return base.GetData(ProjectManager.Instance.Table.Summon.GetData(summonID).skillID);
+        }
+
         public string GetString_Title(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return "없는 스킬";
@@ -32,11 +39,11 @@ namespace TableData
             return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID);
         }
 
-        public string GetString_Desc(uint tableID, ulong value)
+        public string GetString_Desc(uint tableID, int value)
         {
             if(base.ContainsKey(tableID) == false) return "없는 스킬";
 
-            TableData_Skill data = base.GetData(tableID);
+            var data = base.GetData(tableID);
             return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(value), data.dur);
         }
 
@@ -44,7 +51,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return false;
 
-            TableData_Skill data = base.GetData(tableID);
+            var data = base.GetData(tableID);
 
             switch((eTYPE)data.type)
             {
@@ -77,20 +84,20 @@ namespace TableData
             return (eTARGET_TYPE)base.GetData(tableID).target;
         }
 
-        public ulong GetDefaultDamage(uint tableID, Stat_Character statDefault, Stat_Additional statAdditional)
+        public int GetDefaultDamage(uint tableID, Stat_Character statDefault, Stat_Additional statAdditional)
         {
             if(base.ContainsKey(tableID) == false) return 0;
 
             var coe = base.GetData(tableID).coe;
             if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) > 0) coe += coe * statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
-            return (ulong)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
+            return (int)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
         }
 
-        public ulong GetCooldownTurn(uint tableID, Stat_Additional statAdditional)
+        public int GetCooldownTurn(uint tableID, Stat_Additional statAdditional)
         {
             if(base.ContainsKey(tableID) == false) return 0;
 
-            return base.GetData(tableID).cooldown - (ulong)statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
+            return base.GetData(tableID).cooldown - (int)statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
         }
     }
 
@@ -99,11 +106,11 @@ namespace TableData
         //tableID type cooldown coe acc crit dur target buff debuff strID resID
         public uint tableID { get; set; }
         public uint type { get; set; }
-        public uint cooldown { get; set; }
+        public int cooldown { get; set; }
         public float coe { get; set; }
         public float acc { get; set; }
         public float crit { get; set; }
-        public uint dur { get; set; }
+        public int dur { get; set; }
         public uint target { get; set; }
         public List<uint> listStatusID { get; set; }
         public uint strID { get; set; }

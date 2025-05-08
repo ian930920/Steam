@@ -13,7 +13,7 @@ public class UI_CharacterStatusBar : MonoBehaviour
     //Key : StatusID, Value : StatusSlot
     private Dictionary<uint, UI_StatusSlot> m_dicStatus = new Dictionary<uint, UI_StatusSlot>();
 
-    public void Init(Vector3 vecPos, ulong nHP)
+    public void Init(Vector3 vecPos, int nHP)
     {
         this.transform.position = new Vector3(vecPos.x, vecPos.y - 20, vecPos.z);
 
@@ -32,9 +32,9 @@ public class UI_CharacterStatusBar : MonoBehaviour
         this.gameObject.SetActive(true);
     }
 
-    public void RefreshGauge(ulong nHP)
+    public void RefreshGauge(int nHP)
     {
-        this.m_sliderHP.value = nHP;
+        this.m_sliderHP.value = Mathf.Clamp(nHP, 0, int.MaxValue);
         this.m_textHP.text = $"{this.m_sliderHP.value}/{this.m_sliderHP.maxValue}";
     }
 
@@ -44,7 +44,7 @@ public class UI_CharacterStatusBar : MonoBehaviour
     /// <param name="statusID">status 테이블 ID</param>
     /// <param name="turn">남은 턴</param>
     /// <returns>지워지는지 여부</returns>
-    public bool UpdateStatus(uint statusID, ulong turn)
+    public bool UpdateStatus(uint statusID, int turn)
     {
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {

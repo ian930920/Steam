@@ -28,7 +28,7 @@ namespace TableData
     {
         //tableID hp strength resID strSprite
         public uint tableID { get; set; }
-        public ulong hp { get; set; }
+        public int hp { get; set; }
         public uint resID { get; set; }
         public string strSprite { get; set; }
     }
@@ -36,6 +36,6 @@ namespace TableData
     public class TableData_User : TableData_Character
     {
         //tableID hp maxMana resID strSprite
-        public ulong maxMana { get; set; }
+        public int maxMana { get; set; }
     }
 }

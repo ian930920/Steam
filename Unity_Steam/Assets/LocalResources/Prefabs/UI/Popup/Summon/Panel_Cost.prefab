@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6308335269998559836}
   - component: {fileID: 7586978025613327276}
+  - component: {fileID: 8374079561685712067}
   - component: {fileID: 2203144736718691002}
   m_Layer: 5
   m_Name: Panel_Cost
@@ -263,6 +264,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_textCost: {fileID: 5346489959614409537}
+  m_tcEffectType: {fileID: 8374079561685712067}
+--- !u!114 &8374079561685712067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956660014062344638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62819587808c6a940a9b577284db0968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_text: {fileID: 5346489959614409537}
+  m_colorDefault: {r: 1, g: 1, b: 1, a: 1}
+  m_colorPositive: {r: 0, g: 1, b: 0, a: 1}
+  m_colorNegative: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2203144736718691002
 MonoBehaviour:
   m_ObjectHideFlags: 0

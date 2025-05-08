@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class UserData_Summon : UserData<JsonData_Summon>
 {
@@ -16,8 +15,8 @@ public class UserData_Summon : UserData<JsonData_Summon>
 
 		public Stat_Character StatDefault { get; private set; } = new Stat_Character();
 		public Stat_Additional StatAdditional { get; private set; } = new Stat_Additional();
-		public ulong Damage => ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, this.StatDefault, this.StatAdditional);
-		public ulong Cooldown => ProjectManager.Instance.Table.Skill.GetCooldownTurn(this.SkillID, this.StatAdditional);
+		public int Damage => ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, this.StatDefault, this.StatAdditional);
+		public int Cooldown => ProjectManager.Instance.Table.Skill.GetCooldownTurn(this.SkillID, this.StatAdditional);
 
 		public MySummon() { }
 
@@ -80,44 +79,49 @@ public class UserData_Summon : UserData<JsonData_Summon>
 				case TableData.TableRune.eID.Anger:
 				{
 					this.StatAdditional.AddStat(Stat_Additional.eTYPE.Coe, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Coe, TableData.TableStatus.eEFFECT_TYPE.Positive);
 				}
 				break;
 
 				case TableData.TableRune.eID.Focus:
 				{
 					this.StatAdditional.AddStat(Stat_Additional.eTYPE.Acc, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Acc, TableData.TableStatus.eEFFECT_TYPE.Positive);
 				}
 				break;
 
 				case TableData.TableRune.eID.Bold:
 				{
 					this.StatAdditional.AddStat(Stat_Additional.eTYPE.Crit, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Crit, TableData.TableStatus.eEFFECT_TYPE.Positive);
 				}
 				break;
 
 				case TableData.TableRune.eID.Vitality:
 				{
 					this.StatAdditional.AddStat(Stat_Additional.eTYPE.Cooldown, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Cooldown, TableData.TableStatus.eEFFECT_TYPE.Positive);
 				}
 				break;
 
 				case TableData.TableRune.eID.Calm:
 				{
-					this.StatDefault.RemoveStat(Stat_Character.eTYPE.Mana, (ulong)data.value);
+					this.StatDefault.RemoveStat(Stat_Character.eTYPE.Mana, (int)data.value);
+					this.StatDefault.SetEffectType(Stat_Character.eTYPE.Mana, TableData.TableStatus.eEFFECT_TYPE.Positive);
 				}
 				break;
 
 				case TableData.TableRune.eID.Bonding:
 				{
 					//정령 소환 시 { value } 턴 동안 내 캐릭터에게 방어력 증가를 부여합니다.
-					this.StatAdditional.AddStatus(data.statusID, new stStatus(stStatus.eTARGET_TYPE.User, (ulong)data.value));
+					this.StatAdditional.AddStatus(data.statusID, new stStatus(stStatus.eTARGET_TYPE.User, (int)data.value));
 				}
 				break;
 
 				case TableData.TableRune.eID.Disgust:
 				{
 					//정령 소환 시 { value } 턴 동안 모든 적에게 방어력 약화를 부여합니다.
-					this.StatAdditional.AddStatus(data.statusID, new stStatus(stStatus.eTARGET_TYPE.EnemyAll, (ulong)data.value));
+					this.StatAdditional.AddStatus(data.statusID, new stStatus(stStatus.eTARGET_TYPE.EnemyAll, (int)data.value));
 				}
 				break;
 
@@ -137,30 +141,35 @@ public class UserData_Summon : UserData<JsonData_Summon>
 				case TableData.TableRune.eID.Anger:
 				{
 					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Coe, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Coe, TableData.TableStatus.eEFFECT_TYPE.None);
 				}
 				break;
 
 				case TableData.TableRune.eID.Focus:
 				{
 					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Acc, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Acc, TableData.TableStatus.eEFFECT_TYPE.None);
 				}
 				break;
 
 				case TableData.TableRune.eID.Bold:
 				{
 					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Crit, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Crit, TableData.TableStatus.eEFFECT_TYPE.None);
 				}
 				break;
 
 				case TableData.TableRune.eID.Vitality:
 				{
 					this.StatAdditional.RemoveStat(Stat_Additional.eTYPE.Cooldown, data.value);
+					this.StatAdditional.SetEffectType(Stat_Additional.eTYPE.Cooldown, TableData.TableStatus.eEFFECT_TYPE.None);
 				}
 				break;
 
 				case TableData.TableRune.eID.Calm:
 				{
-					this.StatDefault.AddStat(Stat_Character.eTYPE.Mana, (ulong)data.value);
+					this.StatDefault.AddStat(Stat_Character.eTYPE.Mana, (int)data.value);
+					this.StatDefault.SetEffectType(Stat_Character.eTYPE.Mana, TableData.TableStatus.eEFFECT_TYPE.None);
 				}
 				break;
 
@@ -283,9 +292,6 @@ public class UserData_Summon : UserData<JsonData_Summon>
 
 public class JsonData_Summon : BaseJsonData
 {
-	//TODO 룬
-	//TODO 유물
-
 	//Key : InvenType, Value : <Key : ItemID, Value : Value>
 	public Dictionary<uint, UserData_Summon.MySummon> DicSummon = new Dictionary<uint, UserData_Summon.MySummon>();
 }

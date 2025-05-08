@@ -50,7 +50,7 @@ namespace TableData
         public uint strID { get; set; }
         public int maxRune { get; set; }
         public uint rarity { get; set; }
-        public uint cost { get; set; }
+        public int cost { get; set; }
         public uint skillID { get; set; }
         public uint resID { get; set; }
         public string strSprite { get; set; }

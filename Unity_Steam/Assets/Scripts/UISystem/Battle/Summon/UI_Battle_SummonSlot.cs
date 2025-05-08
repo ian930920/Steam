@@ -7,9 +7,12 @@ public class UI_Battle_SummonSlot : MonoBehaviour
 
     [SerializeField] private Image m_imgIcon = null;
     [SerializeField] private Image m_imgSelect = null;
-    [SerializeField] private Image m_imgCooldown = null;
 
+    [SerializeField] private UI_SkillTurn m_uiCooldown = null;
     [SerializeField] private UI_SkillTurn m_uiSkillTurn = null;
+    [SerializeField] private UI_CostInfo m_uiCost = null;
+
+    public bool IsCooldown => this.m_uiCooldown.IsActive;
 
     public void Init(Summon summon)
     {
@@ -19,18 +22,34 @@ public class UI_Battle_SummonSlot : MonoBehaviour
         this.gameObject.SetActive(true);
 
         this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetIcon(this.Summon.SummonID);
+
         this.RefreshSlot();
     }
 
     public void RefreshSlot()
     {
         bool isCoolTime = this.Summon.RemainTurn > 0;
-        this.m_uiSkillTurn.RefreshTurn(this.Summon.RemainTurn);
-        this.m_imgCooldown.enabled = isCoolTime;
+        this.m_uiCooldown.RefreshTurn(this.Summon.RemainTurn);
+
+        this.m_uiCost.Init(this.Summon.Cost);
+        this.m_uiCost.SetTextColor(this.Summon.GetStatEffectType(Stat_Character.eTYPE.Mana));
+
+        this.m_uiSkillTurn.RefreshTurn(this.Summon.Cooldown, true);
+        this.m_uiSkillTurn.SetTextColor(this.Summon.GetAdditionalStatEffectType(Stat_Additional.eTYPE.Cooldown));
     }
 
     public void SetSelect(bool bSelect)
     {
         this.m_imgSelect.enabled = bSelect;
+    }
+
+    public void OpenSummonInfo()
+    {
+        ProjectManager.Instance.BattleScene?.HUD.OpenSummonInfo(this.Summon.SummonID);
+    }
+
+    public void CloseSummonInfo()
+    {
+        ProjectManager.Instance.BattleScene?.HUD.CloseSummonInfo();
     }
 }
