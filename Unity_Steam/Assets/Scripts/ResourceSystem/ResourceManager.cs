@@ -1,10 +1,8 @@
-using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class ResourceManager : BaseManager<ResourceManager>
+public class ResourceManager : BaseSingleton<ResourceManager>
 {
     public enum eATLAS_ID
     {
@@ -39,11 +37,19 @@ public class ResourceManager : BaseManager<ResourceManager>
     //Key : ePOPUP_ID, Value : Gameobject
     private Dictionary<uint, GameObject> m_dicPopup = new Dictionary<uint, GameObject>();
 
-    protected override void init()
+    public override void Initialize()
     {
+        //필수
+        if(base.IsInitialized == true) return;
+
         //버튼 애니 미리 로드
         this.Animator_Button = Resources.Load<RuntimeAnimatorController>(PATH_ANI_BUTTON);
         this.Animator_Popup = Resources.Load<RuntimeAnimatorController>(PATH_ANI_POPUP);
+
+        //테이블 정보로 로드
+        this.LoadResByTable();
+
+        base.IsInitialized = true;
     }
 
     public override void ResetManager()
@@ -57,7 +63,7 @@ public class ResourceManager : BaseManager<ResourceManager>
     public void LoadResByTable()
     {
         TableData.TableData_Resource data = null;
-        Dictionary<uint, TableData.TableData_Resource>.Enumerator enumData = ProjectManager.Instance.Table.Resource.GetEnumerator();
+        Dictionary<uint, TableData.TableData_Resource>.Enumerator enumData = TableManager.Instance.Resource.GetEnumerator();
         while(enumData.MoveNext())
         {
             data = enumData.Current.Value;

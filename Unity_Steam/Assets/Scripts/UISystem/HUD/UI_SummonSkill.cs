@@ -15,7 +15,7 @@ public class UI_SummonSkill : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        this.m_imgSummon.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
+        this.m_imgSummon.sprite = TableManager.Instance.Summon.GetSprite(summonID);
         this.m_animation.Play();
 
         return this.m_animation.clip.length;

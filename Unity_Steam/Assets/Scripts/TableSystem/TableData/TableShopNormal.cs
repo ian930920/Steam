@@ -163,11 +163,11 @@ namespace TableData
             TableData_ShopNormal data = base.GetData(tableID);
             switch((eCATEGORY)data.category)
             {
-                case eCATEGORY.Dia: return $"{ProjectManager.Instance.Table.Item.GetString_ItemCount(new stItem(data.listRewardItemID[0], data.listRewardValue[0]))}";
+                case eCATEGORY.Dia: return $"{TableManager.Instance.Item.GetString_ItemCount(new stItem(data.listRewardItemID[0], data.listRewardValue[0]))}";
 
                 case eCATEGORY.Food:
                 case eCATEGORY.Costume:
-                return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID), data.listRewardValue[0]);
+                return string.Format(TableManager.Instance.String.GetString(data.strID), data.listRewardValue[0]);
             }
 
             return $"{tableID} 문제있는디";

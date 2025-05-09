@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,10 +11,10 @@ public class UI_CurrencySlot : MonoBehaviour
 
     public void InitSlot()
     {
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Item.GetSprite(this.ItemID);
+        this.m_imgIcon.sprite = TableManager.Instance.Item.GetSprite(this.ItemID);
 
         //갱신 이벤트 등록
-        ProjectManager.Instance.UserData.AddItemCountRefreshEvent(this.ItemID, this.refreshSlot);
+        UserDataManager.Instance.AddItemCountRefreshEvent(this.ItemID, this.refreshSlot);
 
         //갱신
         this.RefreshSlot();
@@ -24,7 +22,7 @@ public class UI_CurrencySlot : MonoBehaviour
 
     public void RefreshSlot()
     {
-        this.refreshSlot(ProjectManager.Instance.UserData.GetInventoryItem(this.ItemID).Count);
+        this.refreshSlot(UserDataManager.Instance.GetInventoryItem(this.ItemID).Count);
     }
 
     private void refreshSlot(uint nCount)
@@ -34,6 +32,6 @@ public class UI_CurrencySlot : MonoBehaviour
 
     public void OnShortCutClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO Shortcut");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO Shortcut");
     }
 }

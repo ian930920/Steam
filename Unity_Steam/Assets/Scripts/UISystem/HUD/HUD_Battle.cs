@@ -85,16 +85,16 @@ public class HUD_Battle : BaseHUD
 
     public void OnInventoryClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 가방 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 가방 팝업");
     }
 
     public void OnMySummonClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 내 정령 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 내 정령 팝업");
     }
 
     public void OnOptionClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
     }
 }

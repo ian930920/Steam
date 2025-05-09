@@ -8,9 +8,9 @@ public class UI_StatusInfo : MonoBehaviour
 
     public void SetStatusInfo(uint statusID)
     {
-        var data = ProjectManager.Instance.Table.Status.GetData(statusID);
-        this.m_textTitle.text = ProjectManager.Instance.Table.String.GetString(data.strID);
-        this.m_textDesc.text = ProjectManager.Instance.Table.String.GetString(data.strID, TableData.TableString.eTYPE.Description);
+        var data = TableManager.Instance.Status.GetData(statusID);
+        this.m_textTitle.text = TableManager.Instance.String.GetString(data.strID);
+        this.m_textDesc.text = TableManager.Instance.String.GetString(data.strID, TableData.TableString.eTYPE.Description);
 
         this.gameObject.SetActive(true);
     }

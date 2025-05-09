@@ -55,7 +55,7 @@ public class UI_Reactive_Gauge : UI_Reactive
 
             this.onTick(dDuration);
 
-            dDuration += ProjectManager.Instance.Time.DeltaTime;
+            dDuration += TimeManager.Instance.DeltaTime;
 
             yield return null;
         }
@@ -75,7 +75,7 @@ public class UI_Reactive_Gauge : UI_Reactive
 
             this.onTick(dRemainTime);
 
-            dRemainTime -= ProjectManager.Instance.Time.DeltaTime;
+            dRemainTime -= TimeManager.Instance.DeltaTime;
 
             yield return null;
         }

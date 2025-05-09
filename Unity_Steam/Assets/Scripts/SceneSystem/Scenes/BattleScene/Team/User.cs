@@ -8,7 +8,7 @@ public class User : Team
 
     public Unit_User Unit { get; private set; } = null;
     private List<Summon> m_listSummon = new List<Summon>();
-    private Summon CurrSummon => this.m_listSummon[ProjectManager.Instance.BattleScene.HUD.SelectedSummonIdx];
+    private Summon CurrSummon => this.m_listSummon[SceneManager.Instance.GetCurrScene<BattleScene>().HUD.SelectedSummonIdx];
 
     public void InitStage()
     {
@@ -21,7 +21,7 @@ public class User : Team
 
     private void initCharacter()
     {
-        this.Unit = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Unit_User>(TableData.TableObjectPool.eID.Char_User);
+        this.Unit = ObjectPoolManager.Instance.GetPoolObjectComponent<Unit_User>(TableData.TableObjectPool.eID.Char_User);
         this.Unit.transform.SetParent(this.m_transParent);
         this.Unit.Init((uint)TableData.TableUser.eID.User);
     }
@@ -30,14 +30,14 @@ public class User : Team
     {
         //소환수 저장
         this.m_listSummon.Clear();
-        var listSummon = ProjectManager.Instance.UserData.Summon.GetSummonDataList();
+        var listSummon = UserDataManager.Instance.Summon.GetSummonDataList();
         for(int i = 0, nMax = listSummon.Count; i < nMax; ++i)
         {
             this.m_listSummon.Add(new Summon(listSummon[i].SummonID, this.Unit.GetStatus));
         }
 
         //UI 세팅
-        ProjectManager.Instance.BattleScene?.HUD.InitSummonUI(this.m_listSummon);
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.InitSummonUI(this.m_listSummon);
     }
 
     public override void TurnStart()
@@ -68,6 +68,12 @@ public class User : Team
     {
         this.Unit?.gameObject.SetActive(false);
         this.Unit = null;
+    }
+
+    public override void BattleFinish()
+    {
+        //유저 데이터에 저장
+        UserDataManager.Instance.Session.SaveBattleInfo(this.Unit.CurrStat.GetStat(Stat_Character.eTYPE.HP), this.Unit.GetStatusToList());
     }
 
     public override bool IsTurnFinish()
@@ -112,7 +118,7 @@ public class User : Team
         //스킬쓸 수 있는지 확인
         if(this.CurrSummon.IsUseable(this.Unit.CurrStat.GetStat(Stat_Character.eTYPE.Mana)) == false)
         {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("마나 부족!");
+            UIManager.Instance.PopupSystem.OpenSystemTimerPopup("마나 부족!");
             return;
         }
 
@@ -121,10 +127,10 @@ public class User : Team
 
     private IEnumerator coUseSkill()
     {
-        ProjectManager.Instance.BattleScene?.User_SetClickable(false);
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(false);
 
         //스킬 이펙트
-        float fDuration = ProjectManager.Instance.BattleScene.HUD.ActiveSummonSkill(this.CurrSummon.SummonID);
+        float fDuration = SceneManager.Instance.GetCurrScene<BattleScene>().HUD.ActiveSummonSkill(this.CurrSummon.SummonID);
 
         this.Unit.UseMana(this.CurrSummon.Cost);
 
@@ -133,6 +139,6 @@ public class User : Team
         this.CurrSummon.UseSkill();
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonGroupSlot();
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupSlot();
     }
 }

@@ -25,7 +25,7 @@ public abstract class BaseScene : MonoBehaviour
 	private void Awake()
 	{
 		this.gameObject.tag = "Scene";
-		ProjectManager.Instance.Scene.SetCurrScene(this);
+		SceneManager.Instance.SetCurrScene(this);
 	}
 
     private void Start()
@@ -40,14 +40,16 @@ public abstract class BaseScene : MonoBehaviour
 
 	virtual public void OnSceneStart()
 	{
-		ProjectManager.Instance.Scene.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.Out, this.m_fStartDuration, this.m_colorStart, this.onFadeEnd));
+		SceneManager.Instance.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.Out, this.m_fStartDuration, this.m_colorStart, this.onFadeEnd));
 
 		//hud
 		this.m_hud?.Init();
+
+		ProjectManager.Instance.InitManagerByScene(this.m_eSceneID);
 	}
 
 	virtual public void OnSceneEnd()
 	{
-		ProjectManager.Instance.Scene.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.In, this.m_fEndDuration, this.m_colorEnd, null));
+		SceneManager.Instance.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.In, this.m_fEndDuration, this.m_colorEnd, null));
 	}
 }

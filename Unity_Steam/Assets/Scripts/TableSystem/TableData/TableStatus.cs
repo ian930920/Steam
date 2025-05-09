@@ -44,7 +44,7 @@ namespace TableData
 
         public Sprite GetIcon(uint tableID)
         {
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Status_{tableID}");
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Status_{tableID}");
         }
 
         public eEFFECT_TYPE GetType(uint tableID)

@@ -12,7 +12,7 @@ public class UI_Scroll_Summon : ScrollUI
     {
         base.UpdateData();
 
-        this.m_listSummonData = ProjectManager.Instance.UserData.Summon.GetSummonDataList();
+        this.m_listSummonData = UserDataManager.Instance.Summon.GetSummonDataList();
     }
 
     public override EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)

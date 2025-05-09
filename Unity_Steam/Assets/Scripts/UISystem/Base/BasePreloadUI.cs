@@ -19,6 +19,6 @@ public abstract class BasePreloadUI<T> : MonoBehaviour where T : BasePreloadUI<T
 
     public void UpdateCanvasScaler()
     {
-		ProjectManager.Instance.UI.SetUIScaler(this.m_canvasScaler);
+		UIManager.Instance.SetUIScaler(this.m_canvasScaler);
     }
 }

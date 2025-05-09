@@ -16,7 +16,7 @@ public class Summon
     public Summon(uint summonID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.SummonID = summonID;
-        this.m_data = ProjectManager.Instance.UserData.Summon.GetSummon(this.SummonID);
+        this.m_data = UserDataManager.Instance.Summon.GetSummon(this.SummonID);
         this.Skill = new Skill(this.m_data.SkillID, funcGetStatus);
     }
 
@@ -35,18 +35,18 @@ public class Summon
         this.Skill.UseSkill(this.m_data.StatDefault, this.m_data.StatAdditional);
 
         //룬 효과 있으면 사용
-        if(ProjectManager.Instance.UserData.Summon.IsEquipRune(this.SummonID, (uint)TableData.TableRune.eID.Comfort) == true) this.doRune(TableData.TableRune.eID.Comfort);
+        if(UserDataManager.Instance.Summon.IsEquipRune(this.SummonID, (uint)TableData.TableRune.eID.Comfort) == true) this.doRune(TableData.TableRune.eID.Comfort);
     }
 
     private void doRune(TableData.TableRune.eID eRuneID)
     {
-        var value = ProjectManager.Instance.Table.Rune.GetData((uint)eRuneID).value;
+        var value = TableManager.Instance.Rune.GetData((uint)eRuneID).value;
         switch(eRuneID)
         {
             case TableData.TableRune.eID.Comfort:
             {
                 //유저 캐릭터 힐~
-                ProjectManager.Instance.BattleScene?.User_Heal(new stDamage((int)value));
+                SceneManager.Instance.GetCurrScene<BattleScene>().User_Heal(new stDamage((int)value));
             }
             break;
         }

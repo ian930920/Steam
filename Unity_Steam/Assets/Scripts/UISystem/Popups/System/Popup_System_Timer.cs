@@ -11,7 +11,7 @@ public class Popup_System_Timer : Popup_System
     {
         base.OpenPopup(nOreder, funcClose);
 
-        ProjectManager.Instance.ObjectPool.PlayEffectSound(BaseSound.eID.Error);
+        ObjectPoolManager.Instance.PlayEffectSound(BaseSound.eID.Error);
 
         StopAllCoroutines();
         StartCoroutine("coTimer");

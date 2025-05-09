@@ -10,8 +10,8 @@ public class Popup_RuneInfo : BasePopup
 
     public void SetRuneInfo(uint runeID, Vector3 vecPos)
     {
-        this.m_textTitle.text = ProjectManager.Instance.Table.Rune.GetString_Title(runeID);
-        this.m_textDesc.text = ProjectManager.Instance.Table.Rune.GetString_Desc(runeID);
+        this.m_textTitle.text = TableManager.Instance.Rune.GetString_Title(runeID);
+        this.m_textDesc.text = TableManager.Instance.Rune.GetString_Desc(runeID);
 
         this.m_gobjPopup.transform.position = vecPos;
     }

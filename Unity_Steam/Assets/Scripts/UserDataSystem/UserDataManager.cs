@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
-using static Unity.Collections.Unicode;
 
-public class UserDataManager : BaseManager<UserDataManager>
+public class UserDataManager : BaseSingleton<UserDataManager>
 {
     public enum eID
     {
@@ -34,10 +33,14 @@ public class UserDataManager : BaseManager<UserDataManager>
     public string BuildVersion { get; set; }
     public string PatchVersion { get; set; }
 
-    protected override void init()
+    public override void Initialize()
     {
-        //this.Account.LoadClientData();
-        this.LoadClientData();
+        //필수
+        if(base.IsInitialized == true) return;
+
+        this.loadClientData();
+
+        base.IsInitialized = true;
     }
 
     public override void ResetManager()
@@ -49,7 +52,7 @@ public class UserDataManager : BaseManager<UserDataManager>
         }
     }
 
-    public void LoadClientData()
+    private void loadClientData()
     {
         Dictionary<eID, BaseUserData>.Enumerator enumUser = this.m_dicUser.GetEnumerator();
         while(enumUser.MoveNext())
@@ -132,14 +135,14 @@ public class UserDataManager : BaseManager<UserDataManager>
         //없는 아이템이면 못씀
         if(this.Inventory.IsContainsItem(itemID) == false)
         {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 없다!");
+            UIManager.Instance.PopupSystem.OpenSystemTimerPopup("아이템 없다!");
             return false;
         }
 
         //갖고 있는 것보다 적으면 못씀
         if(this.Inventory.IsUseable(itemID, nUseCount) == false)
         {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("아이템 모자라다!");
+            UIManager.Instance.PopupSystem.OpenSystemTimerPopup("아이템 모자라다!");
             return false;
         }
 
@@ -162,7 +165,7 @@ public class UserDataManager : BaseManager<UserDataManager>
     {
         if(this.IsUseableItem(stItemInfo) == true) return true;
 
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup($"{stItemInfo.ItemID} 부족 +STR");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup($"{stItemInfo.ItemID} 부족 +STR");
         return false;
     }
 
@@ -187,7 +190,7 @@ public class UserDataManager : BaseManager<UserDataManager>
             case TableData.TableItem.eID.Dia:
             {
                 //강화 가능한지 확인
-                //EX) UIManager.Instance.HUD?.SetNew(ePOPUP_ID.Upgrade, ProjectManager.Instance.Table.UpgradeAbility.IsUpgradeable());
+                //EX) UIManager.Instance.HUD?.SetNew(ePOPUP_ID.Upgrade, TableManager.Instance.UpgradeAbility.IsUpgradeable());
             }
             break;
         }

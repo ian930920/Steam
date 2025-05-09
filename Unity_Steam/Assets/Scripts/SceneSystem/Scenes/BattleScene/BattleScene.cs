@@ -21,9 +21,6 @@ public class BattleScene : BaseScene
     {
         base.OnSceneStart();
 
-        //세팅~
-        ProjectManager.Instance.InitInBattleScene();
-
         //스테이지 리셋
         this.resetStage();
     }
@@ -52,23 +49,40 @@ public class BattleScene : BaseScene
         this.m_teamUser.InitStage();
 
         //적 세팅
-        this.m_teamEnemy.InitStage(5);
+        this.m_teamEnemy.InitStage(1);
     }
 
     public void StageWin()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemPopup("승리!");
+        //우리팀 마무리
+        this.m_teamUser.BattleFinish();
 
-        //스테이지 리셋
-        this.resetStage();
+        //적팀 마무리
+        this.m_teamEnemy.BattleFinish();
+
+        UIManager.Instance.PopupSystem.OpenSystemPopup("승리!", () =>
+        {
+            //TODO 다음 스탭으로
+            //일단 마을로 보내기
+            UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+        });
     }
 
     public void StageDefeat()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemPopup("패배!");
+        //적팀 마무리
+        this.m_teamEnemy.BattleFinish();
 
-        //스테이지 리셋
-        this.resetStage();
+        //세션 끝남 ㅠ
+        UserDataManager.Instance.Session.FinishSession();
+
+        UIManager.Instance.PopupSystem.OpenSystemPopup("패배!", () =>
+        {
+            //타이틀로 돌아가기..
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Title);
+        });
+
     }
     #endregion
 

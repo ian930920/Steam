@@ -16,15 +16,15 @@ public class UI_DefaultSummonInfo : MonoBehaviour
 
     public void Refresh(uint summonID)
     {
-        this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
+        this.m_imgChar.sprite = TableManager.Instance.Summon.GetSprite(summonID);
 
-        var dataSummon = ProjectManager.Instance.Table.Summon.GetData(summonID);
+        var dataSummon = TableManager.Instance.Summon.GetData(summonID);
 
-        this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
-        this.m_textSkillName.text = ProjectManager.Instance.Table.Skill.GetString_Title(dataSummon.skillID);
-        this.m_textSkillDesc.text = ProjectManager.Instance.Table.Summon.GetString_SkillDesc(dataSummon.tableID);
+        this.m_textSummonName.text = TableManager.Instance.String.GetString(dataSummon.strID);
+        this.m_textSkillName.text = TableManager.Instance.Skill.GetString_Title(dataSummon.skillID);
+        this.m_textSkillDesc.text = TableManager.Instance.Summon.GetString_SkillDesc(dataSummon.tableID);
 
-        var dataSkill = ProjectManager.Instance.Table.Skill.GetData(dataSummon.skillID);
+        var dataSkill = TableManager.Instance.Skill.GetData(dataSummon.skillID);
         this.m_uiSkillTurn.RefreshTurn(dataSkill.cooldown, true);
 
         this.m_uiCostInfo.Init(dataSummon.cost);

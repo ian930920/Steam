@@ -34,7 +34,7 @@ public class PopupSystem
 
     private void createPopup(uint popupID)
     {
-        GameObject gobjPopup = ProjectManager.Instance.Resource.InstantiatePopup(popupID, ProjectManager.Instance.transform);
+        GameObject gobjPopup = ResourceManager.Instance.InstantiatePopup(popupID, ProjectManager.Instance.transform);
         this.m_dicPopup.Add(popupID, gobjPopup.GetComponent<BasePopup>());
         this.m_dicPopup[popupID].InitPopup();
     }
@@ -189,7 +189,7 @@ public class PopupSystem
     #region System
     public void OpenSystemPopup(TableData.TableString.eID eStringID, UnityAction onClosed = null)
     {
-        this.OpenSystemPopup(ProjectManager.Instance.Table.String.GetString(eStringID), onClosed);
+        this.OpenSystemPopup(TableManager.Instance.String.GetString(eStringID), onClosed);
     }
 
     public void OpenSystemPopup(string strDesc, UnityAction onClosed = null)
@@ -199,7 +199,7 @@ public class PopupSystem
 
     public void OpenSystemConfirmPopup(TableData.TableString.eID eStringID, UnityAction onConfirm, UnityAction onClose = null)
     {
-        this.OpenSystemConfirmPopup(ProjectManager.Instance.Table.String.GetString((uint)eStringID), onConfirm, onClose);
+        this.OpenSystemConfirmPopup(TableManager.Instance.String.GetString((uint)eStringID), onConfirm, onClose);
     }
 
     public void OpenSystemConfirmPopup(string strDesc, UnityAction onConfirm, UnityAction onClose = null)
@@ -209,7 +209,7 @@ public class PopupSystem
 
     public void OpenSystemTimerPopup(TableData.TableString.eID eStringID, UnityAction onClosed = null)
     {
-        this.OpenAndGetPopup<Popup_System_Timer>(ePOPUP_ID.System_Timer, onClosed).SetDescription(ProjectManager.Instance.Table.String.GetString(eStringID));
+        this.OpenAndGetPopup<Popup_System_Timer>(ePOPUP_ID.System_Timer, onClosed).SetDescription(TableManager.Instance.String.GetString(eStringID));
     }
 
     public void OpenSystemTimerPopup(string strDesc, UnityAction onClosed = null)

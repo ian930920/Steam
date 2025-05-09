@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 
-public class QueueActionSystem : MonoBehaviour
+public class QueueActionSystem
 {
     private Queue<UnityAction> m_queueAction = new Queue<UnityAction>();
 
@@ -18,10 +17,10 @@ public class QueueActionSystem : MonoBehaviour
 
     public void DoQueueAction()
     {
-        //ÇÒ °Å ¾øÀ¸¸é ¤¤¤¤
+        //í•  ê±° ì—†ìœ¼ë©´ ã„´ã„´
         if(this.m_queueAction.Count == 0) return;
 
-        //»©¼­ ¹Ù·Î ½ÇÇà
+        //ë¹¼ì„œ ë°”ë¡œ ì‹¤í–‰
         this.m_queueAction.Dequeue().Invoke();
     }
 }

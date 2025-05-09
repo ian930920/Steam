@@ -49,6 +49,6 @@ public class UI_Battle_SummonGroup : MonoBehaviour
         this.m_arrSlot[this.SelectedIdx].SetSelect(true);
 
         //유저 스킬 저장
-        ProjectManager.Instance.BattleScene?.User_SelectSkill();
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_SelectSkill();
     }
 }

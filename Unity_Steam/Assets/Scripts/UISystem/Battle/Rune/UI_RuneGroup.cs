@@ -7,8 +7,8 @@ public class UI_RuneGroup : MonoBehaviour
 
     public void Init(uint summonID, bool isDefault)
     {
-        var maxRune = ProjectManager.Instance.Table.Summon.GetData(summonID).maxRune;
-        var listRune = ProjectManager.Instance.UserData.Summon.GetRuneList(summonID);
+        var maxRune = TableManager.Instance.Summon.GetData(summonID).maxRune;
+        var listRune = UserDataManager.Instance.Summon.GetRuneList(summonID);
         for(int i = 0, nMax = this.m_arrSlot.Length; i < nMax; ++i)
         {
             if(i >= maxRune)

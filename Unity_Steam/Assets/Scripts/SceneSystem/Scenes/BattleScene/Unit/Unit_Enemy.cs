@@ -10,7 +10,7 @@ public class Unit_Enemy : BaseUnit
     public override void Init(uint charID)
     {
         //이미지
-        base.m_renderer.sprite = ProjectManager.Instance.Table.Enemy.GetSprite(charID);
+        base.m_renderer.sprite = TableManager.Instance.Enemy.GetSprite(charID);
 
         //기본 스탯 및 스킬 설정
         this.initStat(charID);
@@ -22,13 +22,13 @@ public class Unit_Enemy : BaseUnit
     protected override void initStatusBar()
     {
         //캐릭터 상태바 세팅
-        if(base.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_Unit_StatusBar);
+        if(base.m_uiStatusBar == null) this.m_uiStatusBar = ObjectPoolManager.Instance.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_Unit_StatusBar);
         base.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
     }
 
     protected override void initStat(uint charID)
     {
-        var dataEnemy = ProjectManager.Instance.Table.Enemy.GetData(charID);
+        var dataEnemy = TableManager.Instance.Enemy.GetData(charID);
         base.DefaultStat.Reset();
         base.DefaultStat.SetStat(Stat_Character.eTYPE.HP, dataEnemy.hp);
         base.DefaultStat.SetStat(Stat_Character.eTYPE.Strength, dataEnemy.strength);
@@ -67,7 +67,7 @@ public class Unit_Enemy : BaseUnit
     protected override void setTarget()
     {
         //스킬타입에 따른 타겟 설정
-        var targetType = ProjectManager.Instance.Table.Skill.GetTargetType(this.CurrSkill.SkillID);
+        var targetType = TableManager.Instance.Skill.GetTargetType(this.CurrSkill.SkillID);
         switch(targetType)
         {
             case TableData.TableSkill.eTARGET_TYPE.Self:
@@ -81,13 +81,13 @@ public class Unit_Enemy : BaseUnit
             case TableData.TableSkill.eTARGET_TYPE.Enemy_Random_2:
             case TableData.TableSkill.eTARGET_TYPE.Enemy_All:
             {
-                this.AddTarget(ProjectManager.Instance.BattleScene.UnitUser);
+                this.AddTarget(SceneManager.Instance.GetCurrScene<BattleScene>().UnitUser);
             }
             break;
 
             default:
             {
-                var listTarget = ProjectManager.Instance.BattleScene?.Enemy_GetTargetList(targetType);
+                var listTarget = SceneManager.Instance.GetCurrScene<BattleScene>().Enemy_GetTargetList(targetType);
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
                     this.AddTarget(listTarget[i]);
@@ -102,15 +102,15 @@ public class Unit_Enemy : BaseUnit
         base.death();
 
         //지우기
-        ProjectManager.Instance.BattleScene?.Enemy_RemoveChar(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().Enemy_RemoveChar(this);
     }
 
     private void OnMouseUp()
     {
-        if(ProjectManager.Instance.BattleScene?.IsUserTurn == false) return;
-        if(ProjectManager.Instance.BattleScene?.IsUserClickable == false) return;
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsUserTurn == false) return;
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsUserClickable == false) return;
 
         //타겟 저장
-        ProjectManager.Instance.BattleScene?.User_AddTarget(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_AddTarget(this);
     }
 }

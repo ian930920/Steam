@@ -20,7 +20,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return "없는 스킬";
 
-            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID);
+            return TableManager.Instance.String.GetString(base.GetData(tableID).strID);
         }
 
         public string GetString_Desc(uint tableID)
@@ -28,14 +28,14 @@ namespace TableData
             if(base.ContainsKey(tableID) == false) return "없는 스킬";
 
             TableData_Rune data = base.GetData(tableID);
-            return string.Format(ProjectManager.Instance.Table.String.GetString(data.strID, TableString.eTYPE.Description), data.value);
+            return string.Format(TableManager.Instance.String.GetString(data.strID, TableString.eTYPE.Description), data.value);
         }
 
         public Sprite GetIcon(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strIcon);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strIcon);
         }
     }
 

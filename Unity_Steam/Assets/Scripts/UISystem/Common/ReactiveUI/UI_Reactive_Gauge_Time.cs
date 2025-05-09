@@ -44,7 +44,7 @@ public class UI_Reactive_Gauge_Time : UI_Reactive
             this.Gauge = (float)(dRemainTime * dMul);
             
             dRemainTime = this.m_stTime.funcGetRemainTime.Invoke();
-            dOneSec += ProjectManager.Instance.Time.DeltaTime;
+            dOneSec += TimeManager.Instance.DeltaTime;
 
             yield return null;
 

@@ -18,7 +18,6 @@ public class DebugModeSystem : MonoBehaviour
 
         this.m_gobjLunarConsole.SetActive(true);
 
-        //TODO UIManager
-        //UIManager.Instance.PopupSystem.OpenSystemTimerPopup("DebugMode On");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("DebugMode On");
     }
 }

@@ -10,7 +10,7 @@ namespace TableData
             if(base.ContainsKey(tableID) == false) return null;
 
             TableData_SummonObj data = base.GetData(tableID);
-            return ProjectManager.Instance.Resource.GetSprite(data.resID, data.strSprite);
+            return ResourceManager.Instance.GetSprite(data.resID, data.strSprite);
         }
     }
 

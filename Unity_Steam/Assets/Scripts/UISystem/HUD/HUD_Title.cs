@@ -14,12 +14,12 @@ public class HUD_Title : BaseHUD
 
     public void OnGameStartClicked()
     {
-        ProjectManager.Instance.Scene.GetCurrScene<TitleScene>().CheckSession();
+        SceneManager.Instance.GetCurrScene<TitleScene>().CheckSession();
     }
 
     public void OnOptionClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
     }
 
     public void OnQuitClicked()

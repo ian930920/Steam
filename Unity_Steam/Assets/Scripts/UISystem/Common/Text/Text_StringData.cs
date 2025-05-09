@@ -13,7 +13,7 @@ public class Text_StringData : MonoBehaviour
     public void Init()
     {
         if(this.m_text == null) this.m_text = this.GetComponent<TextMeshProUGUI>();
-        this.m_text.text = ProjectManager.Instance.Table.String.GetString(this.m_eStringID);
+        this.m_text.text = TableManager.Instance.String.GetString(this.m_eStringID);
         if(this.m_isIngoreSizeControl == false) Utility_UI.SetTextRectTransformWidth(this.m_text);
     }
 }

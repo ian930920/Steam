@@ -14,12 +14,12 @@ public class Fx_Particle_Item : Fx_Particle
         {
             this.m_nItemID = nItemID;
             //TODO
-            //this.m_renderer.material = ProjectManager.Instance.Resource.GetMaterialByItemID(nItemID);
+            //this.m_renderer.material = ResourceManager.Instance.GetMaterialByItemID(nItemID);
         }
         
         //TODO Sound 사운드 재생
-        //if(TableData.TableItem.IsGold(nItemID) == true) ProjectManager.Instance.ObjectPool.PlayEffectSound(BaseSound.eID.ItemDrop, 0.3f);
-        //else ProjectManager.Instance.ObjectPool.PlayEffectSound(BaseSound.eID.ItemDrop_Special);
+        //if(TableData.TableItem.IsGold(nItemID) == true) ObjectPoolManager.Instance.PlayEffectSound(BaseSound.eID.ItemDrop, 0.3f);
+        //else ObjectPoolManager.Instance.PlayEffectSound(BaseSound.eID.ItemDrop_Special);
 
         base.Play(vecPos);
     }

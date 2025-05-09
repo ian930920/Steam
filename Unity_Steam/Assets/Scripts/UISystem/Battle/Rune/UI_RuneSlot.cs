@@ -10,7 +10,7 @@ public class UI_RuneSlot : MonoBehaviour
     public void Init(uint runeID)
     {
         this.m_runeID = runeID;
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Rune.GetIcon(this.m_runeID);
+        this.m_imgIcon.sprite = TableManager.Instance.Rune.GetIcon(this.m_runeID);
         this.m_imgIcon.enabled = true;
     }
 
@@ -21,11 +21,11 @@ public class UI_RuneSlot : MonoBehaviour
 
     public void OnDetailClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenRuneInfoPopup(this.m_runeID, this.transform.position);
+        UIManager.Instance.PopupSystem.OpenRuneInfoPopup(this.m_runeID, this.transform.position);
     }
 
     public void CloseDetail()
     {
-        ProjectManager.Instance.UI.PopupSystem.ClosePopup(ePOPUP_ID.RuneInfo);
+        UIManager.Instance.PopupSystem.ClosePopup(ePOPUP_ID.RuneInfo);
     }
 }

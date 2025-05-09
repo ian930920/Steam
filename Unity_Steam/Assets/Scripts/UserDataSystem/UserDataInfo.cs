@@ -104,7 +104,7 @@ abstract public class UserData<D> : BaseUserData where D : BaseJsonData, new()
 	public override async void SaveFirestoreData()
 	{
 		//TODO Firebase
-		//if(ProjectManager.Instance.UserData.Account.IsLinkedFirebase == false) return;
+		//if(UserDataManager.Instance.Account.IsLinkedFirebase == false) return;
 		if(this.Data == null) return;
 
 		//TODO Firebase

@@ -22,7 +22,7 @@ public abstract class UI_Reactive : MonoBehaviour
         }
 
         //TODO
-        //this.transform.SetParent(ProjectManager.Instance.UI.HUD?.ReactiveGroup.GetTransformByMode(eMode));
+        //this.transform.SetParent(UIManager.Instance.HUD?.ReactiveGroup.GetTransformByMode(eMode));
     }
 
     virtual public void InactiveUI()

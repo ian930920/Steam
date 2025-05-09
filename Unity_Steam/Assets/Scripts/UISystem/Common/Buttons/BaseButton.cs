@@ -42,7 +42,7 @@ public class BaseButton : MonoBehaviour
         if(this.m_eventOnClicked == null) return;
 
         //소리 재생
-        ProjectManager.Instance.ObjectPool.PlayEffectSound(BaseSound.eID.Btn_Click);
+        ObjectPoolManager.Instance.PlayEffectSound(BaseSound.eID.Btn_Click);
 
         this.m_eventOnClicked.Invoke();
     }

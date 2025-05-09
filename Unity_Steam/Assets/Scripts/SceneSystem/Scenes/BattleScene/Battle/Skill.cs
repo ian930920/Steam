@@ -17,7 +17,7 @@ public class Skill
     public Skill(uint skillID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.SkillID = skillID;
-        this.m_data = ProjectManager.Instance.Table.Skill.GetData(this.SkillID);
+        this.m_data = TableManager.Instance.Skill.GetData(this.SkillID);
         this.m_funcGetStatus = funcGetStatus;
     }
 
@@ -37,7 +37,7 @@ public class Skill
     private bool isTargetAddable()
     {
         int nTargetCount = 0;
-        switch(ProjectManager.Instance.Table.Skill.GetTargetType(this.SkillID))
+        switch(TableManager.Instance.Skill.GetTargetType(this.SkillID))
         {
             case TableData.TableSkill.eTARGET_TYPE.Self:
             case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
@@ -72,7 +72,7 @@ public class Skill
         this.RemainTurn--;
 
         //슬롯 갱신
-        ProjectManager.Instance.BattleScene?.HUD.RefreshSummonGroupUI();
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
     private bool isHit(Stat_Additional statAdditional)
@@ -107,7 +107,7 @@ public class Skill
 
     public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
     {
-        stDamage stDamage = new stDamage(ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, statDefault, statAdditional));
+        stDamage stDamage = new stDamage(TableManager.Instance.Skill.GetDefaultDamage(this.SkillID, statDefault, statAdditional));
 
         if(this.isCritical(statAdditional) == true)
         {
@@ -134,8 +134,8 @@ public class Skill
                 for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
                 {
                     var target = this.m_listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.Damaged(this.GetResultDamage(statDefault, statAdditional)));
+                    SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.Damaged(this.GetResultDamage(statDefault, statAdditional)));
                 }
             }
             break;
@@ -145,8 +145,8 @@ public class Skill
                 for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
                 {
                     var target = this.m_listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.Heal(this.GetResultDamage(statDefault, statAdditional)));
+                    SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.Heal(this.GetResultDamage(statDefault, statAdditional)));
                 }
             }
             break;
@@ -157,8 +157,8 @@ public class Skill
                 for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
                 {
                     var target = this.m_listTarget[i];
-                    ProjectManager.Instance.BattleScene.AddTurnEvent(target);
-                    ProjectManager.Instance.ObjectPool.PlayEffect(this.m_data.resID, target.transform.position, () => target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value));
+                    SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value));
                 }
             }
             break;
@@ -166,8 +166,8 @@ public class Skill
             case TableData.TableSkill.eTYPE.Summon:
             {
                 //TODO 생성!
-                //ProjectManager.Instance.BattleScene?.User_AddSummonObj(1001, new Stat_Default(stDamage.Value, 0, 0, this.m_data.dur));
-                ProjectManager.Instance.BattleScene.ChangeTurn();
+                //SceneManager.Instance.GetCurrScene<BattleScene>().User_AddSummonObj(1001, new Stat_Default(stDamage.Value, 0, 0, this.m_data.dur));
+                SceneManager.Instance.GetCurrScene<BattleScene>().ChangeTurn();
             }
             break;
         }
@@ -195,7 +195,7 @@ public class Skill
                 {
                     case stStatus.eTARGET_TYPE.User:
                     {
-                        ProjectManager.Instance.BattleScene?.UnitUser.AddStatus(enumStatus.Current.Key, status.Turn);
+                        SceneManager.Instance.GetCurrScene<BattleScene>().UnitUser.AddStatus(enumStatus.Current.Key, status.Turn);
                     }
                     break;
                     case stStatus.eTARGET_TYPE.Enemy:
@@ -208,7 +208,7 @@ public class Skill
                     break;
                     case stStatus.eTARGET_TYPE.EnemyAll:
                     {
-                        var listTarget = ProjectManager.Instance.BattleScene?.Enemy_GetTargetList(TableData.TableSkill.eTARGET_TYPE.Enemy_All);
+                        var listTarget = SceneManager.Instance.GetCurrScene<BattleScene>().Enemy_GetTargetList(TableData.TableSkill.eTARGET_TYPE.Enemy_All);
                         for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                         {
                             listTarget[i].AddStatus(enumStatus.Current.Key, status.Turn);

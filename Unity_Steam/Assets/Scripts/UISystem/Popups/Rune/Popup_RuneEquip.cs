@@ -45,7 +45,7 @@ public class Popup_RuneEquip : ScrollPopup
 
     public void SetSummon(uint summonID)
     {
-        this.m_summonData = new UserData_Summon.MySummon(ProjectManager.Instance.UserData.Summon.GetSummon(summonID));
+        this.m_summonData = new UserData_Summon.MySummon(UserDataManager.Instance.Summon.GetSummon(summonID));
 
         this.setDefaultInfo();
 
@@ -59,20 +59,20 @@ public class Popup_RuneEquip : ScrollPopup
     private void setDefaultInfo()
     {
         uint summonID = this.m_summonData.SummonID;
-        this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
+        this.m_imgChar.sprite = TableManager.Instance.Summon.GetSprite(summonID);
 
-        var dataSummon = ProjectManager.Instance.Table.Summon.GetData(summonID);
+        var dataSummon = TableManager.Instance.Summon.GetData(summonID);
 
-        this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
+        this.m_textSummonName.text = TableManager.Instance.String.GetString(dataSummon.strID);
         
-        this.m_textSkillName.text = ProjectManager.Instance.Table.Skill.GetString_Title(dataSummon.skillID);
+        this.m_textSkillName.text = TableManager.Instance.Skill.GetString_Title(dataSummon.skillID);
     }
 
     private void refreshStatInfo()
     {
-        this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(this.m_summonData.SkillID, this.m_summonData.Damage);
+        this.m_textSkillDesc.text = TableManager.Instance.Skill.GetString_Desc(this.m_summonData.SkillID, this.m_summonData.Damage);
 
-        var defaultCooldown = ProjectManager.Instance.Table.Skill.GetData(this.m_summonData.SkillID).cooldown;
+        var defaultCooldown = TableManager.Instance.Skill.GetData(this.m_summonData.SkillID).cooldown;
         var addCooldown = this.m_summonData.StatAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
         this.m_uiSkillTurn.RefreshTurn((int)(Mathf.Clamp(defaultCooldown - addCooldown, 0, defaultCooldown)), true);
         this.m_uiSkillTurn.SetTextColor(this.m_summonData.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));
@@ -85,8 +85,8 @@ public class Popup_RuneEquip : ScrollPopup
 
     private void refreshRuneInfo()
     {
-        this.m_textRuneName.text = ProjectManager.Instance.Table.Rune.GetString_Title(this.m_currRune.RuneID);
-        this.m_textRuneDesc.text = ProjectManager.Instance.Table.Rune.GetString_Desc(this.m_currRune.RuneID);
+        this.m_textRuneName.text = TableManager.Instance.Rune.GetString_Title(this.m_currRune.RuneID);
+        this.m_textRuneDesc.text = TableManager.Instance.Rune.GetString_Desc(this.m_currRune.RuneID);
 
         //장착 버튼
         this.refreshBtn();
@@ -95,7 +95,7 @@ public class Popup_RuneEquip : ScrollPopup
     private void refreshBtn()
     {
         //장착중인지 확인
-        var rune = ProjectManager.Instance.UserData.Inventory.GetRune(this.m_currRune.UniqueRuneID);
+        var rune = UserDataManager.Instance.Inventory.GetRune(this.m_currRune.UniqueRuneID);
         this.m_arrBtn[(int)eBTN.Equip].SetActive(rune.SummonID == 0);
         this.m_arrBtn[(int)eBTN.Unequip].SetActive(rune.SummonID != 0);
         this.m_arrBtn[(int)eBTN.Change].SetActive(rune.SummonID != 0);
@@ -104,7 +104,7 @@ public class Popup_RuneEquip : ScrollPopup
 
     private void refreshSummonData()
     {
-        this.m_summonData = new UserData_Summon.MySummon(ProjectManager.Instance.UserData.Summon.GetSummon(this.SummonID));
+        this.m_summonData = new UserData_Summon.MySummon(UserDataManager.Instance.Summon.GetSummon(this.SummonID));
         this.refreshStatInfo();
 
         this.m_uiRuneGroup.Init(this.m_summonData.SummonID, false);
@@ -119,7 +119,7 @@ public class Popup_RuneEquip : ScrollPopup
     {
         if(this.m_currRune != null && this.m_currRune.UniqueRuneID == rune.UniqueRuneID) return;
 
-        var orgSummon = ProjectManager.Instance.UserData.Summon.GetSummon(this.SummonID);
+        var orgSummon = UserDataManager.Instance.Summon.GetSummon(this.SummonID);
 
         //이전에 장착한 룬 삭제
         if(this.m_currRune != null && orgSummon.ListRune.Any(data => data.UniqueRuneID == this.m_currRune.UniqueRuneID) == false) this.m_summonData.RemoveRune(this.m_currRune);
@@ -147,20 +147,20 @@ public class Popup_RuneEquip : ScrollPopup
     public void OnEquipClicked()
     {
         //장착 가능 개수 확인
-        if(ProjectManager.Instance.UserData.Summon.GetSummon(this.SummonID).IsRuneMax == true)
+        if(UserDataManager.Instance.Summon.GetSummon(this.SummonID).IsRuneMax == true)
         {
-            ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("룬이 가득찼습니다");
+            UIManager.Instance.PopupSystem.OpenSystemTimerPopup("룬이 가득찼습니다");
             return;
         }
 
-        ProjectManager.Instance.UserData.EquipRune(this.SummonID, this.m_currRune);
+        UserDataManager.Instance.EquipRune(this.SummonID, this.m_currRune);
 
         this.refreshSummonData();
     }
 
     public void OnUnequipClicked()
     {
-        ProjectManager.Instance.UserData.UnequipRune(this.SummonID, this.m_currRune);
+        UserDataManager.Instance.UnequipRune(this.SummonID, this.m_currRune);
 
         this.refreshSummonData();
     }
@@ -169,7 +169,7 @@ public class Popup_RuneEquip : ScrollPopup
     {
         if(this.m_csbtnChange.State == UIManager.eUI_BUTTON_STATE.Inactive) return;
 
-        ProjectManager.Instance.UserData.ChangeRune(this.SummonID, this.m_currRune);
+        UserDataManager.Instance.ChangeRune(this.SummonID, this.m_currRune);
 
         this.refreshSummonData();
     }
@@ -179,6 +179,6 @@ public class Popup_RuneEquip : ScrollPopup
         base.OnCloseClicked();
 
         //내 정령 팝업 열려있다면 갱신
-        ProjectManager.Instance.UI.PopupSystem.RefreshPopup(ePOPUP_ID.Summon);
+        UIManager.Instance.PopupSystem.RefreshPopup(ePOPUP_ID.Summon);
     }
 }

@@ -13,7 +13,7 @@ public class Popup_System : BasePopup
     /*
     public void SetDescription(eSTRING_ID eStringID)
     {
-        this.SetDescription(ProjectManager.Instance.Table.String.GetString(eStringID));
+        this.SetDescription(TableManager.Instance.String.GetString(eStringID));
     }
     */
 

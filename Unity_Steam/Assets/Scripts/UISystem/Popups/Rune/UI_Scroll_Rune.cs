@@ -6,7 +6,7 @@ public class UI_Scroll_Rune : ScrollGroupUI<Item_Rune, ScrollGroup_Rune>
     {
         base.UpdateData();
 
-        base.m_listData = ProjectManager.Instance.UserData.Inventory.GetRuneList().OrderBy(data => this.sort(data)).ToList();
+        base.m_listData = UserDataManager.Instance.Inventory.GetRuneList().OrderBy(data => this.sort(data)).ToList();
     }
 
     public Item_Rune GetFirstRune()
@@ -18,7 +18,7 @@ public class UI_Scroll_Rune : ScrollGroupUI<Item_Rune, ScrollGroup_Rune>
 
     private int sort(Item_Rune data)
     {
-        if(data.SummonID == ProjectManager.Instance.UI.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).SummonID) return 0;
+        if(data.SummonID == UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).SummonID) return 0;
         if(data.SummonID != 0) return 1;
 
         return 2;

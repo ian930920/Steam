@@ -30,24 +30,24 @@ public abstract class BaseHUD : MonoBehaviour
 
     public virtual void Init()
     {
-        ProjectManager.Instance.UI.SetUIScaler(this.GetComponent<CanvasScaler>());
+        UIManager.Instance.SetUIScaler(this.GetComponent<CanvasScaler>());
 
 		//모든 버튼 가져와서 세팅
-		BaseButton[] arrBtn = this.GetComponentsInChildren<BaseButton>(true);
+		var arrBtn = this.GetComponentsInChildren<BaseButton>(true);
 		for(int i = 0; i < arrBtn.Length; ++i)
         {
 			arrBtn[i].InitButton();
         }
 
         //String 세팅
-        Text_StringData[] arrString = this.GetComponentsInChildren<Text_StringData>(true);
+        var arrString = this.GetComponentsInChildren<Text_StringData>(true);
         for(int i = 0; i < arrString.Length; ++i)
         {
             arrString[i].Init();
         }
 
         //New들 가져오기
-        UI_New[] arrNew = this.GetComponentsInChildren<UI_New>(true);
+        var arrNew = this.GetComponentsInChildren<UI_New>(true);
         for(int i = 0, nMax = arrNew.Length; i < nMax; ++i)
         {
             this.m_dicNew.Add(arrNew[i].PopupID, arrNew[i]);

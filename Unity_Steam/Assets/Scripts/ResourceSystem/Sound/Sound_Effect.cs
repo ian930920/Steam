@@ -8,6 +8,6 @@ public class Sound_Effect : MonoBehaviour
     
     public void PlaySound()
     {
-        ProjectManager.Instance.ObjectPool.PlayEffectSound(this.m_eSoundID);
+        ObjectPoolManager.Instance.PlayEffectSound(this.m_eSoundID);
     }
 }

@@ -13,8 +13,8 @@ public class BaseTableData<T, D> : MonoBehaviour where T : BaseTableData<T, D>  
         {
             if(s_instance == null)
             {
-                s_instance = ProjectManager.Instance.Table.GameObject.GetComponent<T>();
-                if(s_instance == null) s_instance = ProjectManager.Instance.Table.GameObject.AddComponent<T>();
+                s_instance = TableManager.Instance.Parent.GetComponent<T>();
+                if(s_instance == null) s_instance = TableManager.Instance.Parent.AddComponent<T>();
             }
             return s_instance;
         }

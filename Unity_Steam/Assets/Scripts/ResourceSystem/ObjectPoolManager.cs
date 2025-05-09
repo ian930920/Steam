@@ -2,11 +2,9 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.GraphicsBuffer;
-using Unity.VisualScripting;
 using DamageNumbersPro;
 
-public class ObjectPoolManager : BaseManager<ObjectPoolManager>
+public class ObjectPoolManager : BaseSingleton<ObjectPoolManager>
 {
     public static readonly int CONST_OBJECTPOOL_ADD = 10;
     public static readonly string STR_NAME_OBJECTPOOL = "Panel_ObjectPool";
@@ -49,14 +47,19 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
         }
     }
 
-    protected override void init()
+    public override void Initialize()
     {
+        //필수
+        if(base.IsInitialized == true) return;
+
         this.GobjParent = new GameObject(STR_NAME_OBJECTPOOL);
-        this.GobjParent.transform.SetParent(ProjectManager.Instance.transform);
+        this.GobjParent.transform.SetParent(this.transform);
 
         this.m_gobjSound = new GameObject(STR_NAME_SOUND);
         this.m_gobjSound.transform.SetParent(this.GobjParent.transform);
         this.m_opSound = new ObjectPool(ResourceManager.PATH_ANI_AUDIOSORCE, CONST_OBJECTPOOL_ADD, this.m_gobjSound.transform);
+
+        base.IsInitialized = true;
     }
 
     public override void ResetManager()
@@ -80,11 +83,11 @@ public class ObjectPoolManager : BaseManager<ObjectPoolManager>
     private void loadByTable()
     {
         //EX) transParent
-        Transform transRootGobj = ProjectManager.Instance.Scene.CurrScene.TransRootObjectPool;
-        Transform transRootUI = ProjectManager.Instance.Scene.CurrScene.BaseHUD.TransReactiveParent;
+        Transform transRootGobj = SceneManager.Instance.CurrScene.TransRootObjectPool;
+        Transform transRootUI = SceneManager.Instance.CurrScene.BaseHUD.TransReactiveParent;
 
         TableData.TableData_ObjectPool data = null;
-        Dictionary<uint, TableData.TableData_ObjectPool>.Enumerator enumData = ProjectManager.Instance.Table.ObjectPool.GetEnumerator();
+        Dictionary<uint, TableData.TableData_ObjectPool>.Enumerator enumData = TableManager.Instance.ObjectPool.GetEnumerator();
         while(enumData.MoveNext())
         {
             data = enumData.Current.Value;
@@ -294,7 +297,7 @@ public class ObjectPool
 
         //Panel생성
         if(transParent != null) this.m_transParent = transParent;
-        else this.m_transParent = ProjectManager.Instance.ObjectPool.GobjParent.transform;
+        else this.m_transParent = ObjectPoolManager.Instance.GobjParent.transform;
 
         //미리생성
         this.addObject(nCount);

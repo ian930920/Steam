@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TableData;
 
-public class TableManager : BaseManager<TableManager>
+public class TableManager : BaseSingleton<TableManager>
 {
 	private static readonly string STR_PATH_TABLE = "Tables";
-	public GameObject GameObject { private set; get; } = null;
+	public GameObject Parent { private set; get; } = null;
 
 #region 테이블
     public TableString String { get; private set; } = null;
@@ -25,13 +25,19 @@ public class TableManager : BaseManager<TableManager>
 	public TableRune Rune { get; private set; } = null;
 	#endregion
 
-	protected override void init()
+	public override void Initialize()
     {
-		if(this.GameObject == null)
+        //필수
+        if(base.IsInitialized == true) return;
+
+        if(this.Parent == null)
 		{
-			this.GameObject = new GameObject(STR_PATH_TABLE);
-			DontDestroyOnLoad(this.GameObject);
+			this.Parent = new GameObject(STR_PATH_TABLE);
+			this.Parent.transform.SetParent(this.transform);
+			DontDestroyOnLoad(this.Parent);
 		}
+
+        base.IsInitialized = true;
     }
 
     public void LoadClientTables()

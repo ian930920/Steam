@@ -14,7 +14,7 @@ public class UI_Battle_SummonInfo : MonoBehaviour
 
         //스킬에 상태이상이있다면 활성화
         int nStatusIdx = 0;
-        var skillStatus = ProjectManager.Instance.Table.Skill.GetDataBySummonID(summonID).listStatusID;
+        var skillStatus = TableManager.Instance.Skill.GetDataBySummonID(summonID).listStatusID;
         for(int i = nStatusIdx, nMax = skillStatus.Count; i < nMax; ++i)
         {
             this.m_arrStatusInfo[i].SetStatusInfo(skillStatus[i]);
@@ -22,7 +22,7 @@ public class UI_Battle_SummonInfo : MonoBehaviour
 
         //룬에 상태이상이있다면 활성화
         nStatusIdx = skillStatus.Count;
-        var summonRuneStatus = ProjectManager.Instance.UserData.Summon.GetSummon(summonID).StatAdditional.DicStatus.Keys.ToArray();
+        var summonRuneStatus = UserDataManager.Instance.Summon.GetSummon(summonID).StatAdditional.DicStatus.Keys.ToArray();
         for(int i = 0, nMax = summonRuneStatus.Length; i < nMax; ++i)
         {
             this.m_arrStatusInfo[i + nStatusIdx].SetStatusInfo(summonRuneStatus[i]);

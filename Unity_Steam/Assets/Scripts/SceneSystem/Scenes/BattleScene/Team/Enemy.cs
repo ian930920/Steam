@@ -18,7 +18,7 @@ public class Enemy : Team
         //TODO 스테이지 데이터로
         for(int i = 0; i < nCount; ++i)
         {
-            this.m_listChar.Add(ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<Unit_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
+            this.m_listChar.Add(ObjectPoolManager.Instance.GetPoolObjectComponent<Unit_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
             this.m_listChar[i].transform.SetParent(this.m_arrTransParent[i]);
             this.m_listChar[i].Init((uint)(TableData.TableEnemy.eID.Enemy_1 + i));
         }
@@ -31,6 +31,15 @@ public class Enemy : Team
             this.m_listChar[i].gameObject.SetActive(false);
         }
         this.m_listChar.Clear();
+    }
+
+    public override void BattleFinish()
+    {
+        //모든 공격 멈추기
+        for(int i = 0, nMax = this.m_listChar.Count; i < nMax; ++i)
+        {
+            this.m_listChar[i].StopAllCoroutines();
+        }
     }
 
     public override void TurnStart()
@@ -83,7 +92,7 @@ public class Enemy : Team
 
         this.m_listChar.Remove(charEnemy);
 
-        if(this.m_listChar.Count == 0) ProjectManager.Instance.BattleScene?.StageWin();
+        if(this.m_listChar.Count == 0) SceneManager.Instance.GetCurrScene<BattleScene>().StageWin();
     }
 
     public List<Unit_Enemy> GetTargetList(TableData.TableSkill.eTARGET_TYPE eTarget)

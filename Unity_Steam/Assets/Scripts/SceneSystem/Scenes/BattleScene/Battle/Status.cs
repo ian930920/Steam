@@ -57,7 +57,7 @@ public class Status
 
     public void DoStatus(BaseUnit character)
     {
-        float fValue = ProjectManager.Instance.Table.Status.GetValue(this.eStatusID);
+        float fValue = TableManager.Instance.Status.GetValue(this.eStatusID);
         switch(eStatusID)
         {
             case TableData.TableStatus.eID.Burn:

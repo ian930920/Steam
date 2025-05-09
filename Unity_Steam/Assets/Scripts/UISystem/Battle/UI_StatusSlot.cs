@@ -14,7 +14,7 @@ public class UI_StatusSlot : MonoBehaviour
         this.gameObject.SetActive(true);
 
         this.m_statusID = statusID;
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Status.GetIcon(statusID);
+        this.m_imgIcon.sprite = TableManager.Instance.Status.GetIcon(statusID);
     }
 
     /// <summary>
@@ -33,11 +33,11 @@ public class UI_StatusSlot : MonoBehaviour
 
     public void OnClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenStatusInfoPopup(this.m_statusID, this.transform.position);
+        UIManager.Instance.PopupSystem.OpenStatusInfoPopup(this.m_statusID, this.transform.position);
     }
 
     public void OnClickEnd()
     {
-        ProjectManager.Instance.UI.PopupSystem.ClosePopup(ePOPUP_ID.StatusInfo);
+        UIManager.Instance.PopupSystem.ClosePopup(ePOPUP_ID.StatusInfo);
     }
 }

@@ -16,15 +16,15 @@ public class UI_MySummonInfo : MonoBehaviour
 
     public void Refresh(uint summonID)
     {
-        var dataSummon = ProjectManager.Instance.Table.Summon.GetData(summonID);
-        var userSummon = ProjectManager.Instance.UserData.Summon.GetSummon(summonID);
+        var dataSummon = TableManager.Instance.Summon.GetData(summonID);
+        var userSummon = UserDataManager.Instance.Summon.GetSummon(summonID);
 
-        this.m_imgChar.sprite = ProjectManager.Instance.Table.Summon.GetSprite(summonID);
+        this.m_imgChar.sprite = TableManager.Instance.Summon.GetSprite(summonID);
 
-        this.m_textSummonName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
+        this.m_textSummonName.text = TableManager.Instance.String.GetString(dataSummon.strID);
         
-        this.m_textSkillName.text = ProjectManager.Instance.Table.Skill.GetString_Title(dataSummon.skillID);
-        this.m_textSkillDesc.text = ProjectManager.Instance.Table.Skill.GetString_Desc(dataSummon.skillID, userSummon.Damage);
+        this.m_textSkillName.text = TableManager.Instance.Skill.GetString_Title(dataSummon.skillID);
+        this.m_textSkillDesc.text = TableManager.Instance.Skill.GetString_Desc(dataSummon.skillID, userSummon.Damage);
 
         this.m_uiSkillTurn.RefreshTurn(userSummon.Cooldown, true);
         this.m_uiSkillTurn.SetTextColor(userSummon.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));

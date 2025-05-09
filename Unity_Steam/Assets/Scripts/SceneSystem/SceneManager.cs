@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneManager : BaseManager<SceneManager>
+public class SceneManager : BaseSingleton<SceneManager>
 {
     public enum eSCENE_ID
     {
@@ -30,10 +30,15 @@ public class SceneManager : BaseManager<SceneManager>
 
     private UI_SceneFade m_fadeSystem = null;
 
-    protected override void init()
+    public override void Initialize()
     {
+        //필수
+        if(base.IsInitialized == true) return;
+
         this.m_fadeSystem = UI_SceneFade.Init(this.transform, UI_SceneFade.STR_PATH_FADE);
         this.m_fadeSystem.UpdateCanvasScaler();
+
+        base.IsInitialized = true;
     }
 
     public void SetCurrScene(BaseScene crrScene)

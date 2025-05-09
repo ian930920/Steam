@@ -13,21 +13,21 @@ public class ScrollGroupSlot_Rune : BaseSlot<Item_Rune>
     {
         base.RefreshSlot(rune);
 
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Rune.GetIcon(base.Data.RuneID);
+        this.m_imgIcon.sprite = TableManager.Instance.Rune.GetIcon(base.Data.RuneID);
 
         this.m_gobjEquiped.SetActive(base.Data.SummonID != 0);
         if(this.m_gobjEquiped.activeSelf == true)
         {
-            var dataSummon = ProjectManager.Instance.Table.Summon.GetData(base.Data.SummonID);
-            this.m_textName.text = ProjectManager.Instance.Table.String.GetString(dataSummon.strID);
+            var dataSummon = TableManager.Instance.Summon.GetData(base.Data.SummonID);
+            this.m_textName.text = TableManager.Instance.String.GetString(dataSummon.strID);
         }
 
-        bool isSelected = ProjectManager.Instance.UI.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).IsSelectedRune(base.Data.UniqueRuneID);
+        bool isSelected = UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).IsSelectedRune(base.Data.UniqueRuneID);
         this.m_gobjSelected.SetActive(isSelected);
     }
 
     public void OnClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data);
+        UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data);
     }
 }

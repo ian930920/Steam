@@ -11,12 +11,12 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		public uint SkillID => this.m_data.skillID;
 
 		public List<Item_Rune> ListRune { get; private set; } = new List<Item_Rune>();
-		public bool IsRuneMax => this.ListRune.Count == ProjectManager.Instance.Table.Summon.GetData(this.SummonID).maxRune;
+		public bool IsRuneMax => this.ListRune.Count == TableManager.Instance.Summon.GetData(this.SummonID).maxRune;
 
 		public Stat_Character StatDefault { get; private set; } = new Stat_Character();
 		public Stat_Additional StatAdditional { get; private set; } = new Stat_Additional();
-		public int Damage => ProjectManager.Instance.Table.Skill.GetDefaultDamage(this.SkillID, this.StatDefault, this.StatAdditional);
-		public int Cooldown => ProjectManager.Instance.Table.Skill.GetCooldownTurn(this.SkillID, this.StatAdditional);
+		public int Damage => TableManager.Instance.Skill.GetDefaultDamage(this.SkillID, this.StatDefault, this.StatAdditional);
+		public int Cooldown => TableManager.Instance.Skill.GetCooldownTurn(this.SkillID, this.StatAdditional);
 
 		public MySummon() { }
 
@@ -24,7 +24,7 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		public MySummon(uint summonID)
 		{
 			this.SummonID = summonID;
-			this.m_data = ProjectManager.Instance.Table.Summon.GetData(this.SummonID);
+			this.m_data = TableManager.Instance.Summon.GetData(this.SummonID);
 
 			this.StatDefault.Reset();
 			this.StatDefault.SetStat(Stat_Character.eTYPE.Strength, 1);
@@ -45,7 +45,7 @@ public class UserData_Summon : UserData<JsonData_Summon>
 		public MySummon(MySummon org)
 		{
 			this.SummonID = org.SummonID;
-			this.m_data = ProjectManager.Instance.Table.Summon.GetData(this.SummonID);
+			this.m_data = TableManager.Instance.Summon.GetData(this.SummonID);
 
 			this.StatDefault = new Stat_Character(org.StatDefault);
 			this.StatAdditional = new Stat_Additional(org.StatAdditional);
@@ -73,7 +73,7 @@ public class UserData_Summon : UserData<JsonData_Summon>
 
 		private void addRuneStat(uint runeID)
 		{
-			var data = ProjectManager.Instance.Table.Rune.GetData(runeID);
+			var data = TableManager.Instance.Rune.GetData(runeID);
 			switch((TableData.TableRune.eID)runeID)
 			{
 				case TableData.TableRune.eID.Anger:
@@ -135,7 +135,7 @@ public class UserData_Summon : UserData<JsonData_Summon>
 
 		private void removeRuneStat(uint runeID)
 		{
-			var data = ProjectManager.Instance.Table.Rune.GetData(runeID);
+			var data = TableManager.Instance.Rune.GetData(runeID);
 			switch((TableData.TableRune.eID)runeID)
 			{
 				case TableData.TableRune.eID.Anger:
@@ -265,7 +265,7 @@ public class UserData_Summon : UserData<JsonData_Summon>
 #region Debug
 	public void Debug_AddSummon()
 	{
-		var enumData = ProjectManager.Instance.Table.Summon.GetEnumerator();
+		var enumData = TableManager.Instance.Summon.GetEnumerator();
 		while(enumData.MoveNext())
         {
 			this.AddSummon(enumData.Current.Key);

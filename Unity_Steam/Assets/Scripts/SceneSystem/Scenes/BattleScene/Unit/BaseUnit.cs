@@ -103,7 +103,7 @@ public abstract class BaseUnit : MonoBehaviour
     public void Damaged(stDamage stDamage)
     {
         //턴끝
-        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
 
         if(this.gameObject.activeSelf == false)
         {
@@ -115,7 +115,7 @@ public abstract class BaseUnit : MonoBehaviour
 
         if(stDamage.Value < 1)
         {
-            ProjectManager.Instance.ObjectPool.PlayCountEffectByUlong(stDamage, this.transform.position);
+            ObjectPoolManager.Instance.PlayCountEffectByUlong(stDamage, this.transform.position);
             return;
         }
 
@@ -137,7 +137,7 @@ public abstract class BaseUnit : MonoBehaviour
         }
 
         //데미지
-        ProjectManager.Instance.ObjectPool.PlayCountEffect_Damage(stDamage, this.transform.position);
+        ObjectPoolManager.Instance.PlayCountEffect_Damage(stDamage, this.transform.position);
         
         //피격 애니
         this.playAnim(eSTATE.Damaged);
@@ -149,7 +149,7 @@ public abstract class BaseUnit : MonoBehaviour
     public void Heal(stDamage stDamage)
     {
         //턴끝
-        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
 
         if(this.gameObject.activeSelf == false)
         {
@@ -162,7 +162,7 @@ public abstract class BaseUnit : MonoBehaviour
         var currHP = this.CurrStat.GetStat(Stat_Character.eTYPE.HP);
         this.CurrStat.SetStat(Stat_Character.eTYPE.HP, Mathf.Clamp(stDamage.Value + currHP, currHP, this.DefaultStat.GetStat(Stat_Character.eTYPE.HP)));
         this.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP));
-        ProjectManager.Instance.ObjectPool.PlayCountEffect_Heal(stDamage, this.transform.position);
+        ObjectPoolManager.Instance.PlayCountEffect_Heal(stDamage, this.transform.position);
     }
 
     public void AddShield(int value)
@@ -171,7 +171,7 @@ public abstract class BaseUnit : MonoBehaviour
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, shield);
 
         //턴끝
-        ProjectManager.Instance.BattleScene.RemoveTurnEvent(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
     }
 
     public void ResetShield()
@@ -192,6 +192,11 @@ public abstract class BaseUnit : MonoBehaviour
         }
 
         this.m_uiStatusBar.UpdateStatus(statusID, this.m_dicStatus[statusID].RemainTurn);
+    }
+
+    public List<Status> GetStatusToList()
+    {
+        return this.m_dicStatus.Values.ToList();
     }
 
     protected virtual void death()
@@ -219,7 +224,7 @@ public abstract class BaseUnit : MonoBehaviour
     protected void resetMana()
     {
         this.CurrStat.SetStat(Stat_Character.eTYPE.Mana, this.DefaultStat.GetStat(Stat_Character.eTYPE.Mana));
-        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(this.CurrStat.GetStat(Stat_Character.eTYPE.Mana));
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshMana(this.CurrStat.GetStat(Stat_Character.eTYPE.Mana));
     }
 
     public void AddMana(int cost)
@@ -228,15 +233,15 @@ public abstract class BaseUnit : MonoBehaviour
         this.CurrStat.SetStat(Stat_Character.eTYPE.Mana, mana);
         if(this.CurrStat.GetStat(Stat_Character.eTYPE.Mana) > this.DefaultStat.GetStat(Stat_Character.eTYPE.Mana))
         {
-            ProjectManager.Instance.BattleScene?.HUD.SetMaxMana(mana);
+            SceneManager.Instance.GetCurrScene<BattleScene>().HUD.SetMaxMana(mana);
         }
-        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(mana);
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshMana(mana);
     }
 
     public void UseMana(int cost)
     {
         var mana = this.CurrStat.GetStat(Stat_Character.eTYPE.Mana) - cost;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Mana, mana);
-        ProjectManager.Instance.BattleScene?.HUD.RefreshMana(mana);
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshMana(mana);
     }
 }

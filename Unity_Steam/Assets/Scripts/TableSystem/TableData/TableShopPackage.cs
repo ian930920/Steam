@@ -53,7 +53,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return $"{tableID} 없는 상품 ㅠ";
 
-            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID);
+            return TableManager.Instance.String.GetString(base.GetData(tableID).strID);
         }
 
         public bool IsActiveShop(uint tableID)

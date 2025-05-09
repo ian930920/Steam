@@ -1,3 +1,4 @@
+using TableData;
 using UnityEngine;
 
 public class Unit_User : BaseUnit
@@ -5,7 +6,7 @@ public class Unit_User : BaseUnit
     public override void Init(uint charID)
     {
         //이미지
-        base.m_renderer.sprite = ProjectManager.Instance.Table.User.GetSprite(charID);
+        base.m_renderer.sprite = TableManager.Instance.User.GetSprite(charID);
 
         //기본 스탯 설정
         this.initStat(charID);
@@ -17,20 +18,22 @@ public class Unit_User : BaseUnit
     protected override void initStatusBar()
     {
         //캐릭터 상태바 세팅
-        if(base.m_uiStatusBar == null) this.m_uiStatusBar = ProjectManager.Instance.ObjectPool.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_User_StatusBar);
+        if(base.m_uiStatusBar == null) this.m_uiStatusBar = ObjectPoolManager.Instance.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_User_StatusBar);
         base.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
     }
 
     protected override void initStat(uint charID)
     {
-        base.DefaultStat = new Stat_Character(ProjectManager.Instance.UserData.Session.DefaultStat);
+        //기본 스탯
+		var dataChar = TableManager.Instance.User.GetData((int)TableUser.eID.User);
+        base.DefaultStat.Reset();
+        base.DefaultStat.SetStat(Stat_Character.eTYPE.HP, dataChar.hp);
+        base.DefaultStat.SetStat(Stat_Character.eTYPE.Mana, dataChar.maxMana);
 
-        base.CurrStat.Reset();
-        base.CurrStat.SetStat(Stat_Character.eTYPE.HP, base.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
-        base.CurrStat.SetStat(Stat_Character.eTYPE.Mana, base.DefaultStat.GetStat(Stat_Character.eTYPE.Mana));
+        base.CurrStat = new Stat_Character(UserDataManager.Instance.Session.DefaultStat);
         
         //HUD 세팅
-        ProjectManager.Instance.BattleScene?.HUD.SetMaxMana(base.CurrStat.GetStat(Stat_Character.eTYPE.Mana));
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.SetMaxMana(base.CurrStat.GetStat(Stat_Character.eTYPE.Mana));
     }
 
     public bool IsFinishTurn()
@@ -49,14 +52,14 @@ public class Unit_User : BaseUnit
         base.death();
 
         //패배
-        ProjectManager.Instance.BattleScene?.StageDefeat();
+        SceneManager.Instance.GetCurrScene<BattleScene>().StageDefeat();
     }
 
     public override void SetMyTurn()
     {
         base.SetMyTurn();
 
-        ProjectManager.Instance.BattleScene?.User_SetClickable(true);
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
 
         //마나 채우기
         base.resetMana();
@@ -65,7 +68,7 @@ public class Unit_User : BaseUnit
     protected override void setTarget()
     {
         //스킬타입에 따른 타겟 설정
-        var targetType = ProjectManager.Instance.Table.Skill.GetTargetType(base.CurrSkill.SkillID);
+        var targetType = TableManager.Instance.Skill.GetTargetType(base.CurrSkill.SkillID);
         switch(targetType)
         {
             case TableData.TableSkill.eTARGET_TYPE.Enemy_Select_1:
@@ -90,7 +93,7 @@ public class Unit_User : BaseUnit
 
             default:
             {
-                var listTarget = ProjectManager.Instance.BattleScene?.Enemy_GetTargetList(targetType);
+                var listTarget = SceneManager.Instance.GetCurrScene<BattleScene>().Enemy_GetTargetList(targetType);
                 for(int i = 0, nMax = listTarget.Count; i < nMax; ++i)
                 {
                     this.AddTarget(listTarget[i]);
@@ -102,11 +105,11 @@ public class Unit_User : BaseUnit
 
     private void OnMouseUp()
     {
-        if(ProjectManager.Instance.BattleScene?.IsUserTurn == false) return;
-        if(ProjectManager.Instance.BattleScene?.IsUserClickable == false) return;
-        if(ProjectManager.Instance.Table.Skill.IsFriendlyTarget(base.CurrSkill.SkillID) == false) return;
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsUserTurn == false) return;
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsUserClickable == false) return;
+        if(TableManager.Instance.Skill.IsFriendlyTarget(base.CurrSkill.SkillID) == false) return;
 
         //타겟 저장
-        ProjectManager.Instance.BattleScene?.User_AddTarget(this);
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_AddTarget(this);
     }
 }

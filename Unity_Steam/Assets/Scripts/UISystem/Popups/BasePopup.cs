@@ -28,7 +28,7 @@ abstract public class BasePopup : MonoBehaviour
 		this.m_canvas = this.GetComponent<Canvas>();
 		this.m_canvas.enabled = false;
 
-		ProjectManager.Instance.UI.SetUIScaler(this.GetComponent<CanvasScaler>());
+		UIManager.Instance.SetUIScaler(this.GetComponent<CanvasScaler>());
 
 		//모든 버튼 가져와서 세팅
 		var arrBtn = this.GetComponentsInChildren<BaseButton>(true);
@@ -59,7 +59,7 @@ abstract public class BasePopup : MonoBehaviour
 		this.m_funcOnCloseClicked = funcClose;
 
 		//소리
-		if(this.m_isOpenSound == true) ProjectManager.Instance.ObjectPool.PlayEffectSound(BaseSound.eID.Popup_Open);
+		if(this.m_isOpenSound == true) ObjectPoolManager.Instance.PlayEffectSound(BaseSound.eID.Popup_Open);
 
 		return this;
 	}
@@ -71,7 +71,7 @@ abstract public class BasePopup : MonoBehaviour
 		if(this.IsOpen == false) return false;
 
 		//UI 매니저에 알리기
-		ProjectManager.Instance.UI.PopupSystem.RemovePopup(this.m_ePopupID);
+		UIManager.Instance.PopupSystem.RemovePopup(this.m_ePopupID);
 
 		//애니 실행
 		this.m_canvas.enabled = false;

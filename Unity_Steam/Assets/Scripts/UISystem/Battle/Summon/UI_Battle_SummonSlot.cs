@@ -21,7 +21,7 @@ public class UI_Battle_SummonSlot : MonoBehaviour
         this.SetSelect(false);
         this.gameObject.SetActive(true);
 
-        this.m_imgIcon.sprite = ProjectManager.Instance.Table.Summon.GetIcon(this.Summon.SummonID);
+        this.m_imgIcon.sprite = TableManager.Instance.Summon.GetIcon(this.Summon.SummonID);
 
         this.RefreshSlot();
     }
@@ -45,11 +45,11 @@ public class UI_Battle_SummonSlot : MonoBehaviour
 
     public void OpenSummonInfo()
     {
-        ProjectManager.Instance.BattleScene?.HUD.OpenSummonInfo(this.Summon.SummonID);
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.OpenSummonInfo(this.Summon.SummonID);
     }
 
     public void CloseSummonInfo()
     {
-        ProjectManager.Instance.BattleScene?.HUD.CloseSummonInfo();
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.CloseSummonInfo();
     }
 }

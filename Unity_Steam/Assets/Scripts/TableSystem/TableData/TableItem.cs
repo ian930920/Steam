@@ -38,7 +38,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return $"없는 애이템인데요 {tableID}";
 
-            return ProjectManager.Instance.Table.String.GetString(base.GetData(tableID).strID, eStringType);
+            return TableManager.Instance.String.GetString(base.GetData(tableID).strID, eStringType);
         }
 
         public string GetString_ItemCount(stItem stItem)
@@ -52,7 +52,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).iconName);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).iconName);
         }
     }
 
@@ -74,7 +74,7 @@ public struct stItem
     public uint ItemID;
     public uint Count;
 
-    public TableData.TableItem.eINVEN_TYPE InvenType => ProjectManager.Instance.Table.Item.GetInvenType(this.ItemID);
+    public TableData.TableItem.eINVEN_TYPE InvenType => TableManager.Instance.Item.GetInvenType(this.ItemID);
 
     public stItem(uint tableID)
     {

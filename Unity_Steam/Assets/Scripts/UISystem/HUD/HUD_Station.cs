@@ -16,26 +16,32 @@ public class HUD_Station : BaseHUD
 
     public void OnInventoryClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 가방 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 가방 팝업");
     }
 
     public void OnMySummonClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenPopup(ePOPUP_ID.Summon);
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.Summon);
     }
 
     public void OnOptionClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
     }
 
     public void OnShopClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 상점 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 상점 팝업");
     }
 
     public void OnRouteClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenSystemTimerPopup("TODO 루트 선택 팝업");
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 루트 선택 팝업");
+
+        //TODO 루트 선택 팝업
+
+        //TODO Delete
+        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Battle);
+        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Battle);
     }
 }

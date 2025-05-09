@@ -33,7 +33,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 	public bool IsContainsItem(uint itemID)
     {
 		//인벤에 있는지 확인
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		int nInvenType = (int)TableManager.Instance.Item.GetInvenType(itemID);
 		if(base.Data.DicInventory.ContainsKey(nInvenType) == false) return false;
 
 		return base.Data.DicInventory[nInvenType].ContainsKey(itemID);
@@ -58,7 +58,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
     {
 		if(this.IsContainsItem(itemID) == false) return 0;
 
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		int nInvenType = (int)TableManager.Instance.Item.GetInvenType(itemID);
 		return base.Data.DicInventory[nInvenType][itemID];
     }
 
@@ -76,7 +76,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 
     public void AddItem(uint itemID, uint nCount)
     {
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		int nInvenType = (int)TableManager.Instance.Item.GetInvenType(itemID);
 		if(this.IsContainsItem(itemID) == false)
 		{
 			if(base.Data.DicInventory.ContainsKey(nInvenType) == false) base.Data.DicInventory.Add(nInvenType, new Dictionary<uint, uint>());
@@ -93,7 +93,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		//0이면 할 필요 없음
 		if(nCount == 0) return;
 
-		int nInvenType = (int)ProjectManager.Instance.Table.Item.GetInvenType(itemID);
+		int nInvenType = (int)TableManager.Instance.Item.GetInvenType(itemID);
 
 		uint nResult = base.Data.DicInventory[nInvenType][itemID] - nCount;
 		base.Data.DicInventory[nInvenType][itemID] = nResult;
@@ -154,7 +154,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 #region Debug
 	public void Debug_AddRune()
 	{
-		var enumData = ProjectManager.Instance.Table.Rune.GetEnumerator();
+		var enumData = TableManager.Instance.Rune.GetEnumerator();
 		while(enumData.MoveNext())
 		{
 			this.AddRune(enumData.Current.Key);

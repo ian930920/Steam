@@ -20,7 +20,7 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
         }
     }
 

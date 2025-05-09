@@ -30,28 +30,28 @@ public class UI_Debug : MonoBehaviour
 #region TitleScene
     public void AddSummon()
     {
-        ProjectManager.Instance.UserData.Summon.Debug_AddSummon();
+        UserDataManager.Instance.Summon.Debug_AddSummon();
     }
 
     public void RemoveSummon()
     {
-        ProjectManager.Instance.UserData.Summon.Debug_RemoveSummon();
+        UserDataManager.Instance.Summon.Debug_RemoveSummon();
     }
 
     public void AddRune()
     {
-        ProjectManager.Instance.UserData.Inventory.Debug_AddRune();
+        UserDataManager.Instance.Inventory.Debug_AddRune();
     }
 
     public void RemoveRune()
     {
-        ProjectManager.Instance.UserData.Inventory.Debug_RemoveRune();
+        UserDataManager.Instance.Inventory.Debug_RemoveRune();
     }
 
     public void RemoveSummonRune()
     {
-        ProjectManager.Instance.UserData.Inventory.Debug_RemoveRuneSummonID();
-        ProjectManager.Instance.UserData.Summon.Debug_RemoveSummonRune();
+        UserDataManager.Instance.Inventory.Debug_RemoveRuneSummonID();
+        UserDataManager.Instance.Summon.Debug_RemoveSummonRune();
     }
     #endregion
 }

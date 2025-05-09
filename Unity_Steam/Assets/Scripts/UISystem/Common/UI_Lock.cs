@@ -15,7 +15,7 @@ public class UI_Lock : MonoBehaviour
     {
         this.m_nLockID = nLockID;
 
-        this.IsLocked = false;//ProjectManager.Instance.Table.Lock.IsLocked(this.m_nLockID, nTargetID);
+        this.IsLocked = false;//TableManager.Instance.Lock.IsLocked(this.m_nLockID, nTargetID);
 
         this.setActive(this.IsLocked, nTargetID);
     }
@@ -44,7 +44,7 @@ public class UI_Lock : MonoBehaviour
 
         if(isLock == false) return;
 
-        this.m_textDesc.text = ProjectManager.Instance.Table.String.GetString(TableData.TableString.eID.None); //ProjectManager.Instance.Table.Lock.GetString_Title(this.m_nLockID, nTargetID);
+        this.m_textDesc.text = TableManager.Instance.String.GetString(TableData.TableString.eID.None); //TableManager.Instance.Lock.GetString_Title(this.m_nLockID, nTargetID);
     }
 
     public void OnClicked()

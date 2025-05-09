@@ -19,14 +19,14 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strSprite);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strSprite);
         }
 
         public Sprite GetSprite(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ProjectManager.Instance.Resource.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
         }
 
         public List<TableData_Summon> GetRandomList(int nCount)
@@ -38,8 +38,8 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return "없는 정령";
 
-            var dataSkill = ProjectManager.Instance.Table.Skill.GetData(base.GetData(tableID).skillID);
-            return string.Format(ProjectManager.Instance.Table.String.GetString(dataSkill.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(dataSkill.coe), dataSkill.dur);
+            var dataSkill = TableManager.Instance.Skill.GetData(base.GetData(tableID).skillID);
+            return string.Format(TableManager.Instance.String.GetString(dataSkill.strID, TableString.eTYPE.Description), Utility_UI.GetCommaNumber(dataSkill.coe), dataSkill.dur);
         }
     }
 

@@ -13,6 +13,6 @@ public class ScrollItem_Summon : ScrollItem<uint>
 
     public void OnRuneEquipClicked()
     {
-        ProjectManager.Instance.UI.PopupSystem.OpenRuneEquipPopup(base.Data);
+        UIManager.Instance.PopupSystem.OpenRuneEquipPopup(base.Data);
     }
 }

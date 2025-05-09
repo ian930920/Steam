@@ -39,7 +39,7 @@ public class UserData_Time : UserData<JsonData_Time>
 			if(this.m_funcRemoveTimeEvent != null) return;
 
 			//타임 매니저에 등록
-			this.m_funcRemoveTimeEvent = ProjectManager.Instance.Time.AddTimeUpdateEvent(this.updateEvent);
+			this.m_funcRemoveTimeEvent = TimeManager.Instance.AddTimeUpdateEvent(this.updateEvent);
 
 			if(this.IsActive == false) this.onTimeUpdateFinished();
         }
@@ -95,8 +95,8 @@ public class UserData_Time : UserData<JsonData_Time>
 		public override void SetTime(uint timeID, double dRemainTime)
         {
 			base.SetTime(timeID, dRemainTime);
-			this.EndTime = ProjectManager.Instance.Time.CurrDateTime.AddSeconds(dRemainTime);
-			this.RemainTime = (this.EndTime - ProjectManager.Instance.Time.CurrDateTime).TotalSeconds;
+			this.EndTime = TimeManager.Instance.CurrDateTime.AddSeconds(dRemainTime);
+			this.RemainTime = (this.EndTime - TimeManager.Instance.CurrDateTime).TotalSeconds;
 
 			//시간 업데이트 함수 등록
 			base.AddTimeUpdateEvent();
@@ -106,7 +106,7 @@ public class UserData_Time : UserData<JsonData_Time>
         {
 			base.AddTime(timeID, dRemainTime);
 			this.EndTime = this.EndTime.AddSeconds(dRemainTime);
-			this.RemainTime = (this.EndTime - ProjectManager.Instance.Time.CurrDateTime).TotalSeconds;
+			this.RemainTime = (this.EndTime - TimeManager.Instance.CurrDateTime).TotalSeconds;
 
 			//시간 업데이트 함수 등록
 			base.AddTimeUpdateEvent();
@@ -123,7 +123,7 @@ public class UserData_Time : UserData<JsonData_Time>
 
         public void RefreshRemainTime()
         {
-			this.RemainTime = (this.EndTime - ProjectManager.Instance.Time.CurrDateTime).TotalSeconds;
+			this.RemainTime = (this.EndTime - TimeManager.Instance.CurrDateTime).TotalSeconds;
 
 			//끝난 후처리
 			if(this.IsActive == false) base.onTimeUpdateFinished();
@@ -193,7 +193,7 @@ public class UserData_Time : UserData<JsonData_Time>
 
 	private void saveLastUpdateTime()
     {
-		DateTime currTime = ProjectManager.Instance.Time.CurrDateTime;
+		DateTime currTime = TimeManager.Instance.CurrDateTime;
 
 		//저장
 		base.Data.LastUpdateTime = currTime;
@@ -215,7 +215,7 @@ public class UserData_Time : UserData<JsonData_Time>
 	public void SaveOfflineRewardTime()
     {
 		//저장
-		base.Data.OfflineRewardTime = ProjectManager.Instance.Time.CurrDateTime;
+		base.Data.OfflineRewardTime = TimeManager.Instance.CurrDateTime;
 		
 		//저장
 		base.SaveClientData();
@@ -278,7 +278,7 @@ public class UserData_Time : UserData<JsonData_Time>
     {
 		switch(eSaveType)
         {
-            case (int)eSAVE_TYPE.Define: return ProjectManager.Instance.Table.Time.GetType(timeID);
+            case (int)eSAVE_TYPE.Define: return TableManager.Instance.Time.GetType(timeID);
 
             default: return TimeManager.eTYPE.Real;
         }

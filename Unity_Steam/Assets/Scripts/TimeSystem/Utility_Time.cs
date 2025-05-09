@@ -68,9 +68,9 @@ public class Utility_Time
 
         return "";
         //TODO
-        //if(nMin < 1)        return $"{nSec}{ProjectManager.Instance.Table.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Sec)}";
-        //else if(nSec < 1)   return $"{nMin}{ProjectManager.Instance.Table.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Min)}";
-        //else                return $"{nMin}{ProjectManager.Instance.Table.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Min)}{nSec}{ProjectManager.Instance.Table.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Sec)}";
+        //if(nMin < 1)        return $"{nSec}{TableManager.Instance.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Sec)}";
+        //else if(nSec < 1)   return $"{nMin}{TableManager.Instance.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Min)}";
+        //else                return $"{nMin}{TableManager.Instance.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Min)}{nSec}{TableManager.Instance.String.GetString_TimeUnitType(TimeManager.eUNIT_TYPE.Sec)}";
     }
 
     static public string GetCurrTime()

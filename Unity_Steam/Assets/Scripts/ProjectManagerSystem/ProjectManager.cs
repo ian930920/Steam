@@ -1,63 +1,18 @@
-using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
-/// <summary>
-/// 프로젝트에서 사용되는 모든 Manager or System 관리
-/// </summary>
-public class ProjectManager : MonoBehaviour
+public class ProjectManager : BaseSingleton<ProjectManager>
 {
-    //TODO 프로젝트에 Tag 추가 : "ProjectManager" "Scene"
     //TODO 프로젝트 Define에 추가 : DEBUG_LOG
 
-#region Instance
-    //Singleton Ojbect is only Managers
-    static private string s_strGameObjectName = "ProjectManager";
-
-    static readonly private Lazy<ProjectManager> s_instance = new Lazy<ProjectManager>(()=>
-    {
-        ProjectManager instance = FindAnyObjectByType(typeof(ProjectManager)) as ProjectManager;
-        if(instance == null)
-        {
-            GameObject gobj = GameObject.FindGameObjectWithTag(s_strGameObjectName);
-            if(gobj == null)
-            {
-                gobj = new GameObject(s_strGameObjectName);
-                gobj.tag = s_strGameObjectName;
-            }
-            instance = gobj.AddComponent<ProjectManager>();
-        }
-
-        //아직 파괴 안되게 세팅 안됐다면 세팅
-        if(instance.gameObject.scene.name != "DontDestroyOnLoad") DontDestroyOnLoad(instance.gameObject);
-
-        return instance;
-    });
-
-    static public ProjectManager Instance { get { return s_instance.Value; } }
-    #endregion
-
+    //TODO DebugSystem에 옮기기
     [SerializeField] private DebugModeSystem m_systemDebugMode  = null;
     public DebugModeSystem DebugModeSystem => this.m_systemDebugMode;
-    [SerializeField] private QueueActionSystem m_systemQueueAction  = null;
-    public QueueActionSystem QueueActionSystem => this.m_systemQueueAction;
+    public QueueActionSystem QueueActionSystem { get; private set; } = new QueueActionSystem();
 
-#region 무조건 사용하는 System
-    public UIManager UI { private set; get; } = null;
-    public SceneManager Scene { private set; get; } = null;
-    public TableManager Table { private set; get; } = null;
-    public TimeManager Time { private set; get; } = null;
-    public ResourceManager Resource { private set; get; } = null;
-    public ObjectPoolManager ObjectPool { private set; get; } = null;
-    public UserDataManager UserData { private set; get; } = null;
-    #endregion
-
-    //씬 편하게쓰기~
-    public BattleScene BattleScene => this.Scene.GetCurrScene<BattleScene>();
-
-    private void Awake()
+    public override void Initialize()
     {
+        if(base.IsInitialized == true) return;
+
         //프레임 고정
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
@@ -65,28 +20,38 @@ public class ProjectManager : MonoBehaviour
         //슬립모드
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        //항상 초기화 해야하는 Manager or System
-        this.Table = TableManager.Init(this.gameObject);
-        this.Table.LoadClientTables();
+        //테이블 로드
+        TableManager.Instance.LoadClientTables();
 
-        this.UI = UIManager.Init(this.gameObject);
-        this.Scene = SceneManager.Init(this.gameObject);
-        this.Time = TimeManager.Init(this.gameObject);
-        this.Resource = ResourceManager.Init(this.gameObject);
-        this.ObjectPool = ObjectPoolManager.Init(this.gameObject);
-        this.UserData = UserDataManager.Init(this.gameObject);
+        base.IsInitialized = true;
     }
 
-    public void InitInTitleScene()
+    public void InitManagerByScene(SceneManager.eSCENE_ID eSceneID)
     {
-        //타이틀 씬에서만 생성 및 초기화하는 Manager or System
-        this.Resource.LoadResByTable();
-    }
+        switch(eSceneID)
+        {
+            case SceneManager.eSCENE_ID.Title:
+            {
 
-    public void InitInBattleScene()
-    {
-        //메인 씬에서만 생성 및 초기화하는 Manager or System
-        this.ObjectPool.InitObjectPool();
+            }
+            break;
+
+            case SceneManager.eSCENE_ID.Station:
+            {
+
+            }
+            break;
+
+            case SceneManager.eSCENE_ID.Battle:
+            {
+                //전투씬에서만 쓰는 objectPool 세팅
+                ObjectPoolManager.Instance.InitObjectPool();
+            }
+            break;
+
+            case SceneManager.eSCENE_ID.Scenario:
+            break;
+        }
     }
 
     private void Update()
@@ -101,10 +66,10 @@ public class ProjectManager : MonoBehaviour
 		if(Input.GetKeyUp(KeyCode.Escape) == false) return;
 
         //팝업닫기
-        if(this.UI.PopupSystem.AutoClosePopup() == true) return;
+        if(UIManager.Instance.PopupSystem.AutoClosePopup() == true) return;
 
         //종료하시겠습니까? 팝업
-        this.UI.PopupSystem.OpenSystemConfirmPopup("+STR 종료하시겠습니까?", this.QuitGame);
+        UIManager.Instance.PopupSystem.OpenSystemConfirmPopup("종료하시겠습니까?", this.QuitGame);
 	}
 
     /// <summary>
@@ -193,5 +158,5 @@ public class ProjectManager : MonoBehaviour
 #endif
 #endif
     }
-#endregion
+    #endregion
 }

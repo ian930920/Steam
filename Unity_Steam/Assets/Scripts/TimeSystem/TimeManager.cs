@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TimeManager : BaseManager<TimeManager>
+public class TimeManager : BaseSingleton<TimeManager>
 {
     public enum eTYPE
     {
@@ -50,8 +49,11 @@ public class TimeManager : BaseManager<TimeManager>
         }
     }
 
-    protected override void init()
+    public override void Initialize()
     {
+        //필수
+        if(base.IsInitialized == true) return;
+
         this.m_utime = this.gameObject.AddComponent<UTime>();
         this.m_utime.HasConnection(connection =>
         {
@@ -60,6 +62,8 @@ public class TimeManager : BaseManager<TimeManager>
             //지금 시간 저장
             this.GetCurrDateTime();
         });
+
+        base.IsInitialized = true;
     }
 
     public override void ResetManager()

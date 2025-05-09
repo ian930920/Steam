@@ -14,13 +14,13 @@ public class UI_DailyResetTimer : MonoBehaviour
 
         this.m_isInit = true;
         this.refreshResetTimer();
-        ProjectManager.Instance.Time.AddRefreshUIEvent(this.refreshResetTimer);
+        TimeManager.Instance.AddRefreshUIEvent(this.refreshResetTimer);
     }
 
     private void refreshResetTimer()
     {
         if(this.gameObject.activeSelf == false) return;
 
-        this.m_textResetTimer.text = $"+STR 초기화까지 {ProjectManager.Instance.Time.DailyResetTime}";
+        this.m_textResetTimer.text = $"+STR 초기화까지 {TimeManager.Instance.DailyResetTime}";
     }
 }
