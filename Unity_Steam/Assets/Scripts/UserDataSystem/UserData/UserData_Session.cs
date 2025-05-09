@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TableData;
+using Unity.Android.Gradle.Manifest;
 
 public class UserData_Session : UserData<JsonData_Session>
 {
@@ -9,6 +10,7 @@ public class UserData_Session : UserData<JsonData_Session>
 	public bool IsScenarioWatch => base.Data.IsScenarioWatch;
 
 	public Stat_Character DefaultStat => base.Data.CurrStat;
+	public Dictionary<uint, int>.Enumerator EnumDicStatus => base.Data.DicStatus.GetEnumerator();
 
 	protected override void dataProcessing()
 	{

@@ -22,12 +22,39 @@ public class ScrollGroupSlot_Rune : BaseSlot<Item_Rune>
             this.m_textName.text = TableManager.Instance.String.GetString(dataSummon.strID);
         }
 
-        bool isSelected = UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).IsSelectedRune(base.Data.UniqueRuneID);
+        bool isSelected = false;
+        switch(UIManager.Instance.PopupSystem.CurrPopup.PopupID)
+        {
+            case ePOPUP_ID.RuneEquip:
+            {
+                isSelected = UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).IsSelectedRune(base.Data.UniqueRuneID);
+            }
+            break;
+
+            case ePOPUP_ID.Inventory:
+            {
+                isSelected = UIManager.Instance.PopupSystem.GetPopup<Popup_Inventory>(ePOPUP_ID.Inventory).IsSelectedRune(base.Data.UniqueRuneID);
+            }
+            break;
+        }
         this.m_gobjSelected.SetActive(isSelected);
     }
 
     public void OnClicked()
     {
-        UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data);
+        switch(UIManager.Instance.PopupSystem.CurrPopup.PopupID)
+        {
+            case ePOPUP_ID.RuneEquip:
+            {
+                UIManager.Instance.PopupSystem.GetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).EquipRunePreview(base.Data);
+            }
+            break;
+
+            case ePOPUP_ID.Inventory:
+            {
+                UIManager.Instance.PopupSystem.GetPopup<Popup_Inventory>(ePOPUP_ID.Inventory).SelectRune(base.Data);
+            }
+            break;
+        }
     }
 }

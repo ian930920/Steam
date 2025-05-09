@@ -5,16 +5,19 @@ using UnityEngine;
 public class TabGroup : MonoBehaviour
 {
     public int CurrTabIdx { get; private set; } = 0;
-    public int TabCount { get => this.m_arrTab.Length; }
 
     private Button_Tab[] m_arrTab = null;
 
+    [SerializeField] private Color m_colorTextActive = Color.white;
+    [SerializeField] private Color m_colorTextInactive = Color.grey;
+
     public void Init()
     {
-        this.m_arrTab = this.transform.GetComponentsInChildren<Button_Tab>();
+        this.m_arrTab = this.transform.GetComponentsInChildren<Button_Tab>(false);
         for(int i = 0; i < this.m_arrTab.Length; ++i)
         {
             this.m_arrTab[i].InitButton();
+            this.m_arrTab[i].InitTab(this.m_colorTextActive, this.m_colorTextInactive);
 
             //일단 무조건 첫번째 탭 활성화
             this.m_arrTab[i].SetBtnActive(i == 0);
@@ -30,15 +33,5 @@ public class TabGroup : MonoBehaviour
         {
             this.m_arrTab[i].SetBtnActive(i == nTabIdx);
         }
-    }
-
-    public void SetNewImage(int nTabIdx)
-    {
-        this.m_arrTab[nTabIdx].IsNew = true;
-    }
-
-    public Transform GetTabTransform(int nTabIdx)
-    {
-        return this.m_arrTab[nTabIdx].transform;
     }
 }

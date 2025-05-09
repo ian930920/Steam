@@ -9,6 +9,7 @@
   "2003": { "type":2, "poolCount":2, "path":"Prefabs/UI/UI_User_StatusBar"},
   "2004": { "type":2, "poolCount":10, "path":"Prefabs/Effects/Effect_Count"},
   "2005": { "type":2, "poolCount":5, "path":"Prefabs/UI/UI_Unit_StatusBar"},
+  "2006": { "type":2, "poolCount":5, "path":"Prefabs/UI/UI_Dialogue"},
   "3001": { "type":3, "poolCount":10, "path":"Prefabs/Effects/Effect_ItemDrop"},
   "3002": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Defence"},
   "3003": { "type":3, "poolCount":3, "path":"Prefabs/Effects/Effect_Blood"},

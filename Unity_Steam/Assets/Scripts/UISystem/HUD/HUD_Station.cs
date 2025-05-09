@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class HUD_Station : BaseHUD
 {
+    [SerializeField] private UI_RouteSelect m_uiRouteSelect = null;
+
     public override void Init()
     {
         base.Init();
+
+        this.m_uiRouteSelect.gameObject.SetActive(false);
     }
 
     public override void RefreshUI()
@@ -16,7 +20,7 @@ public class HUD_Station : BaseHUD
 
     public void OnInventoryClicked()
     {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 가방 팝업");
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.Inventory);
     }
 
     public void OnMySummonClicked()
@@ -29,19 +33,8 @@ public class HUD_Station : BaseHUD
         UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
     }
 
-    public void OnShopClicked()
+    public void OpenRouteSelect()
     {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 상점 팝업");
-    }
-
-    public void OnRouteClicked()
-    {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 루트 선택 팝업");
-
-        //TODO 루트 선택 팝업
-
-        //TODO Delete
-        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Battle);
-        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Battle);
+        this.m_uiRouteSelect.Open();
     }
 }

@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 3954877561904078789}
   - component: {fileID: 3954877561904078785}
   m_Layer: 0
-  m_Name: Popup_Rune
+  m_Name: Popup_RuneEquip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

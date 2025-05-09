@@ -95,11 +95,10 @@ public class Popup_RuneEquip : ScrollPopup
     private void refreshBtn()
     {
         //장착중인지 확인
-        var rune = UserDataManager.Instance.Inventory.GetRune(this.m_currRune.UniqueRuneID);
-        this.m_arrBtn[(int)eBTN.Equip].SetActive(rune.SummonID == 0);
-        this.m_arrBtn[(int)eBTN.Unequip].SetActive(rune.SummonID != 0);
-        this.m_arrBtn[(int)eBTN.Change].SetActive(rune.SummonID != 0);
-        this.m_csbtnChange.RefreshActive(rune.SummonID != this.SummonID);
+        this.m_arrBtn[(int)eBTN.Equip].SetActive(this.m_currRune.SummonID == 0);
+        this.m_arrBtn[(int)eBTN.Unequip].SetActive(this.m_currRune.SummonID != 0);
+        this.m_arrBtn[(int)eBTN.Change].SetActive(this.m_currRune.SummonID != 0);
+        this.m_csbtnChange.RefreshActive(this.m_currRune.SummonID != this.SummonID);
     }
 
     private void refreshSummonData()

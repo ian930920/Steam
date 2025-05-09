@@ -264,6 +264,15 @@ public class ObjectPoolManager : BaseSingleton<ObjectPoolManager>
         this.playSound(eSoundID, BaseSound.eTYPE.Effect, fVolume);
     }
     #endregion
+
+    public void ActiveDialogue(string strDec, Vector3 vecPos)
+    {
+        uint resKey = (uint)TableData.TableObjectPool.eID.UI_Dialogue;
+        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
+
+        //재생
+        this.m_dicObjectPool[resKey].GetObjectComponent<UI_Dialogue>().Active(strDec, vecPos);
+    }
 }
 
 public class ObjectPool

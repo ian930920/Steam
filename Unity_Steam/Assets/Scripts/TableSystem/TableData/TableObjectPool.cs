@@ -19,6 +19,7 @@ namespace TableData
             UI_User_StatusBar,          //유저 상태바
             Effect_Count,               //카운트
             UI_Unit_StatusBar,          //캐릭터 상태바
+            UI_Dialogue,                //대화 말풍선
 
             Effect_ItemDrop = 3001,     //아이템 드랍 이펙트
             Effect_Defence,             //방어 이펙트

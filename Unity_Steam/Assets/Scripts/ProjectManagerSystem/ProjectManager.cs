@@ -38,7 +38,8 @@ public class ProjectManager : BaseSingleton<ProjectManager>
 
             case SceneManager.eSCENE_ID.Station:
             {
-
+                //전투씬에서만 쓰는 objectPool 세팅
+                ObjectPoolManager.Instance.InitObjectPool();
             }
             break;
 

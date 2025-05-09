@@ -12,6 +12,9 @@ public enum ePOPUP_ID
     SummonSelect = 41001,
     Summon,
     RuneEquip,
+    Inventory,
+    Shop,
+    RouteSelect,
 
     StatusInfo = 42001,
     RuneInfo,
@@ -30,7 +33,7 @@ public class PopupSystem
     private int CurrSortingOrder { get => this.m_listSortingOrder.Count; }
 
     public BasePopup CurrPopup { get; private set; } = null;
-    public bool IsPopupOpen { get => this.CurrPopup != null; }
+    public bool IsAnyPopupOpen { get => this.CurrPopup != null; }
 
     private void createPopup(uint popupID)
     {
