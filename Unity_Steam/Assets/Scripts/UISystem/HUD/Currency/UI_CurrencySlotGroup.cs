@@ -6,8 +6,6 @@ public class UI_CurrencySlotGroup : MonoBehaviour
 {
     private UI_CurrencySlot[] ArrCurrencySlot { get; set; } = null;
 
-    public UI_CurrencySlot GoldSlot { get; private set; } = null;
-
     private void setCurrencySlot()
     {
         this.ArrCurrencySlot = this.transform.GetComponentsInChildren<UI_CurrencySlot>();

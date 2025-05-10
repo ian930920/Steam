@@ -1,21 +1,12 @@
-﻿
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 
 namespace TableData
 {
     public class TableItem : BaseTableData<TableItem, TableData_Item>
     {
-        public enum eINVEN_TYPE
-        {
-            None = 0,
-            Currency,
-        }
-
         public enum eID
 	    {
-            Gold = 101,
+            Ticket = 101,
             Dia,
 	    }
 
@@ -27,54 +18,47 @@ namespace TableData
             return base.GetData(nItemID);
         }
 
-        public eINVEN_TYPE GetInvenType(uint tableID)
-        {
-            if(base.ContainsKey(tableID) == false) return eINVEN_TYPE.None;
-
-		    return (eINVEN_TYPE)base.GetData(tableID).type;
-        }
-
         public string GetString(uint tableID, TableString.eTYPE eStringType = TableString.eTYPE.Title)
         {
-            if(base.ContainsKey(tableID) == false) return $"없는 애이템인데요 {tableID}";
+            if(base.ContainsKey(tableID) == false) return $"@@@ {tableID}는 없는 애이템ㅠㅠ";
 
             return TableManager.Instance.String.GetString(base.GetData(tableID).strID, eStringType);
         }
 
         public string GetString_ItemCount(stItem stItem)
         {
-            if(base.ContainsKey(stItem.ItemID) == false) return $"없는 애이템인데요{stItem.ItemID}";
+            if(base.ContainsKey(stItem.ItemID) == false) return $"@@@ {stItem.ItemID}는 없는 애이템ㅠㅠ";
 
-            return $"{this.GetString(stItem.ItemID)} {Utility_UI.GetCommaNumber(stItem.Count)} +STR 개";
+            switch((eID)stItem.ItemID)
+            {
+                case eID.Ticket:
+                return $"{this.GetString(stItem.ItemID)} {Utility_UI.GetCommaNumber(stItem.Count)}장";
+            }
+
+            return $"{this.GetString(stItem.ItemID)} {Utility_UI.GetCommaNumber(stItem.Count)}개";
         }
 
-        public Sprite GetSprite(uint tableID)
+        public Sprite GetIcon(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).iconName);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strIcon);
         }
     }
 
     public class TableData_Item : iTableData
     {
-        //tableID type resID strIcon strID grade material shortcutID
+        //tableID strIcon strID
         public uint tableID { get; set; }
-        public int type { get; set; }
-        public uint resID { get; set; }
-        public string iconName { get; set; }
+        public string strIcon { get; set; }
         public uint strID { get; set; }
-        public int material { get; set; }
-        public uint shortcutID { get; set; }
     }
 }
 
 public struct stItem
 {
     public uint ItemID;
-    public uint Count;
-
-    public TableData.TableItem.eINVEN_TYPE InvenType => TableManager.Instance.Item.GetInvenType(this.ItemID);
+    public int Count;
 
     public stItem(uint tableID)
     {
@@ -88,13 +72,13 @@ public struct stItem
         this.Count = 0;
     }
 
-    public stItem(uint nItemID, uint nCount)
+    public stItem(uint nItemID, int nCount)
     {
         this.ItemID = nItemID;
         this.Count = nCount;
     }
 
-    public stItem(TableData.TableItem.eID eItemID, uint nCount)
+    public stItem(TableData.TableItem.eID eItemID, int nCount)
     {
         this.ItemID = (uint)eItemID;
         this.Count = nCount;

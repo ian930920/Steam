@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TableData
@@ -36,6 +39,11 @@ namespace TableData
             if(base.ContainsKey(tableID) == false) return null;
 
             return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strIcon);
+        }
+
+        public List<TableData_Rune> GetRandomList(int nCount)
+        {
+            return base.m_listData.OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
         }
     }
 

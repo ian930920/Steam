@@ -63,11 +63,8 @@ public class Popup_SummonSelect : BasePopup
         }
         else
         {
-            //저장하고
-            UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
-
-            //역으로 이동~
-            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+            //시나리오로 넘기기
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
         }
     }
 

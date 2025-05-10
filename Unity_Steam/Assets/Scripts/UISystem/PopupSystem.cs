@@ -13,7 +13,7 @@ public enum ePOPUP_ID
     Summon,
     RuneEquip,
     Inventory,
-    Shop,
+    StationShop,
     RouteSelect,
 
     StatusInfo = 42001,

@@ -33,22 +33,21 @@ public class TitleScene : BaseScene
 
     public void CheckSession()
     {
-        //진행중인 세션이있다면
-        if(UserDataManager.Instance.Session.IsSessionStart == true)
+        if(UserDataManager.Instance.Summon.SummonCount < 3) //진행중인 세션이 없다면
+        {
+            //세션 시작했다고 저장하고
+            UserDataManager.Instance.StartSession();
+
+            //소환수 선택
+            UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+        }
+        else if(UserDataManager.Instance.Session.IsSessionStart == true) //진행중인 세션이있다면
         {
             //TODO 지우고 진행할건지 물어보기
             //UIManager.Instance.PopupSystem.OpenSystemConfirmPopup("진행중인 게임이 있습니다.\n처음부터 시작하시겠습니까?", this);
 
             //그냥 시작
             this.GameStart();
-        }
-        else if(UserDataManager.Instance.Session.IsScenarioWatch == false)
-        {
-            //세션 시작했다고 저장하고
-            UserDataManager.Instance.StartSession();
-
-            //시나리오로 넘기기
-            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
         }
         else
         {

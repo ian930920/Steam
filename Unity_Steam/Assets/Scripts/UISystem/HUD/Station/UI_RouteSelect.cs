@@ -15,7 +15,7 @@ public class UI_RouteSelect : MonoBehaviour
 
     public void OnShopClicked()
     {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 상점 팝업");
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.StationShop);
     }
 
     public void OnRouteClicked()

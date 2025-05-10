@@ -7,8 +7,11 @@ public class ScenarioScene : BaseScene
         //저장하고
         UserDataManager.Instance.Session.WatchScenario();
 
-        //소환수 선택
-        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+        //저장하고
+        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
+
+        //역으로 이동~
+        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
     }
 
     public void OnSkipClicked()

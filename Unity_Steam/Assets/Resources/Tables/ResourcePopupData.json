@@ -6,6 +6,7 @@
   "41002": { "type":4, "path":"Prefabs/UI/Popups/Popup_Summon"},
   "41003": { "type":4, "path":"Prefabs/UI/Popups/Popup_RuneEquip"},
   "41004": { "type":4, "path":"Prefabs/UI/Popups/Popup_Inventory"},
+  "41005": { "type":4, "path":"Prefabs/UI/Popups/Popup_StationShop"},
   "42001": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_StatusInfo"},
   "42002": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_RuneInfo"}
 }}
