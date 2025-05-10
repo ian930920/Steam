@@ -15,6 +15,8 @@ public class Popup_Inventory : ScrollPopup
 
         this.m_uiRuneInfo.gameObject.SetActive(false);
 
+        this.m_currRune = null;
+
         return this;
     }
 

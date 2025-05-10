@@ -40,6 +40,8 @@ public class Enemy : Team
         {
             this.m_listChar[i].StopAllCoroutines();
         }
+
+        this.StopAllCoroutines();
     }
 
     public override void TurnStart()

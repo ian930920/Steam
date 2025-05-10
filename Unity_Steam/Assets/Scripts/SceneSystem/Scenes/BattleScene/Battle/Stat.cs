@@ -14,14 +14,14 @@ public class Stat_Character
         End,
     }
 
-    private Dictionary<eTYPE, int> m_dicStat = new Dictionary<eTYPE, int>();
-    private Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE> m_dicEffectType = new Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE>();
+    public Dictionary<int, int> m_dicStat { get; private set; } = new Dictionary<int, int>();
+    public Dictionary<int, int> m_dicEffectType { get; private set; } = new Dictionary<int, int>();
 
     public Stat_Character() { }
 
     public Stat_Character(Stat_Character org)
     {
-        this.m_dicStat = new Dictionary<eTYPE, int>(org.m_dicStat);
+        this.m_dicStat = new Dictionary<int, int>(org.m_dicStat);
     }
 
     public void Reset()
@@ -31,44 +31,50 @@ public class Stat_Character
 
     public void SetStat(eTYPE eStatType, int value)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) this.m_dicStat.Add(nStatType, 0);
 
-        this.m_dicStat[eStatType] = value;
+        this.m_dicStat[nStatType] = value;
     }
 
     public void AddStat(eTYPE eStatType, int value)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) this.m_dicStat.Add(nStatType, 0);
 
-        this.m_dicStat[eStatType] += value;
+        this.m_dicStat[nStatType] += value;
     }
 
     public void RemoveStat(eTYPE eStatType, int value)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) this.m_dicStat.Add(nStatType, 0);
 
-        this.m_dicStat[eStatType] = (int)Mathf.Clamp(this.m_dicStat[eStatType] - value, 0, this.m_dicStat[eStatType]);
+        this.m_dicStat[nStatType] -= value;
     }
 
     public int GetStat(eTYPE eStatType)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) return 0;
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) return 0;
 
-        return this.m_dicStat[eStatType];
+        return this.m_dicStat[nStatType];
     }
 
     public void SetEffectType(eTYPE eStatType, TableData.TableStatus.eEFFECT_TYPE eType)
     {
-        if(this.m_dicEffectType.ContainsKey(eStatType) == false) this.m_dicEffectType.Add(eStatType, TableData.TableStatus.eEFFECT_TYPE.None);
+        int nStatType = (int)eStatType;
+        if(this.m_dicEffectType.ContainsKey(nStatType) == false) this.m_dicEffectType.Add(nStatType, (int)TableData.TableStatus.eEFFECT_TYPE.None);
 
-        this.m_dicEffectType[eStatType] = eType;
+        this.m_dicEffectType[nStatType] = (int)eType;
     }
 
     public TableData.TableStatus.eEFFECT_TYPE GetEffectType(eTYPE eStatType)
     {
-        if(this.m_dicEffectType.ContainsKey(eStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
+        int nStatType = (int)eStatType;
+        if(this.m_dicEffectType.ContainsKey(nStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
 
-        return this.m_dicEffectType[eStatType];
+        return (TableData.TableStatus.eEFFECT_TYPE)this.m_dicEffectType[nStatType];
     }
 }
 
@@ -86,8 +92,8 @@ public class Stat_Additional
         End,
     }
 
-    private Dictionary<eTYPE, float> m_dicStat = new Dictionary<eTYPE, float>();
-    private Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE> m_dicEffectType = new Dictionary<eTYPE, TableData.TableStatus.eEFFECT_TYPE>();
+    private Dictionary<int, float> m_dicStat = new Dictionary<int, float>();
+    private Dictionary<int, int> m_dicEffectType = new Dictionary<int, int>();
 
     //Key : statusID, Value : turn
     public Dictionary<uint, stStatus> DicStatus { get; private set; } = new Dictionary<uint, stStatus>();
@@ -96,7 +102,7 @@ public class Stat_Additional
 
     public Stat_Additional(Stat_Additional org)
     {
-        this.m_dicStat = new Dictionary<eTYPE, float>(org.m_dicStat);
+        this.m_dicStat = new Dictionary<int, float>(org.m_dicStat);
         this.DicStatus = new Dictionary<uint, stStatus>(org.DicStatus);
     }
 
@@ -107,23 +113,26 @@ public class Stat_Additional
 
     public void AddStat(eTYPE eStatType, float fValue)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) this.m_dicStat.Add(nStatType, 0);
 
-        this.m_dicStat[eStatType] += fValue;
+        this.m_dicStat[nStatType] += fValue;
     }
 
     public void RemoveStat(eTYPE eStatType, float fValue)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) this.m_dicStat.Add(eStatType, 0);
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) this.m_dicStat.Add(nStatType, 0);
 
-        this.m_dicStat[eStatType] -= fValue;
+        this.m_dicStat[nStatType] -= fValue;
     }
 
     public float GetStat(eTYPE eStatType)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) return 0;
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) return 0;
 
-        return this.m_dicStat[eStatType];
+        return this.m_dicStat[nStatType];
     }
 
     public void AddStatus(uint statusID, stStatus status)
@@ -142,16 +151,18 @@ public class Stat_Additional
 
     public void SetEffectType(eTYPE eStatType, TableData.TableStatus.eEFFECT_TYPE eType)
     {
-        if(this.m_dicEffectType.ContainsKey(eStatType) == false) this.m_dicEffectType.Add(eStatType, TableData.TableStatus.eEFFECT_TYPE.None);
+        int nStatType = (int)eStatType;
+        if(this.m_dicEffectType.ContainsKey(nStatType) == false) this.m_dicEffectType.Add(nStatType, (int)TableData.TableStatus.eEFFECT_TYPE.None);
 
-        this.m_dicEffectType[eStatType] = eType;
+        this.m_dicEffectType[nStatType] = (int)eType;
     }
 
     public TableData.TableStatus.eEFFECT_TYPE GetEffectType(eTYPE eStatType)
     {
-        if(this.m_dicStat.ContainsKey(eStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
+        int nStatType = (int)eStatType;
+        if(this.m_dicStat.ContainsKey(nStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
 
-        return this.m_dicEffectType[eStatType];
+        return (TableData.TableStatus.eEFFECT_TYPE)this.m_dicEffectType[nStatType];
     }
 }
 

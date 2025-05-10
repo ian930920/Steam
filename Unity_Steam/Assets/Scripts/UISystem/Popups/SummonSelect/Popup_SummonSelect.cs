@@ -55,11 +55,20 @@ public class Popup_SummonSelect : BasePopup
         //팝업닫기
         this.OnCloseClicked();
 
-        //저장하고
-        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
+        //3개인지 확인
+        if(UserDataManager.Instance.Summon.SummonCount < 3)
+        {
+            //더 뽑기
+            UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+        }
+        else
+        {
+            //저장하고
+            UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
 
-        //역으로 이동~
-        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+            //역으로 이동~
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+        }
     }
 
     public void OnInactiveClicked()

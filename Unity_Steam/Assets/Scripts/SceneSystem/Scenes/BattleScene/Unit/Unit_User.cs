@@ -20,6 +20,7 @@ public class Unit_User : BaseUnit
         //캐릭터 상태바 세팅
         if(base.m_uiStatusBar == null) this.m_uiStatusBar = ObjectPoolManager.Instance.GetPoolObjectComponent<UI_CharacterStatusBar>(TableData.TableObjectPool.eID.UI_User_StatusBar);
         base.m_uiStatusBar.Init(Camera.main.WorldToScreenPoint(this.transform.position), this.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
+        base.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP));
     }
 
     protected override void initStat(uint charID)

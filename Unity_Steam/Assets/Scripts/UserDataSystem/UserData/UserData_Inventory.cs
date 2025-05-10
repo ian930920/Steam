@@ -10,6 +10,8 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 
     protected override string StrKey => PP_KEY;
 
+	public int RuneCount => base.Data.DicRune.Count;
+
 	protected override void dataProcessing()
 	{
 		if(base.Data.DicInventory.Count == 0)

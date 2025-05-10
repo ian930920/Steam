@@ -1,31 +1,24 @@
+using Febucci.UI;
 using System.Collections;
 using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
     [SerializeField] private Transform m_transTartgetUI = null;
-
-    private static readonly string[] STR_DESC =
-    {
-        "의미심장한 대사1",
-        "은하철도 구구구..",
-        "기차가..어둠을...",
-        "... ... ...",
-    };
+    [SerializeField] private TypewriterByCharacter m_textDesc = null;
 
     private void Start()
     {
-        //TODO 말풍선
-        StartCoroutine("coDialogue");
+        StartCoroutine("coAnimDesc");
     }
 
-    private IEnumerator coDialogue()
+    private IEnumerator coAnimDesc()
     {
-        ObjectPoolManager.Instance.ActiveDialogue(STR_DESC[Random.Range(0, STR_DESC.Length)], Camera.main.WorldToScreenPoint(this.m_transTartgetUI.position));
+        this.m_textDesc.ShowText("무엇을 도와드릴까요?");
 
-        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(5);
+        yield return Utility_Time.YieldInstructionCache.WaitForSeconds(8.0f);
 
-        StartCoroutine("coDialogue");
+        StartCoroutine("coAnimDesc");
     }
 
     private void OnMouseDown()

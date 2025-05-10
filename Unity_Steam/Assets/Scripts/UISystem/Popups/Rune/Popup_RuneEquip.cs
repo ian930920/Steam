@@ -22,6 +22,8 @@ public class Popup_RuneEquip : ScrollPopup
     [SerializeField] private TextMeshProUGUI m_textRuneName = null;
     [SerializeField] private TextMeshProUGUI m_textRuneDesc = null;
 
+    [SerializeField] private GameObject m_gobjEmpty = null;
+
     [SerializeField] private UI_SkillTurn m_uiSkillTurn = null;
     [SerializeField] private UI_RuneGroup m_uiRuneGroup = null;
     [SerializeField] private UI_CostInfo m_uiCostInfo = null;
@@ -43,6 +45,15 @@ public class Popup_RuneEquip : ScrollPopup
 
     private Item_Rune m_currRune = null;
 
+    public override BasePopup OpenPopup(int nOreder, UnityAction funcClose = null)
+    {
+        base.OpenPopup(nOreder, funcClose);
+
+        this.m_gobjEmpty.SetActive(UserDataManager.Instance.Inventory.RuneCount == 0);
+
+        return this;
+    }
+
     public void SetSummon(uint summonID)
     {
         this.m_summonData = new UserData_Summon.MySummon(UserDataManager.Instance.Summon.GetSummon(summonID));
@@ -52,8 +63,7 @@ public class Popup_RuneEquip : ScrollPopup
         this.refreshStatInfo();
 
         this.m_scrollUI.UpdateData();
-        this.m_currRune = this.m_scrollUI.GetFirstRune();
-        this.m_scrollUI.ResetScroller();
+        this.EquipRunePreview(this.m_scrollUI.GetFirstRune());
     }
 
     private void setDefaultInfo()
@@ -116,6 +126,8 @@ public class Popup_RuneEquip : ScrollPopup
 
     public void EquipRunePreview(Item_Rune rune)
     {
+        if(rune == null) return;
+
         if(this.m_currRune != null && this.m_currRune.UniqueRuneID == rune.UniqueRuneID) return;
 
         var orgSummon = UserDataManager.Instance.Summon.GetSummon(this.SummonID);

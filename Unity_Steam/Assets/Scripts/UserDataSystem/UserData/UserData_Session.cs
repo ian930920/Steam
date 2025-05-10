@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TableData;
-using Unity.Android.Gradle.Manifest;
 
 public class UserData_Session : UserData<JsonData_Session>
 {

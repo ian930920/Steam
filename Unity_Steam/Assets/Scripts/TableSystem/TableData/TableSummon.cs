@@ -31,7 +31,7 @@ namespace TableData
 
         public List<TableData_Summon> GetRandomList(int nCount)
         {
-            return base.m_listData.OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
+            return base.m_listData.Where(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false).OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
         }
 
         public string GetString_SkillDesc(uint tableID)
