@@ -14,7 +14,7 @@ public class UI_CurrencySlot : MonoBehaviour
         this.m_imgIcon.sprite = TableManager.Instance.Item.GetIcon(this.ItemID);
 
         //갱신 이벤트 등록
-        UserDataManager.Instance.AddItemCountRefreshEvent(this.ItemID, this.refreshSlot);
+        UserDataManager.Instance.AddItemCountRefreshEvent(this.ItemID, this.RefreshSlot);
 
         //갱신
         this.RefreshSlot();
@@ -22,12 +22,7 @@ public class UI_CurrencySlot : MonoBehaviour
 
     public void RefreshSlot()
     {
-        this.refreshSlot(UserDataManager.Instance.Inventory.GetItem(this.ItemID).Count);
-    }
-
-    private void refreshSlot(int nCount)
-    {
-        this.m_textValue.text = Utility_UI.GetCommaNumber(nCount);
+        this.m_textValue.text = Utility_UI.GetCommaNumber(UserDataManager.Instance.Inventory.GetItem(this.ItemID).Count);
     }
 
     public void OnShortCutClicked()

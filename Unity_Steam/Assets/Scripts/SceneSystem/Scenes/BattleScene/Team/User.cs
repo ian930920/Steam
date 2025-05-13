@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class User : Team
@@ -16,7 +17,7 @@ public class User : Team
         this.initCharacter();
 
         //정령 세팅
-        this.initSummon();
+        this.InitSummon();
     }
 
     private void initCharacter()
@@ -26,7 +27,7 @@ public class User : Team
         this.Unit.Init((uint)TableData.TableUser.eID.User);
     }
 
-    private void initSummon()
+    public void InitSummon()
     {
         //소환수 저장
         this.m_listSummon.Clear();
@@ -45,11 +46,11 @@ public class User : Team
         //소환수 스킬 업데이트
         this.updateSummonSkillTurn();
 
-        //유저 상태이상 업데이트
-        this.Unit.UpdateStatus();
-
         //캐릭터 턴 세팅
         this.Unit.SetMyTurn();
+
+        //유저 상태이상 업데이트
+        this.Unit.UpdateStatus();
 
         //스킬 선택돼 있는걸로 세팅
         this.SelectSkill();
@@ -66,8 +67,16 @@ public class User : Team
 
     public override void ResetTeam()
     {
-        this.Unit?.gameObject.SetActive(false);
-        this.Unit = null;
+        //적용된 상태이상 초기화
+        this.Unit.ResetStatus();
+
+        //정령 재사용 대기 시간
+        for(int i = 0; i < this.m_listSummon.Count; i++)
+        {
+            this.m_listSummon[i].ResetTurn();
+        }
+
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
     public override void BattleFinish()
@@ -94,7 +103,6 @@ public class User : Team
     {
         if(this.IsTurnFinish() == false)
         {
-            //TODO 스킬 선택
             this.Unit.SetMyTurn();
             return;
         }
@@ -140,5 +148,10 @@ public class User : Team
 
         //슬롯 갱신
         SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupSlot();
+    }
+
+    public int GetSummonDamage(uint summonID)
+    {
+        return this.m_listSummon.First(summon => summon.SummonID == summonID).Damage;
     }
 }

@@ -92,12 +92,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 80
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -247,7 +247,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 89}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 170, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3540618702558520101
 CanvasRenderer:
@@ -908,11 +908,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1496889179436012640, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 316
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 1496889179436012640, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 104
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1496889179436012640, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -981,6 +981,34 @@ PrefabInstance:
     - target: {fileID: 1496889179672418040, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4473312576635769288}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBuyClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI_ShopSlot_Rune, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515257810250651621, guid: 45f150dfcca153c468823a30ad0a32a8, type: 3}
+      propertyPath: m_onBuyClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

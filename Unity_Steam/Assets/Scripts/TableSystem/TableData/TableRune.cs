@@ -21,14 +21,14 @@ namespace TableData
 
         public string GetString_Title(uint tableID)
         {
-            if(base.ContainsKey(tableID) == false) return "없는 스킬";
+            if(base.ContainsKey(tableID) == false) return "없는 룬";
 
             return TableManager.Instance.String.GetString(base.GetData(tableID).strID);
         }
 
         public string GetString_Desc(uint tableID)
         {
-            if(base.ContainsKey(tableID) == false) return "없는 스킬";
+            if(base.ContainsKey(tableID) == false) return "없는 룬";
 
             TableData_Rune data = base.GetData(tableID);
             return string.Format(TableManager.Instance.String.GetString(data.strID, TableString.eTYPE.Description), data.value);
@@ -47,13 +47,12 @@ namespace TableData
         }
     }
 
-    public class TableData_Rune : iTableData
+    public class TableData_Rune : TableData_Item
     {
-        //tableID strID value statusID strIcon
-        public uint tableID { get; set; }
-        public uint strID { get; set; }
+        //value statusID rarity	price
         public float value { get; set; }
         public uint statusID { get; set; }
-        public string strIcon { get; set; }
+        public int rarity { get; set; }
+        public int price { get; set; }
     }
 }

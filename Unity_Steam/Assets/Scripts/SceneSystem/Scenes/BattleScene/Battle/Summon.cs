@@ -16,8 +16,28 @@ public class Summon
     public Summon(uint summonID, Func<TableData.TableStatus.eID, Status> funcGetStatus)
     {
         this.SummonID = summonID;
-        this.m_data = UserDataManager.Instance.Summon.GetSummon(this.SummonID);
+        this.m_data = new UserData_Summon.MySummon(UserDataManager.Instance.Summon.GetSummon(this.SummonID));
         this.Skill = new Skill(this.m_data.SkillID, funcGetStatus);
+
+        //지금 스테이지에 따른 디버프
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsCurrDebuff(TableData.TableRoute.eDEBUFF.Summon_COE_Debuff))
+        {
+            this.m_data.StatAdditional.AddStat(Stat_Additional.eTYPE.Coe, -0.1f);
+        }
+        else if(SceneManager.Instance.GetCurrScene<BattleScene>().IsCurrDebuff(TableData.TableRoute.eDEBUFF.Weakened_Hit_Debuff))
+        {
+            this.m_data.StatAdditional.AddStat(Stat_Additional.eTYPE.Acc, -0.2f);
+        }
+        else if(SceneManager.Instance.GetCurrScene<BattleScene>().IsCurrDebuff(TableData.TableRoute.eDEBUFF.Summon_Cost_Debuff))
+        {
+            this.m_data.StatDefault.AddStat(Stat_Character.eTYPE.Mana, 1);
+			this.m_data.StatDefault.SetEffectType(Stat_Character.eTYPE.Mana, TableData.TableStatus.eEFFECT_TYPE.Negative);
+        }
+    }
+
+    public void ResetTurn()
+    {
+        this.Skill.ResetTurn();
     }
 
     public bool IsUseable(int currMana)
@@ -32,7 +52,7 @@ public class Summon
     public void UseSkill()
     {
         //스킬 사용
-        this.Skill.UseSkill(this.m_data.StatDefault, this.m_data.StatAdditional);
+        this.Skill.UseSkill(SceneManager.Instance.GetCurrScene<BattleScene>().UnitUser, this.m_data.StatDefault, this.m_data.StatAdditional);
 
         //룬 효과 있으면 사용
         if(UserDataManager.Instance.Summon.IsEquipRune(this.SummonID, (uint)TableData.TableRune.eID.Comfort) == true) this.doRune(TableData.TableRune.eID.Comfort);

@@ -44,6 +44,7 @@ public class Unit_User : BaseUnit
         
         //상태이상 체크
         if(base.GetStatus(TableData.TableStatus.eID.Fainting) != null) return true;
+        if(base.GetStatus(TableData.TableStatus.eID.Freezing) != null) return true;
 
         return false;
     }
@@ -60,10 +61,10 @@ public class Unit_User : BaseUnit
     {
         base.SetMyTurn();
 
-        SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
-
         //마나 채우기
         base.resetMana();
+
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
     }
 
     protected override void setTarget()

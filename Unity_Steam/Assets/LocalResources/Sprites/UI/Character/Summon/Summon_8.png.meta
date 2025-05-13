@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9acf0690755111140af88faec60c1308
+guid: 4a9e5d7f32a13dd40a0070b182391431
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -129,10 +129,10 @@ TextureImporter:
       name: Summon_8_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 5
-        width: 80
-        height: 118
+        x: 85
+        y: 21
+        width: 267
+        height: 388
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -70,24 +70,24 @@ public class UserDataManager : BaseSingleton<UserDataManager>
 
     #region Item
     //Key : ItemID, Value : RefreshFunc
-    private Dictionary<uint, UnityEvent<int>> m_dicItemCountRefreshEvent = new Dictionary<uint, UnityEvent<int>>();
+    private Dictionary<uint, UnityEvent> m_dicItemCountRefreshEvent = new Dictionary<uint, UnityEvent>();
 
     #region RefreshEvent
-    public void AddItemCountRefreshEvent(uint itemID, UnityAction<int> funcRefresh)
+    public void AddItemCountRefreshEvent(uint itemID, UnityAction funcRefresh)
     {
         if(this.m_dicItemCountRefreshEvent.ContainsKey(itemID) == false)
         {
-            this.m_dicItemCountRefreshEvent.Add(itemID, new UnityEvent<int>());
+            this.m_dicItemCountRefreshEvent.Add(itemID, new UnityEvent());
         }
 
         this.m_dicItemCountRefreshEvent[itemID].AddListener(funcRefresh);
     }
 
-    private void doItemCountRefreshEvent(stItem stItem)
+    public void DoItemCountRefreshEvent(uint itemID)
     {
-        if(this.m_dicItemCountRefreshEvent.ContainsKey(stItem.ItemID) == false) return;
+        if(this.m_dicItemCountRefreshEvent.ContainsKey(itemID) == false) return;
 
-        this.m_dicItemCountRefreshEvent[stItem.ItemID].Invoke(stItem.Count);
+        this.m_dicItemCountRefreshEvent[itemID].Invoke();
     }
     #endregion
     #endregion

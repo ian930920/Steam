@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 2dade86f21300cd449d4e361125ced9b
+guid: 8ff46230127ad994881254759b974385
 TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5601592196414394492
     second: Summon_7_0
-  - first:
-      213: 6776443543443809563
-    second: Summon_7_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,10 +129,10 @@ TextureImporter:
       name: Summon_7_0
       rect:
         serializedVersion: 2
-        x: 49
-        y: 23
-        width: 414
-        height: 460
+        x: 85
+        y: 21
+        width: 267
+        height: 388
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,28 +143,6 @@ TextureImporter:
       bones: []
       spriteID: c7051e39c6adcbd40800000000000000
       internalID: 5601592196414394492
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Summon_7_1
-      rect:
-        serializedVersion: 2
-        x: 237
-        y: 478
-        width: 11
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b152577ef73ca0e50800000000000000
-      internalID: 6776443543443809563
       vertices: []
       indices: 
       edges: []
@@ -187,7 +162,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Summon_7_0: 5601592196414394492
-      Summon_7_1: 6776443543443809563
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

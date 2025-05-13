@@ -1,4 +1,4 @@
 {"Json":{
-  "101": { "strIcon":"icon_ticket", "strID":20001},
-  "102": { "strIcon":"icon_gem_2_blue", "strID":20002}
+  "101": { "type":1, "strIcon":"icon_ticket", "strID":20001},
+  "102": { "type":1, "strIcon":"icon_gem_2_blue", "strID":20002}
 }}

@@ -16,7 +16,7 @@ public class UI_DefaultSummonInfo : MonoBehaviour
 
     public void Refresh(uint summonID)
     {
-        this.m_imgChar.sprite = TableManager.Instance.Summon.GetSprite(summonID);
+        this.m_imgChar.sprite = TableManager.Instance.Summon.GetIcon(summonID);
 
         var dataSummon = TableManager.Instance.Summon.GetData(summonID);
 

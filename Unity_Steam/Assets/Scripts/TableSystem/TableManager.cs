@@ -20,9 +20,15 @@ public class TableManager : BaseSingleton<TableManager>
 	public TableEnemy Enemy { get; private set; } = null;
 	public TableSkill Skill { get; private set; } = null;
 	public TableSummon Summon { get; private set; } = null;
-	public TableSummonObj SummonObj { get; private set; } = null;
 	public TableStatus Status { get; private set; } = null;
 	public TableRune Rune { get; private set; } = null;
+	public TableRoute Route { get; private set; } = null;
+	public TableEvent Event { get; private set; } = null;
+	public TableEventOption EventOption { get; private set; } = null;
+	public TableRouteStep RouteStep { get; private set; } = null;
+	public TableEnemyCount EnemyCount { get; private set; } = null;
+	public TableEnemyType EnemyType { get; private set; } = null;
+	public TableEventCutscene EventCutscene { get; private set; } = null;
 	#endregion
 
 	public override void Initialize()
@@ -46,7 +52,15 @@ public class TableManager : BaseSingleton<TableManager>
 
 		this.Define = TableDefine.Instance.LoadTable($"{strPath}/DefineData");
 		this.Time = TableTime.Instance.LoadTable($"{strPath}/TimeData");
-		this.Item = TableItem.Instance.LoadTable($"{strPath}/ItemData");
+
+		//아이템
+		//this.Item = TableItem.Instance.LoadTable($"{strPath}/ItemData");
+		this.Item = TableItem.Instance.LoadTables(new string[]
+		{
+			$"{strPath}/ItemData",
+			$"{strPath}/ItemRuneData",
+		});
+		this.Rune = TableRune.Instance.LoadTable($"{strPath}/ItemRuneData");
 
 		//String
 		this.String = TableString.Instance.LoadTables(new string[]
@@ -55,6 +69,8 @@ public class TableManager : BaseSingleton<TableManager>
 			$"{strPath}/StringCharacterData",
 			$"{strPath}/StringStatusData",
 			$"{strPath}/StringItemData",
+			$"{strPath}/StringStageData",
+			$"{strPath}/StringScenarioData",
 		});
 
 		//Resource
@@ -68,12 +84,21 @@ public class TableManager : BaseSingleton<TableManager>
 
 		//캐릭터
 		this.User = TableUser.Instance.LoadTable($"{strPath}/UserData");
-		this.Enemy = TableEnemy.Instance.LoadTable($"{strPath}/EnemyData");
-		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
 		this.Summon = TableSummon.Instance.LoadTable($"{strPath}/SummonData");
-		this.SummonObj = TableSummonObj.Instance.LoadTable($"{strPath}/SummonObjData");
+		this.Skill = TableSkill.Instance.LoadTable($"{strPath}/SkillData");
 		this.Status = TableStatus.Instance.LoadTable($"{strPath}/StatusData");
-		this.Rune = TableRune.Instance.LoadTable($"{strPath}/RuneData");
+
+		//루트
+		this.Route = TableRoute.Instance.LoadTable($"{strPath}/RouteData");
+		this.Event = TableEvent.Instance.LoadTable($"{strPath}/EventData");
+		this.EventOption = TableEventOption.Instance.LoadTable($"{strPath}/EventOptionData");
+		this.RouteStep = TableRouteStep.Instance.LoadTable($"{strPath}/RouteStepData");
+		this.EventCutscene = TableEventCutscene.Instance.LoadTable($"{strPath}/EventCutsceneData");
+
+		//적
+		this.Enemy = TableEnemy.Instance.LoadTable($"{strPath}/EnemyData");
+		this.EnemyCount = TableEnemyCount.Instance.LoadTable($"{strPath}/EnemyCountData");
+		this.EnemyType = TableEnemyType.Instance.LoadTable($"{strPath}/EnemyTypeData");
 
 #if UNITY_EDITOR
 		if(true)

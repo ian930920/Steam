@@ -28,6 +28,11 @@ public class UI_Debug : MonoBehaviour
     }
 
 #region TitleScene
+    public void RestartSession()
+    {
+        UserDataManager.Instance.StartSession();
+    }
+
     public void AddSummon()
     {
         UserDataManager.Instance.Summon.Debug_AddSummon();

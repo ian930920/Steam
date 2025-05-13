@@ -16,6 +16,8 @@ public class Popup_SummonSelect : BasePopup
     {
         base.OpenPopup(nOreder, funcClose);
 
+        this.m_nSelectIdx = -1;
+
         this.m_listSummon = TableManager.Instance.Summon.GetRandomList(this.m_arrSlot.Length);
         for(int i = 0, nMax = this.m_arrSlot.Length; i < nMax; ++i)
         {
@@ -52,20 +54,24 @@ public class Popup_SummonSelect : BasePopup
         //선택 소환수 저장
         UserDataManager.Instance.Summon.AddSummon(this.m_listSummon[this.m_nSelectIdx].tableID);
 
+        //소환수 얻었다고 저장
+        UIManager.Instance.PopupSystem.OpenRewardSummonPopup(this.m_listSummon[this.m_nSelectIdx].tableID, () =>
+        {
+            //3개인지 확인
+            if(UserDataManager.Instance.Summon.SummonCount < 3)
+            {
+                //더 뽑기
+                UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+            }
+            else
+            {
+                //시나리오로 넘기기
+                SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
+            }
+        });
+
         //팝업닫기
         this.OnCloseClicked();
-
-        //3개인지 확인
-        if(UserDataManager.Instance.Summon.SummonCount < 3)
-        {
-            //더 뽑기
-            UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
-        }
-        else
-        {
-            //시나리오로 넘기기
-            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
-        }
     }
 
     public void OnInactiveClicked()

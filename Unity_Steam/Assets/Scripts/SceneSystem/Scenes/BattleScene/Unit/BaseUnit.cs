@@ -194,6 +194,12 @@ public abstract class BaseUnit : MonoBehaviour
         this.m_uiStatusBar.UpdateStatus(statusID, this.m_dicStatus[statusID].RemainTurn);
     }
 
+    public void ResetStatus()
+    {
+        this.m_dicStatus.Clear();
+        this.m_uiStatusBar.ResetStatus();
+    }
+
     public List<Status> GetStatusToList()
     {
         return this.m_dicStatus.Values.ToList();

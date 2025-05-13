@@ -5,9 +5,6 @@ TextureImporter:
   - first:
       213: -1635404812037588075
     second: Summon_1_0
-  - first:
-      213: -2258319363805844703
-    second: Summon_1_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,10 +129,10 @@ TextureImporter:
       name: Summon_1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 16
         y: 0
-        width: 1024
-        height: 849
+        width: 1008
+        height: 824
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,28 +143,6 @@ TextureImporter:
       bones: []
       spriteID: 59bf88afcffdd49e0800000000000000
       internalID: -1635404812037588075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Summon_1_1
-      rect:
-        serializedVersion: 2
-        x: 958
-        y: 441
-        width: 39
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 12b67f2f086d8a0e0800000000000000
-      internalID: -2258319363805844703
       vertices: []
       indices: 
       edges: []
@@ -187,7 +162,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Summon_1_0: -1635404812037588075
-      Summon_1_1: -2258319363805844703
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

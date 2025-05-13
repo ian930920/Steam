@@ -10,12 +10,15 @@ public class HUD_Battle : BaseHUD
     [SerializeField] private UI_Battle_SummonInfo m_uiSummonInfo = null;
 
     [Space(5)][Header("전투 정보")]
+    [SerializeField] private GameObject m_gobjBattle = null;
     [SerializeField] private UI_ManaGroup m_uiMana = null;
     [SerializeField] private UI_TurnInfo m_uiTurnInfo = null;
 
     [Space(5)][Header("루트 정보")]
     [SerializeField] private TextMeshProUGUI m_textRoutName = null;
     [SerializeField] private TextMeshProUGUI m_textStep = null;
+    [SerializeField] private Transform m_transRouteInfo = null;
+    [SerializeField] private UI_LevelInfo m_uiLevelInfo = null;
 
     public int SelectedSummonIdx => this.m_uiSummon.SelectedIdx;
 
@@ -47,10 +50,12 @@ public class HUD_Battle : BaseHUD
         this.m_uiSummon.RefreshSlot();
     }
 
-    public void RefreshStageInfo(uint stageID, uint step)
+    public void RefreshStageInfo(uint routeID, int step)
     {
-        this.m_textRoutName.text = $"루트 {stageID}";
-        this.m_textStep.text = $"{step}/{5}";
+        this.m_textRoutName.text = TableManager.Instance.Route.GetString(routeID);
+        this.m_textStep.text = $"{step + 1}/{5}";
+
+        this.m_uiLevelInfo.Refresh(TableManager.Instance.Route.GetData(routeID).level);
     }
 
     public void SetMaxMana(int nMaxMana)
@@ -61,6 +66,15 @@ public class HUD_Battle : BaseHUD
     public void RefreshMana(int nCurrMana)
     {
         this.m_uiMana.Refresh(nCurrMana);
+    }
+
+    public void SetActiveBattleUI(bool isActive)
+    {
+        if(this.m_gobjBattle.activeSelf == isActive) return;
+
+        this.m_gobjBattle.SetActive(isActive);
+
+        if(isActive == false) this.m_uiTurnInfo.ResetUI();
     }
 
     public float ActiveSummonSkill(uint summonID)
@@ -96,5 +110,11 @@ public class HUD_Battle : BaseHUD
     public void OnOptionClicked()
     {
         UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
+    }
+
+    public void OnRouteInfo(bool isActive)
+    {
+        if(isActive == true) UIManager.Instance.PopupSystem.OpenAndGetPopup<Popup_RouteInfo>(ePOPUP_ID.RouteInfo).SetRouteInfo(UserDataManager.Instance.Session.RouteID, this.m_transRouteInfo.position);
+        else UIManager.Instance.PopupSystem.ClosePopup(ePOPUP_ID.RouteInfo);
     }
 }

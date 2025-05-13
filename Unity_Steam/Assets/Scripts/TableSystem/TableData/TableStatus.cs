@@ -15,6 +15,8 @@ namespace TableData
             Weakened_Def,   //방어력 약화
             Weakened_Atk,   //공격력 약화
             Weakened_Hit,   //명중 약화
+            Freezing,       //빙결
+            Absorption,     //흡수
 
             Regeneration = 2001,    //매 턴 시작 시 최대 체력의 10% 회복
             Shield,                 //받는 피해 흡수

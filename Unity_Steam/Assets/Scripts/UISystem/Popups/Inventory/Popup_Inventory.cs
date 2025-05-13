@@ -6,6 +6,7 @@ public class Popup_Inventory : ScrollPopup
     [SerializeField] private UI_RuneInfo m_uiRuneInfo = null;
 
     [SerializeField] private UI_Scroll_Rune m_scrollUI = null;
+    [SerializeField] private GameObject m_gobjEmpty = null;
 
     private Item_Rune m_currRune = null;
 
@@ -17,7 +18,14 @@ public class Popup_Inventory : ScrollPopup
 
         this.m_currRune = null;
 
+        this.RefreshEmpty();
+
         return this;
+    }
+
+    public void RefreshEmpty()
+    {
+        this.m_gobjEmpty.SetActive(this.m_scrollUI.IsEmpty);
     }
 
     public void SelectRune(Item_Rune rune)

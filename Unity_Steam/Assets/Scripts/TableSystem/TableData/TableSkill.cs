@@ -9,8 +9,9 @@ namespace TableData
         {
             Attack = 1,
             Heal,
-            Status,
-            Summon
+            Buff,
+            //Debuff,
+            //Summon
         }
 
         public enum eTARGET_TYPE
@@ -56,7 +57,7 @@ namespace TableData
             switch((eTYPE)data.type)
             {
                 case eTYPE.Heal:
-                case eTYPE.Summon:
+                //case eTYPE.Summon:
                 return true;
             }
 
@@ -89,7 +90,10 @@ namespace TableData
             if(base.ContainsKey(tableID) == false) return 0;
 
             var coe = base.GetData(tableID).coe;
+
             if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) > 0) coe += coe * statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
+            else if(statAdditional.GetStat(Stat_Additional.eTYPE.Coe) < 0) coe -= coe * -statAdditional.GetStat(Stat_Additional.eTYPE.Coe);
+
             return (int)(coe * statDefault.GetStat(Stat_Character.eTYPE.Strength));
         }
 

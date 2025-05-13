@@ -7,6 +7,14 @@
   "41003": { "type":4, "path":"Prefabs/UI/Popups/Popup_RuneEquip"},
   "41004": { "type":4, "path":"Prefabs/UI/Popups/Popup_Inventory"},
   "41005": { "type":4, "path":"Prefabs/UI/Popups/Popup_StationShop"},
+  "41006": { "type":4, "path":"Prefabs/UI/Popups/Popup_RouteSelect"},
+  "41007": { "type":4, "path":"Prefabs/UI/Popups/Popup_Event"},
+  "41008": { "type":4, "path":"Prefabs/UI/Popups/Popup_RewardBox"},
+  "41009": { "type":4, "path":"Prefabs/UI/Popups/Popup_Reward_Item"},
+  "41010": { "type":4, "path":"Prefabs/UI/Popups/Popup_Reward_Summon"},
+  "41011": { "type":4, "path":"Prefabs/UI/Popups/Popup_BattleResult"},
   "42001": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_StatusInfo"},
-  "42002": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_RuneInfo"}
+  "42002": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_RuneInfo"},
+  "42003": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_RouteInfo"},
+  "42004": { "type":4, "path":"Prefabs/UI/Popups/Small/Popup_BattleStart"}
 }}

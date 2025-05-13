@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Unit_Enemy : BaseUnit
@@ -33,6 +34,12 @@ public class Unit_Enemy : BaseUnit
         base.DefaultStat.SetStat(Stat_Character.eTYPE.HP, dataEnemy.hp);
         base.DefaultStat.SetStat(Stat_Character.eTYPE.Strength, dataEnemy.strength);
 
+        //지금 스테이지에 따른 디버프
+        if(SceneManager.Instance.GetCurrScene<BattleScene>().IsCurrDebuff(TableData.TableRoute.eDEBUFF.Enemy_COE_Buff))
+        {
+            base.DefaultStat.AddStat(Stat_Character.eTYPE.Strength, (int)(dataEnemy.strength * 0.2f));
+        }
+
         base.CurrStat.Reset();
         base.CurrStat.SetStat(Stat_Character.eTYPE.HP, base.DefaultStat.GetStat(Stat_Character.eTYPE.HP));
 
@@ -47,12 +54,28 @@ public class Unit_Enemy : BaseUnit
     {
         base.SetMyTurn();
 
+        //스킬턴 업데이트
+        for(int i = 0, nMax = this.m_listSkill.Count; i < nMax; ++i)
+        {
+            this.m_listSkill[i].UpdateTurn();
+        }
+
         //랜덤 스킬~
-        base.SetCurrSkill(this.m_listSkill[Random.Range(0, this.m_listSkill.Count)]);
-        base.CurrSkill.UseSkill(this.DefaultStat, this.m_statAdditional);
+        base.SetCurrSkill(this.getRandomSkill());
 
         //지금 설정된 스킬 사용
         StartCoroutine("coUseSkill");
+    }
+
+    private Skill getRandomSkill()
+    {
+        var listUsableSkill = this.m_listSkill.Where(skill => skill.RemainTurn == 0);
+        
+        //쓸수있는 스킬 없으면 맨 앞에꺼 사용
+        if(listUsableSkill.Count() == 0) return this.m_listSkill[0];
+
+        //쿨타임 기반
+        return listUsableSkill.OrderBy(g => System.Guid.NewGuid()).OrderByDescending(skill => TableManager.Instance.Skill.GetData(skill.SkillID).cooldown).First();
     }
 
     private IEnumerator coUseSkill()
@@ -61,7 +84,7 @@ public class Unit_Enemy : BaseUnit
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
 
-        base.CurrSkill.UseSkill(this.DefaultStat, this.m_statAdditional);
+        base.CurrSkill.UseSkill(this, this.DefaultStat, this.m_statAdditional);
     }
 
     protected override void setTarget()

@@ -15,9 +15,16 @@ public enum ePOPUP_ID
     Inventory,
     StationShop,
     RouteSelect,
+    Event,
+    RewardBox,
+    Reward_Item,
+    Reward_Summon,
+    BattleResult,
 
     StatusInfo = 42001,
     RuneInfo,
+    RouteInfo,
+    BattleStart,
     End
 }
 
@@ -234,5 +241,30 @@ public class PopupSystem
     public void OpenRuneEquipPopup(uint summonID)
     {
         this.OpenAndGetPopup<Popup_RuneEquip>(ePOPUP_ID.RuneEquip).SetSummon(summonID);
+    }
+
+    public void OpenEventPopup(uint eventID)
+    {
+        this.OpenAndGetPopup<Popup_Event>(ePOPUP_ID.Event).SetEvent(eventID);
+    }
+
+    public void OpenRewardSummonPopup(uint summonID, UnityAction onClose)
+    {
+        this.OpenAndGetPopup<Popup_Reward_Summon>(ePOPUP_ID.Reward_Summon).SetSummon(summonID, onClose);
+    }
+
+    public void OpenRewardItemPopup(stItem stReward, UnityAction onClose)
+    {
+        this.OpenAndGetPopup<Popup_Reward_Item>(ePOPUP_ID.Reward_Item).SetItem(stReward, onClose);
+    }
+
+    public void OpenBattleResultPopup(Popup_BattleResult.eRESULT eResult)
+    {
+        this.OpenAndGetPopup<Popup_BattleResult>(ePOPUP_ID.BattleResult).SetResult(eResult);
+    }
+
+    public void OpenBattleStartPopup(Popup_BattleStart.eTYPE eType, UnityAction onClosed)
+    {
+        this.OpenAndGetPopup<Popup_BattleStart>(ePOPUP_ID.BattleStart).SetType(eType, onClosed);
     }
 }

@@ -19,18 +19,26 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strSprite);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, $"Icon_{base.GetData(tableID).strSprite}");
         }
 
         public Sprite GetSprite(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return null;
 
-            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.Characer, base.GetData(tableID).strSprite);
+            return ResourceManager.Instance.GetSpriteByAtlas(ResourceManager.eATLAS_ID.UI, base.GetData(tableID).strSprite);
+        }
+
+        public int GetRandomListCount(int nCount)
+        {
+            var list = base.m_listData.Where(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false);
+            if(nCount < list.Count()) nCount = list.Count();
+            return nCount;
         }
 
         public List<TableData_Summon> GetRandomList(int nCount)
         {
+            nCount = this.GetRandomListCount(nCount);
             return base.m_listData.Where(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false).OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
         }
 
@@ -45,7 +53,7 @@ namespace TableData
 
     public class TableData_Summon : iTableData
     {
-        //tableID strID maxRune rarity cost skillID resID
+        //tableID strID maxRune rarity cost skillID resID buyCost
         public uint tableID { get; set; }
         public uint strID { get; set; }
         public int maxRune { get; set; }
@@ -54,5 +62,6 @@ namespace TableData
         public uint skillID { get; set; }
         public uint resID { get; set; }
         public string strSprite { get; set; }
+        public int buyCost { get; set; }
     }
 }

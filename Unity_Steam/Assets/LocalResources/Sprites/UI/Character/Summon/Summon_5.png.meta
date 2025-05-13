@@ -132,10 +132,10 @@ TextureImporter:
       name: Summon_5_0
       rect:
         serializedVersion: 2
-        x: 140
-        y: 45
-        width: 283
-        height: 440
+        x: 89
+        y: 23
+        width: 297
+        height: 462
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,10 +154,10 @@ TextureImporter:
       name: Summon_5_1
       rect:
         serializedVersion: 2
-        x: 280
-        y: 477
-        width: 24
-        height: 21
+        x: 213
+        y: 476
+        width: 27
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

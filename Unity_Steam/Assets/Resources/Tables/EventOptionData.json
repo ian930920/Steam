@@ -1,0 +1,8 @@
+{"Json":{
+  "2001": { "strOption":62001, "strResult":62002, "isBattle":0, "rewardType":3, "rewardID":1, "rewardValue":1},
+  "2002": { "strOption":62003, "strResult":62004, "isBattle":0, "rewardType":1, "rewardID":101, "rewardValue":3},
+  "2003": { "strOption":62005, "strResult":62006, "isBattle":1, "rewardType":0, "rewardID":0, "rewardValue":0},
+  "2004": { "strOption":62007, "strResult":62008, "isBattle":0, "rewardType":0, "rewardID":0, "rewardValue":0},
+  "2005": { "strOption":62009, "strResult":62010, "isBattle":0, "rewardType":1, "rewardID":101, "rewardValue":2},
+  "2006": { "strOption":62011, "strResult":62012, "isBattle":0, "rewardType":2, "rewardID":5, "rewardValue":1}
+}}

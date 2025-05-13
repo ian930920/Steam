@@ -7,7 +7,8 @@ public class ResourceManager : BaseSingleton<ResourceManager>
     public enum eATLAS_ID
     {
         UI = 20001,
-        Characer,
+        Character,
+        BG,
     }
 
     public enum eRES_ID

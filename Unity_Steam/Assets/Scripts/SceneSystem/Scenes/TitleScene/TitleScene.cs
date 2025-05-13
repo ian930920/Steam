@@ -14,6 +14,9 @@ public class TitleScene : BaseScene
 
     public void GameStart()
     {
+        //TODO Delete
+        //UserDataManager.Instance.Inventory.AddItem(new stItem(TableData.TableItem.eID.Ticket, 10));
+        
         //세션타입에 따라서 진행
         switch(UserDataManager.Instance.Session.CurrSessionType)
         {

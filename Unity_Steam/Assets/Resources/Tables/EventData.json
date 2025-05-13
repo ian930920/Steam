@@ -1,0 +1,5 @@
+{"Json":{
+  "1001": { "strID":61001, "battleChance":0, "arrOption":[2001, 2002]},
+  "1002": { "strID":61002, "battleChance":1, "arrOption":[2003, 2004]},
+  "1003": { "strID":61003, "battleChance":0, "arrOption":[2005, 2006]}
+}}

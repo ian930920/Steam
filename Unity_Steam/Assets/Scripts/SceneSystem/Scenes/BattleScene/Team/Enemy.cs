@@ -11,17 +11,31 @@ public class Enemy : Team
     private List<Unit_Enemy> m_listChar = new List<Unit_Enemy>();
     private int m_nCurrAttackerIdx = 0;
 
-    public void InitStage(int nCount)
+    public void InitStage(int nLevel)
     {
         this.ResetTeam();
 
-        //TODO 스테이지 데이터로
-        for(int i = 0; i < nCount; ++i)
+        var enemyCount = TableManager.Instance.EnemyCount.GetEnemyCount(UserDataManager.Instance.Session.Stage, nLevel);
+        for(int i = 0; i < enemyCount; ++i)
         {
             this.m_listChar.Add(ObjectPoolManager.Instance.GetPoolObjectComponent<Unit_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
             this.m_listChar[i].transform.SetParent(this.m_arrTransParent[i]);
-            this.m_listChar[i].Init((uint)(TableData.TableEnemy.eID.Enemy_1 + i));
+
+            var enemyType = TableManager.Instance.EnemyType.GetRandomEnemyType(nLevel);
+            var enemyID = TableManager.Instance.Enemy.GetRandomEnemyByType((int)enemyType);
+            this.m_listChar[i].Init(enemyID);
         }
+    }
+
+    public void InitBoss()
+    {
+        this.ResetTeam();
+
+        this.m_listChar.Add(ObjectPoolManager.Instance.GetPoolObjectComponent<Unit_Enemy>(TableData.TableObjectPool.eID.Char_Enemy));
+        this.m_listChar[0].transform.SetParent(this.transform);
+        
+        var enemyID = TableManager.Instance.Enemy.GetRandomEnemyByType((int)TableData.TableEnemyType.eTYPE.Boss);
+        this.m_listChar[0].Init(enemyID);
     }
 
     public override void ResetTeam()
@@ -61,7 +75,7 @@ public class Enemy : Team
     {
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
 
-        this.m_listChar[this.m_nCurrAttackerIdx].SetMyTurn();
+        if(this.m_listChar.Count > 0) this.m_listChar[this.m_nCurrAttackerIdx].SetMyTurn();
     }
 
     public override bool IsTurnFinish()

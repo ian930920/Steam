@@ -1,0 +1,6 @@
+{"Json":{
+  "1001": { "strID":50001, "level":1, "strSprite":"BG_Battle_1"},
+  "1002": { "strID":50002, "level":1, "strSprite":"BG_Battle_2"},
+  "1003": { "strID":50003, "level":2, "strSprite":"BG_Battle_3"},
+  "1004": { "strID":50004, "level":3, "strSprite":"BG_Battle_4"}
+}}

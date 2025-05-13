@@ -1,0 +1,12 @@
+{"Json":{
+  "1": { "type":2, "strIcon":"RuneIcon0_Critical_Damage", "strID":21001, "value":0.2, "rarity":0, "price":6, "statusID":0},
+  "2": { "type":2, "strIcon":"RuneIcon0_Ball_Count", "strID":21002, "value":0.2, "rarity":1, "price":8, "statusID":0},
+  "3": { "type":2, "strIcon":"RuneIcon0_Critical_Chance", "strID":21003, "value":0.2, "rarity":1, "price":8, "statusID":0},
+  "4": { "type":2, "strIcon":"RuneIcon0_Buff", "strID":21004, "value":1, "rarity":3, "price":12, "statusID":0},
+  "5": { "type":2, "strIcon":"RuneIcon0_Get_Coin", "strID":21005, "value":1, "rarity":3, "price":12, "statusID":0},
+  "6": { "type":2, "strIcon":"RuneIcon0_Damage", "strID":21006, "value":2, "rarity":2, "price":10, "statusID":2006},
+  "7": { "type":2, "strIcon":"RuneIcon0_Debuff", "strID":21007, "value":2, "rarity":2, "price":10, "statusID":1006},
+  "8": { "type":2, "strIcon":"RuneIcon0_Ball_Health", "strID":21008, "value":10, "rarity":2, "price":10, "statusID":0},
+  "9": { "type":2, "strIcon":"RuneIcon0_Buff", "strID":21009, "value":1, "rarity":2, "price":10, "statusID":0},
+  "10": { "type":2, "strIcon":"RuneIcon0_Buff", "strID":21010, "value":1, "rarity":0, "price":6, "statusID":0}
+}}

@@ -1,0 +1,5 @@
+{"Json":{
+  "1": { "battle":0.6, "event":0.1, "treasure":0.05, "battleEvent":0.1, "battleTreasure":0.15, "boss":0},
+  "2": { "battle":0.7, "event":0.1, "treasure":0.05, "battleEvent":0.1, "battleTreasure":0.05, "boss":0},
+  "3": { "battle":0.75, "event":0.05, "treasure":0.05, "battleEvent":0.1, "battleTreasure":0.05, "boss":0}
+}}

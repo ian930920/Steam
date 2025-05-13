@@ -18,13 +18,15 @@ public class UI_MySummonInfo : MonoBehaviour
     {
         var dataSummon = TableManager.Instance.Summon.GetData(summonID);
         var userSummon = UserDataManager.Instance.Summon.GetSummon(summonID);
-
-        this.m_imgChar.sprite = TableManager.Instance.Summon.GetSprite(summonID);
+        this.m_imgChar.sprite = TableManager.Instance.Summon.GetIcon(summonID);
 
         this.m_textSummonName.text = TableManager.Instance.String.GetString(dataSummon.strID);
         
         this.m_textSkillName.text = TableManager.Instance.Skill.GetString_Title(dataSummon.skillID);
-        this.m_textSkillDesc.text = TableManager.Instance.Skill.GetString_Desc(dataSummon.skillID, userSummon.Damage);
+
+        var damage = userSummon.Damage;
+        if(SceneManager.Instance.CurrSceneID == SceneManager.eSCENE_ID.Battle) damage = SceneManager.Instance.GetCurrScene<BattleScene>().User_GetSummonDamage(summonID);
+        this.m_textSkillDesc.text = TableManager.Instance.Skill.GetString_Desc(dataSummon.skillID, damage);
 
         this.m_uiSkillTurn.RefreshTurn(userSummon.Cooldown, true);
         this.m_uiSkillTurn.SetTextColor(userSummon.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));

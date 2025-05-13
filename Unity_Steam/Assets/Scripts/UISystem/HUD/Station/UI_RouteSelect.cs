@@ -20,12 +20,7 @@ public class UI_RouteSelect : MonoBehaviour
 
     public void OnRouteClicked()
     {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 루트 선택 팝업");
-
-        //TODO 루트 선택 팝업
-
-        //TODO Delete
-        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Battle);
-        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Battle);
+        //루트 선택 팝업
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.RouteSelect);
     }
 }

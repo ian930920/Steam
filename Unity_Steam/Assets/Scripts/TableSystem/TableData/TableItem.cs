@@ -10,6 +10,12 @@ namespace TableData
             Dia,
 	    }
 
+        public enum eTYPE
+	    {
+            Cunsume = 1,
+            Rune,
+	    }
+
         public TableData_Item GetData(eID eItemID)
         {
             uint nItemID = (uint)eItemID;
@@ -48,8 +54,9 @@ namespace TableData
 
     public class TableData_Item : iTableData
     {
-        //tableID strIcon strID
+        //tableID type strIcon strID
         public uint tableID { get; set; }
+        public int type { get; set; }
         public string strIcon { get; set; }
         public uint strID { get; set; }
     }
@@ -59,6 +66,7 @@ public struct stItem
 {
     public uint ItemID;
     public int Count;
+    public TableData.TableItem.eTYPE ItemType => (TableData.TableItem.eTYPE)TableManager.Instance.Item.GetData(ItemID).type;
 
     public stItem(uint tableID)
     {

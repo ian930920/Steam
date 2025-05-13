@@ -49,8 +49,24 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 
 	public void AddItem(stItem stItem)
     {
-		this.addItem(stItem.ItemID, stItem.Count);
-	}
+        switch(stItem.ItemType)
+        {
+            case TableData.TableItem.eTYPE.Cunsume:
+			{
+				this.addItem(stItem.ItemID, stItem.Count);
+
+				//업데이트
+				UserDataManager.Instance.DoItemCountRefreshEvent(stItem.ItemID);
+			}
+            break;
+
+            case TableData.TableItem.eTYPE.Rune:
+			{
+				this.addRune(stItem.ItemID);
+			}
+			break;
+        }
+    }
 
     private void addItem(uint itemID, int nCount)
     {
@@ -85,7 +101,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		return base.Data.DicRune[uniqueRuneID];
 	}
 
-	public void AddRune(uint runeID)
+	private void addRune(uint runeID)
 	{
 		var uniqueRuneID = base.Data.UniqueRuneID;
 
@@ -125,7 +141,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		var enumData = TableManager.Instance.Rune.GetEnumerator();
 		while(enumData.MoveNext())
 		{
-			this.AddRune(enumData.Current.Key);
+			this.addRune(enumData.Current.Key);
 		}
 	}
 
@@ -144,7 +160,7 @@ public class UserData_Inventory : UserData<JsonData_Inventory>
 		}
 		this.SaveClientData();
 	}
-#endregion
+    #endregion
 }
 
 public class JsonData_Inventory : BaseJsonData

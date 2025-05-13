@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class UI_TurnInfo : MonoBehaviour
 {
@@ -12,6 +10,14 @@ public class UI_TurnInfo : MonoBehaviour
     }
 
     [SerializeField] private GameObject[] m_arrGobj = null;
+
+    public void ResetUI()
+    {
+        for(int i = 0, nMax = (int)eTURN.End; i < nMax; ++i)
+        {
+            this.m_arrGobj[i].SetActive(false);
+        }
+    }
 
     public void SetTurn(bool isPlayerTurn)
     {

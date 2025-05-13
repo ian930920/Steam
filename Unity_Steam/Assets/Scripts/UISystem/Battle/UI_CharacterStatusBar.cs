@@ -21,13 +21,7 @@ public class UI_CharacterStatusBar : MonoBehaviour
         this.m_sliderHP.maxValue = nHP;
         this.RefreshGauge(nHP);
 
-        this.m_dicStatus.Clear();
-        for(int i = 0, nMax = this.m_arrStatus.Length; i < nMax; ++i)
-        {
-            if(this.m_arrStatus[i].gameObject.activeSelf == false) continue;
-
-            this.m_arrStatus[i].gameObject.SetActive(false);
-        }
+        this.ResetStatus();
 
         this.gameObject.SetActive(true);
     }
@@ -36,6 +30,17 @@ public class UI_CharacterStatusBar : MonoBehaviour
     {
         this.m_sliderHP.value = Mathf.Clamp(nHP, 0, int.MaxValue);
         this.m_textHP.text = $"{this.m_sliderHP.value}/{this.m_sliderHP.maxValue}";
+    }
+
+    public void ResetStatus()
+    {
+        this.m_dicStatus.Clear();
+        for(int i = 0, nMax = this.m_arrStatus.Length; i < nMax; ++i)
+        {
+            if(this.m_arrStatus[i].gameObject.activeSelf == false) continue;
+
+            this.m_arrStatus[i].gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -59,7 +64,13 @@ public class UI_CharacterStatusBar : MonoBehaviour
         }
 
         bool isRemove = this.m_dicStatus[statusID].UpdateTurn(turn);
-        if(isRemove == true) this.m_dicStatus.Remove(statusID);
+        if(isRemove == true)
+        {
+            this.m_dicStatus.Remove(statusID);
+
+            //정보 켜뒀다면 닫기
+            UIManager.Instance.PopupSystem.ClosePopup(ePOPUP_ID.StatusInfo);
+        }
 
         return isRemove;
     }

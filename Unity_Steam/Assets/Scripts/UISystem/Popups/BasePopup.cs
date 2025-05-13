@@ -373,6 +373,8 @@ public class ScrollGroupUI<Data, Slot> : ScrollUI where Slot : BaseScrollGroup<D
         }
     }
 
+	public bool IsEmpty => this.DataCount == 0;
+
 	protected override void initData()
     {
         base.initData();

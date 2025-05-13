@@ -75,6 +75,11 @@ public class Skill
         SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
+    public void ResetTurn()
+    {
+        this.RemainTurn = 0;
+    }
+
     private bool isHit(Stat_Additional statAdditional)
     {
         //상태이상 확인
@@ -125,7 +130,7 @@ public class Skill
         return stDamage;
     }
 
-    public void UseSkill(Stat_Character statDefault, Stat_Additional statAdditional)
+    public void UseSkill(BaseUnit caster, Stat_Character statDefault, Stat_Additional statAdditional)
     {
         switch((TableData.TableSkill.eTYPE)this.m_data.type)
         {
@@ -135,7 +140,14 @@ public class Skill
                 {
                     var target = this.m_listTarget[i];
                     SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
-                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.Damaged(this.GetResultDamage(statDefault, statAdditional)));
+
+                    var damage = this.GetResultDamage(statDefault, statAdditional);
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () =>
+                    {
+                        target.Damaged(damage);
+                        if(this.m_data.listStatusID.Contains((uint)TableData.TableStatus.eID.Absorption) == true) caster.Heal(new stDamage((int)(damage.Value * 0.5f)));
+                    });
+
                 }
             }
             break;
@@ -151,7 +163,7 @@ public class Skill
             }
             break;
 
-            case TableData.TableSkill.eTYPE.Status:
+            case TableData.TableSkill.eTYPE.Buff:
             {
                 //TODO 쉴드 ..?
                 for(int i = 0, nMax = this.m_listTarget.Count; i < nMax; ++i)
@@ -163,6 +175,13 @@ public class Skill
             }
             break;
 
+            default:
+            {
+                SceneManager.Instance.GetCurrScene<BattleScene>().ChangeTurn();
+            }
+            break;
+
+            /*
             case TableData.TableSkill.eTYPE.Summon:
             {
                 //TODO 생성!
@@ -170,6 +189,7 @@ public class Skill
                 SceneManager.Instance.GetCurrScene<BattleScene>().ChangeTurn();
             }
             break;
+            */
         }
 
         //상태이상 추가
@@ -221,8 +241,5 @@ public class Skill
 
         //쿨타임 추가
         this.RemainTurn = (int)UnityEngine.Mathf.Clamp(this.m_data.cooldown - statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown), 0, this.m_data.cooldown);
-
-        //타겟 다 지우기
-        this.m_listTarget.Clear();
     }
 }
