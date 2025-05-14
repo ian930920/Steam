@@ -1,10 +1,6 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static UnityEngine.Rendering.DebugUI;
-using static UnityEngine.GraphicsBuffer;
-using Unity.VisualScripting;
 
 public abstract class BaseUnit : MonoBehaviour
 {
@@ -36,9 +32,12 @@ public abstract class BaseUnit : MonoBehaviour
 
     protected UI_CharacterStatusBar m_uiStatusBar = null;
 
+    private bool isDead = false;
+
     public virtual void Init(uint charID)
     {
         this.CharID = charID;
+        this.isDead = false;
 
         this.transform.localPosition = Vector3.zero;
         this.gameObject.SetActive(true);
@@ -102,10 +101,7 @@ public abstract class BaseUnit : MonoBehaviour
 
     public void Damaged(stDamage stDamage)
     {
-        //턴끝
-        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
-
-        if(this.gameObject.activeSelf == false)
+        if(this.isDead == true)
         {
             ProjectManager.Instance.LogWarning("죽었는데 딜 왜 들어오냐?");
             return;
@@ -115,7 +111,7 @@ public abstract class BaseUnit : MonoBehaviour
 
         if(stDamage.Value < 1)
         {
-            ObjectPoolManager.Instance.PlayCountEffectByUlong(stDamage, this.transform.position);
+            ObjectPoolManager.Instance.PlayCountEffect_Damage(stDamage, this.transform.position);
             return;
         }
 
@@ -148,10 +144,7 @@ public abstract class BaseUnit : MonoBehaviour
 
     public void Heal(stDamage stDamage)
     {
-        //턴끝
-        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
-
-        if(this.gameObject.activeSelf == false)
+        if(this.isDead == true)
         {
             ProjectManager.Instance.LogWarning("죽었는데 힐 왜 들어오냐?");
             return;
@@ -169,9 +162,6 @@ public abstract class BaseUnit : MonoBehaviour
     {
         var shield = this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) + value;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, shield);
-
-        //턴끝
-        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(this);
     }
 
     public void ResetShield()
@@ -181,6 +171,8 @@ public abstract class BaseUnit : MonoBehaviour
 
     public void AddStatus(uint statusID, int turn)
     {
+        if(this.isDead == true) return;
+
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {
             this.m_dicStatus.Add(statusID, new Status(statusID, turn));
@@ -208,6 +200,8 @@ public abstract class BaseUnit : MonoBehaviour
     protected virtual void death()
     {
         ProjectManager.Instance.Log("사망");
+
+        this.isDead = true;
         
         this.gameObject.SetActive(false);
 

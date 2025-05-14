@@ -1,6 +1,6 @@
 {"Json":{
-  "1001": { "type":1, "cooldown":0, "coe":1, "acc":0.7, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31001, "resID":3013},
-  "1002": { "type":1, "cooldown":0, "coe":0.5, "acc":0.6, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31002, "resID":3014},
+  "1001": { "type":1, "cooldown":1, "coe":1, "acc":0.7, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31001, "resID":3013},
+  "1002": { "type":1, "cooldown":1, "coe":0.5, "acc":0.6, "crit":0.2, "dur":0, "target":1, "listStatusID":[], "strID":31002, "resID":3014},
   "1003": { "type":1, "cooldown":1, "coe":3, "acc":0.6, "crit":0.3, "dur":1, "target":1, "listStatusID":[1002], "strID":31003, "resID":3006},
   "1004": { "type":1, "cooldown":2, "coe":2, "acc":0.7, "crit":0.2, "dur":2, "target":1, "listStatusID":[1005], "strID":31004, "resID":3007},
   "1005": { "type":1, "cooldown":2, "coe":2, "acc":0.6, "crit":0.2, "dur":2, "target":1, "listStatusID":[1001], "strID":31005, "resID":3012},
@@ -12,11 +12,11 @@
   "1011": { "type":1, "cooldown":4, "coe":1, "acc":0.6, "crit":0.3, "dur":0, "target":1, "listStatusID":[], "strID":31011, "resID":3013},
   "1012": { "type":1, "cooldown":1, "coe":0.6, "acc":0.7, "crit":0.2, "dur":0, "target":1, "listStatusID":[1009], "strID":31012, "resID":3013},
   "2001": { "type":1, "cooldown":1, "coe":20, "acc":0.7, "crit":0.2, "dur":2, "target":1, "listStatusID":[1000], "strID":32001, "resID":3009},
-  "2002": { "type":1, "cooldown":0, "coe":15, "acc":0.6, "crit":0.2, "dur":1, "target":5, "listStatusID":[1000], "strID":32002, "resID":3008},
-  "2003": { "type":3, "cooldown":0, "coe":30, "acc":1, "crit":0, "dur":1, "target":10, "listStatusID":[2002], "strID":32003, "resID":3002},
+  "2002": { "type":1, "cooldown":1, "coe":15, "acc":0.6, "crit":0.2, "dur":1, "target":5, "listStatusID":[1000], "strID":32002, "resID":3008},
+  "2003": { "type":3, "cooldown":1, "coe":30, "acc":1, "crit":0, "dur":1, "target":10, "listStatusID":[2002], "strID":32003, "resID":3002},
   "2004": { "type":0, "cooldown":0, "coe":20, "acc":1, "crit":0, "dur":2, "target":0, "listStatusID":[2008], "strID":32004, "resID":3017},
   "2005": { "type":2, "cooldown":3, "coe":15, "acc":1, "crit":0.2, "dur":0, "target":10, "listStatusID":[2009], "strID":32005, "resID":3004},
   "2006": { "type":2, "cooldown":2, "coe":5, "acc":1, "crit":0.2, "dur":3, "target":10, "listStatusID":[2001], "strID":32006, "resID":3004},
-  "2007": { "type":1, "cooldown":4, "coe":10, "acc":0.6, "crit":0.2, "dur":1, "target":5, "listStatusID":[1008], "strID":32007, "resID":3004},
+  "2007": { "type":1, "cooldown":4, "coe":10, "acc":0.6, "crit":0.2, "dur":1, "target":5, "listStatusID":[1008], "strID":32007, "resID":3011},
   "2008": { "type":1, "cooldown":4, "coe":30, "acc":0.7, "crit":0.2, "dur":2, "target":1, "listStatusID":[1000, 1003], "strID":32008, "resID":3004}
 }}

@@ -10,6 +10,7 @@ namespace TableData
         public enum eID
         {
             Start = 1,
+            Ending,
         }
 
         public string GetStringByIdx(eID eTableID, int nIdx)

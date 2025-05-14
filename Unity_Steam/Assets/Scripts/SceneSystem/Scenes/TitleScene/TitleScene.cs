@@ -14,9 +14,6 @@ public class TitleScene : BaseScene
 
     public void GameStart()
     {
-        //TODO Delete
-        //UserDataManager.Instance.Inventory.AddItem(new stItem(TableData.TableItem.eID.Ticket, 10));
-        
         //세션타입에 따라서 진행
         switch(UserDataManager.Instance.Session.CurrSessionType)
         {
@@ -36,21 +33,20 @@ public class TitleScene : BaseScene
 
     public void CheckSession()
     {
-        if(UserDataManager.Instance.Summon.SummonCount < 3) //진행중인 세션이 없다면
+        if(UserDataManager.Instance.Session.IsSessionStart == false) //진행중인 세션이 없다면
         {
             //세션 시작했다고 저장하고
             UserDataManager.Instance.StartSession();
 
-            //소환수 선택
-            UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.SummonSelect);
+            //시나리오 시작~!
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
         }
-        else if(UserDataManager.Instance.Session.IsSessionStart == true) //진행중인 세션이있다면
+        else if(UserDataManager.Instance.Session.IsScenarioWatch == false || UserDataManager.Instance.Summon.SummonCount < 3)
         {
-            //TODO 지우고 진행할건지 물어보기
-            //UIManager.Instance.PopupSystem.OpenSystemConfirmPopup("진행중인 게임이 있습니다.\n처음부터 시작하시겠습니까?", this);
+            //시나리오 안봤거나 소환수 아직 덜 선택했다면
 
-            //그냥 시작
-            this.GameStart();
+            //시나리오로 이동
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
         }
         else
         {

@@ -20,6 +20,7 @@ public enum ePOPUP_ID
     Reward_Item,
     Reward_Summon,
     BattleResult,
+    ClosingCredits,
 
     StatusInfo = 42001,
     RuneInfo,

@@ -19,6 +19,7 @@ public class Skill
         this.SkillID = skillID;
         this.m_data = TableManager.Instance.Skill.GetData(this.SkillID);
         this.m_funcGetStatus = funcGetStatus;
+        this.RemainTurn = 0;
     }
 
     public void ResetTarget()
@@ -110,7 +111,7 @@ public class Skill
         return UnityEngine.Random.Range(0, 1.0f) <= crit;
     }
 
-    public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional)
+    public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional, bool isMissable = true)
     {
         stDamage stDamage = new stDamage(TableManager.Instance.Skill.GetDefaultDamage(this.SkillID, statDefault, statAdditional));
 
@@ -120,7 +121,7 @@ public class Skill
             stDamage.Value = (int)(stDamage.Value * CRITICAL_DMG);
         }
 
-        if(this.isHit(statAdditional) == false)
+        if(isMissable == true && this.isHit(statAdditional) == false)
         {
             stDamage.IsCritical = false;
             stDamage.eSkillType = stDamage.eSKILL_TYPE.Miss;
@@ -145,9 +146,26 @@ public class Skill
                     ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () =>
                     {
                         target.Damaged(damage);
-                        if(this.m_data.listStatusID.Contains((uint)TableData.TableStatus.eID.Absorption) == true) caster.Heal(new stDamage((int)(damage.Value * 0.5f)));
-                    });
 
+                        //명중돼야 상태이상 적용
+                        if(damage.eSkillType != stDamage.eSKILL_TYPE.Miss)
+                        {
+                            for(int j = 0, nStatusMax = this.m_data.listStatusID.Count; j < nStatusMax; ++j)
+                            {
+                                //TODO Status 명중타입따라서
+                                target.AddStatus(this.m_data.listStatusID[j], this.m_data.dur);
+                            }
+                        }
+
+                        //피해 흡혈 효과
+                        if(this.m_data.listStatusID.Contains((uint)TableData.TableStatus.eID.Absorption) == true)
+                        {
+                            if(damage.eSkillType != stDamage.eSKILL_TYPE.Miss) caster.Heal(new stDamage((int)(damage.Value * 0.5f)));
+                        }
+
+                        //턴 끝났다고 지우기
+                        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(target);
+                    });
                 }
             }
             break;
@@ -158,7 +176,22 @@ public class Skill
                 {
                     var target = this.m_listTarget[i];
                     SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
-                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.Heal(this.GetResultDamage(statDefault, statAdditional)));
+
+                    var damage = this.GetResultDamage(statDefault, statAdditional, true);
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () =>
+                    {
+                        target.Heal(damage);
+
+                        //상태이상 적용
+                        for(int j = 0, nStatusMax = this.m_data.listStatusID.Count; j < nStatusMax; ++j)
+                        {
+                            //TODO Status 명중타입따라서
+                            target.AddStatus(this.m_data.listStatusID[j], this.m_data.dur);
+                        }
+
+                        //턴 끝났다고 지우기
+                        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(target);
+                    });
                 }
             }
             break;
@@ -170,7 +203,13 @@ public class Skill
                 {
                     var target = this.m_listTarget[i];
                     SceneManager.Instance.GetCurrScene<BattleScene>().AddTurnEvent(target);
-                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () => target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value));
+                    ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () =>
+                    {
+                        target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value);
+
+                        //턴 끝났다고 지우기
+                        SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(target);
+                    });
                 }
             }
             break;
@@ -192,6 +231,7 @@ public class Skill
             */
         }
 
+        /*
         //상태이상 추가
         if(this.m_data.listStatusID.Count > 0)
         {
@@ -203,6 +243,7 @@ public class Skill
                 }
             }
         }
+        */
 
         //룬의 상태이상도 추가
         if(statAdditional.DicStatus.Count > 0)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class BattleScene : BaseScene
 {
@@ -40,14 +41,6 @@ public class BattleScene : BaseScene
 #region Stage
     private void startCurrStep()
     {
-        if(UserDataManager.Instance.Session.Step >= TableData.TableRouteStep.MAX_STEP)
-        {
-            //역으로 보내기
-            UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
-            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
-            return;
-        }
-
         //스텝
         this.HUD.RefreshStageInfo(UserDataManager.Instance.Session.RouteID, UserDataManager.Instance.Session.Step);
         this.HUD.SetActiveBattleUI(false);
@@ -59,10 +52,8 @@ public class BattleScene : BaseScene
             case TableData.TableRouteStep.eSTEP_TYPE.Battle:
             case TableData.TableRouteStep.eSTEP_TYPE.Battle_Box:
             case TableData.TableRouteStep.eSTEP_TYPE.Boss:
+            default:
             {
-                //전투 정보 노출
-                this.HUD.SetActiveBattleUI(true);
-
                 //전투 시작
                 this.BattleStart();
             }
@@ -97,6 +88,9 @@ public class BattleScene : BaseScene
 
     public void BattleStart()
     {
+        //전투 정보 노출
+        this.HUD.SetActiveBattleUI(true);
+
         this.IsBattleStart = true;
 
         //스테이지 세팅
@@ -124,8 +118,7 @@ public class BattleScene : BaseScene
 
         switch(UserDataManager.Instance.Session.GetCurrStep())
         {
-            case TableData.TableRouteStep.eSTEP_TYPE.Battle:
-            case TableData.TableRouteStep.eSTEP_TYPE.Battle_Box:
+            default:
             {
                 //적 세팅
                 var level = TableManager.Instance.Route.GetData(UserDataManager.Instance.Session.RouteID).level;
@@ -153,6 +146,7 @@ public class BattleScene : BaseScene
         this.m_teamEnemy.BattleFinish();
 
         //결과 팝업
+        this.HUD.SetActiveBattleUI(false);
         UIManager.Instance.PopupSystem.OpenBattleResultPopup(Popup_BattleResult.eRESULT.Win);
     }
 
@@ -167,6 +161,7 @@ public class BattleScene : BaseScene
         UserDataManager.Instance.Session.FinishSession();
 
         //결과 팝업
+        this.HUD.SetActiveBattleUI(false);
         UIManager.Instance.PopupSystem.OpenBattleResultPopup(Popup_BattleResult.eRESULT.Defeat);
     }
 
@@ -190,6 +185,16 @@ public class BattleScene : BaseScene
             }
             break;
 
+            case TableData.TableRouteStep.eSTEP_TYPE.Boss:
+            {
+                //TODO 보상 테이블
+                //일단 정령 선물~~
+                uint summonID = TableManager.Instance.Summon.GetRandomSummonID();
+                UserDataManager.Instance.Summon.AddSummon(summonID);
+                UIManager.Instance.PopupSystem.OpenRewardSummonPopup(summonID, this.NextStep);
+            }
+            break;
+
             default:
             {
                 this.NextStep();
@@ -200,14 +205,28 @@ public class BattleScene : BaseScene
 
     public void NextStep()
     {
+        //다음 스텝 진행
+        UserDataManager.Instance.Session.NextStep();
+
+        if(UserDataManager.Instance.Session.IsEnding == true)
+        {
+            //끝이라면 엔딩 시나리오
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
+            return;
+        }
+        else if(UserDataManager.Instance.Session.Step >= TableData.TableRouteStep.MAX_STEP)
+        {
+            //역으로 보내기
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+            return;
+        }
+
+        StopCoroutine("coNextStep");
         StartCoroutine("coNextStep");
     }
 
     private IEnumerator coNextStep()
     {
-        //다음 스텝 진행
-        UserDataManager.Instance.Session.NextStep();
-
         SceneManager.Instance.FadeStart(new UI_SceneFade.stFadeInfo(UI_SceneFade.eFADE_TYPE.In, 1.0f, Color.black, null));
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1.0f);
@@ -251,26 +270,17 @@ public class BattleScene : BaseScene
 
         if(this.IsUserTurn == true) //유저턴이 라면
         {
-            //턴이 안끝났다면
-            if(this.m_teamUser.IsTurnFinish() == false)
-            {
-                //스킬 사용할 수 있다고 세팅
-                this.User_SetClickable(true);
-                return;
-            }
-        }
-        else //적 턴이라면
-        { 
-            //턴이 안끝났다면
-            if(this.m_teamEnemy.IsTurnFinish() == false)
-            {
-                //다음 적이 공격
-                this.m_teamEnemy.CheckTurnFinish();
-                return;
-            }
-        }
+            //체크한다곤하지만..
+            this.m_teamUser.CheckTurnFinish();
 
-        StartCoroutine("coSetTurn", !this.IsUserTurn);
+            //유저는 직접 바꿈
+        }
+        else if(this.m_teamEnemy.CheckTurnFinish() == true) //적 턴인데 턴 끝났으면
+        {
+            //턴 바꾸기
+            StopAllCoroutines();
+            StartCoroutine("coSetTurn", !this.IsUserTurn);
+        }
     }
 
     private IEnumerator coSetTurn(bool isUserTuren)
@@ -360,8 +370,26 @@ public class BattleScene : BaseScene
     {
         this.m_teamEnemy.RemoveChar(charEnemy);
 
-        //TODO 보상
-        if(Random.Range(0, 1.0f) > 0.5f) UserDataManager.Instance.Inventory.AddItem(new stItem(TableData.TableItem.eID.Ticket, Random.Range(1, 5)));
+        switch((TableData.TableEnemyType.eTYPE)TableManager.Instance.Enemy.GetData(charEnemy.CharID).type)
+        {
+            case TableData.TableEnemyType.eTYPE.Boss:
+            {
+                //TODO 보상 참조
+            }
+            break;
+
+            default:
+            {
+                //TODO 보상 테이블 참조
+                if(Random.Range(0, 1.0f) > 0.5f)
+                {
+                    stItem reward = new stItem(TableData.TableItem.eID.Ticket, Random.Range(1, 5));
+                    UIManager.Instance.PopupSystem.OpenRewardItemPopup(reward, null);
+                    UserDataManager.Instance.Inventory.AddItem(reward);
+                }
+            }
+            break;
+        }
     }
     #endregion
 }

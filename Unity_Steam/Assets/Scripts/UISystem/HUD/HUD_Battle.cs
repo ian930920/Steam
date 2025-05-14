@@ -66,6 +66,9 @@ public class HUD_Battle : BaseHUD
     public void RefreshMana(int nCurrMana)
     {
         this.m_uiMana.Refresh(nCurrMana);
+
+        //마나 값 바뀌면 다시 세팅
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
     public void SetActiveBattleUI(bool isActive)

@@ -7,6 +7,7 @@ public class UI_Battle_SummonSlot : MonoBehaviour
 
     [SerializeField] private Image m_imgIcon = null;
     [SerializeField] private Image m_imgSelect = null;
+    [SerializeField] private Image m_imgInactive = null;
 
     [SerializeField] private UI_SkillTurn m_uiCooldown = null;
     [SerializeField] private UI_SkillTurn m_uiSkillTurn = null;
@@ -36,6 +37,9 @@ public class UI_Battle_SummonSlot : MonoBehaviour
 
         this.m_uiSkillTurn.RefreshTurn(this.Summon.Cooldown, true);
         this.m_uiSkillTurn.SetTextColor(this.Summon.GetAdditionalStatEffectType(Stat_Additional.eTYPE.Cooldown));
+        
+        bool isUsable = this.Summon.Cost <= SceneManager.Instance.GetCurrScene<BattleScene>().UnitUser.CurrStat.GetStat(Stat_Character.eTYPE.Mana);
+        this.m_imgInactive.enabled = this.m_uiCooldown.IsActive == false && isUsable == false;
     }
 
     public void SetSelect(bool bSelect)

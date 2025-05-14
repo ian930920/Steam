@@ -171,7 +171,7 @@ public class Popup_RuneEquip : ScrollPopup
 
     public void OnUnequipClicked()
     {
-        UserDataManager.Instance.UnequipRune(this.SummonID, this.m_currRune);
+        UserDataManager.Instance.UnequipRune(this.m_currRune.SummonID, this.m_currRune);
 
         this.refreshSummonData();
     }

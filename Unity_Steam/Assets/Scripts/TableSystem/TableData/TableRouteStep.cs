@@ -15,6 +15,7 @@ namespace TableData
         }
 
         public readonly static int MAX_STEP = 5;
+        public readonly static int MAX_STAGE = 3;
 
         protected override void dataProcessing()
         {

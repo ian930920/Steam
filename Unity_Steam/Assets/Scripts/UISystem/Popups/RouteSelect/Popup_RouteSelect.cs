@@ -61,7 +61,6 @@ public class Popup_RouteSelect : BasePopup
         UserDataManager.Instance.Session.SaveRoute(this.m_listRoute[this.m_nSelectIdx].tableID);
 
         //게임 진행~!
-        UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Battle);
         SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Battle);
     }
 

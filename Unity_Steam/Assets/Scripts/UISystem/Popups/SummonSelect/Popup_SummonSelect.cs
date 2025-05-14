@@ -65,8 +65,8 @@ public class Popup_SummonSelect : BasePopup
             }
             else
             {
-                //시나리오로 넘기기
-                SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
+                //역으로 이동~
+                SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
             }
         });
 

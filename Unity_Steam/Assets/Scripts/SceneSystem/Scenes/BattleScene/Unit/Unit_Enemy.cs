@@ -64,18 +64,20 @@ public class Unit_Enemy : BaseUnit
         base.SetCurrSkill(this.getRandomSkill());
 
         //지금 설정된 스킬 사용
+        StopAllCoroutines();
         StartCoroutine("coUseSkill");
     }
 
     private Skill getRandomSkill()
     {
-        var listUsableSkill = this.m_listSkill.Where(skill => skill.RemainTurn == 0);
-        
         //쓸수있는 스킬 없으면 맨 앞에꺼 사용
-        if(listUsableSkill.Count() == 0) return this.m_listSkill[0];
+        if(this.m_listSkill.Any(skill => skill.RemainTurn == 0) == false) return this.m_listSkill[0];
+
+        var listUsableSkill = this.m_listSkill.Where(skill => skill.RemainTurn == 0).OrderByDescending(skill => TableManager.Instance.Skill.GetData(skill.SkillID).cooldown).ToList();
 
         //쿨타임 기반
-        return listUsableSkill.OrderBy(g => System.Guid.NewGuid()).OrderByDescending(skill => TableManager.Instance.Skill.GetData(skill.SkillID).cooldown).First();
+        return listUsableSkill[0];
+        //return listUsableSkill.OrderByDescending(skill => TableManager.Instance.Skill.GetData(skill.SkillID).cooldown).First();
     }
 
     private IEnumerator coUseSkill()
@@ -84,6 +86,7 @@ public class Unit_Enemy : BaseUnit
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
 
+        UIManager.Instance.PopupSystem.OpenSystemTimerPopup(TableManager.Instance.Skill.GetString_Title(base.CurrSkill.SkillID));
         base.CurrSkill.UseSkill(this, this.DefaultStat, this.m_statAdditional);
     }
 

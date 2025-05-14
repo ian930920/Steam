@@ -3,7 +3,7 @@
   "1002": { "hp":30, "strength":15, "type":0, "listSkillID":[1001, 1007, 1010], "resID":20002, "strSprite":"Enemy_2"},
   "1003": { "hp":30, "strength":15, "type":0, "listSkillID":[1001, 1008, 1010], "resID":20002, "strSprite":"Enemy_3"},
   "1004": { "hp":60, "strength":10, "type":1, "listSkillID":[1001, 1008, 1012], "resID":20002, "strSprite":"Enemy_4"},
-  "1005": { "hp":125, "strength":7, "type":9, "listSkillID":[1001,1003, 1012], "resID":20002, "strSprite":"Enemy_5"},
+  "1005": { "hp":125, "strength":7, "type":9, "listSkillID":[1001, 1008, 1009, 1011, 1012], "resID":20002, "strSprite":"Enemy_5"},
   "1006": { "hp":100, "strength":10, "type":-1, "listSkillID":[1], "resID":20002, "strSprite":"Enemy_6"},
   "1007": { "hp":100, "strength":10, "type":-1, "listSkillID":[1], "resID":20002, "strSprite":"Enemy_7"},
   "1008": { "hp":100, "strength":10, "type":-1, "listSkillID":[1], "resID":20002, "strSprite":"Enemy_8"},

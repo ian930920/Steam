@@ -42,6 +42,11 @@ namespace TableData
             return base.m_listData.Where(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false).OrderBy(g => Guid.NewGuid()).Take(nCount).ToList();
         }
 
+        public uint GetRandomSummonID()
+        {
+            return this.GetRandomList(1)[0].tableID;
+        }
+
         public string GetString_SkillDesc(uint tableID)
         {
             if(base.ContainsKey(tableID) == false) return "없는 정령";

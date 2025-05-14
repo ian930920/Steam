@@ -49,6 +49,7 @@ public class UserDataManager : BaseSingleton<UserDataManager>
         while(enumUser.MoveNext())
         {
             enumUser.Current.Value.Reset();
+            enumUser.Current.Value.SaveClientData();
         }
     }
 

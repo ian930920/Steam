@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class User : Team
 {
     [SerializeField] private Transform m_transParent = null;
+    [SerializeField] private Image m_imgFinishTurn = null;
 
     public Unit_User Unit { get; private set; } = null;
     private List<Summon> m_listSummon = new List<Summon>();
@@ -54,6 +56,10 @@ public class User : Team
 
         //스킬 선택돼 있는걸로 세팅
         this.SelectSkill();
+
+        //버튼 이펙트 비활성
+        this.m_imgFinishTurn.enabled = false;
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
     private void updateSummonSkillTurn()
@@ -76,6 +82,9 @@ public class User : Team
             this.m_listSummon[i].ResetTurn();
         }
 
+        //버튼 이펙트 비활성
+        this.m_imgFinishTurn.enabled = false;
+
         SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
@@ -85,7 +94,7 @@ public class User : Team
         UserDataManager.Instance.Session.SaveBattleInfo(this.Unit.CurrStat.GetStat(Stat_Character.eTYPE.HP), this.Unit.GetStatusToList());
     }
 
-    public override bool IsTurnFinish()
+    protected override bool isTurnFinish()
     {
         //캐릭터 체크
         if(this.Unit.IsFinishTurn() == true) return true;
@@ -99,16 +108,22 @@ public class User : Team
         return true;
     }
 
-    public override void CheckTurnFinish()
+    public override bool CheckTurnFinish()
     {
-        if(this.IsTurnFinish() == false)
+        if(this.isTurnFinish() == false)
         {
-            this.Unit.SetMyTurn();
-            return;
+            //스킬 사용할 수 있다고 세팅
+            this.m_imgFinishTurn.enabled = false;
+            SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
+            return false;
         }
 
         //턴 끝
-        this.turnFinish();
+
+        //버튼 이펙트 활성
+        this.m_imgFinishTurn.enabled = true;
+
+        return true;
     }
 
     public override void AddTarget(BaseUnit charTarget)
@@ -147,7 +162,7 @@ public class User : Team
         this.CurrSummon.UseSkill();
 
         //슬롯 갱신
-        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupSlot();
+        SceneManager.Instance.GetCurrScene<BattleScene>().HUD.RefreshSummonGroupUI();
     }
 
     public int GetSummonDamage(uint summonID)

@@ -68,6 +68,8 @@ public class Enemy : Team
 
         //맨 처음 적이 공격
         this.m_nCurrAttackerIdx = 0;
+
+        StopAllCoroutines();
         StartCoroutine("coAttack");
     }
 
@@ -78,23 +80,25 @@ public class Enemy : Team
         if(this.m_listChar.Count > 0) this.m_listChar[this.m_nCurrAttackerIdx].SetMyTurn();
     }
 
-    public override bool IsTurnFinish()
+    protected override bool isTurnFinish()
     {
+        if(this.m_listChar.Count == 0) return true;
+
         return this.m_nCurrAttackerIdx == this.m_listChar.Count - 1;
     }
 
-    public override void CheckTurnFinish()
+    public override bool CheckTurnFinish()
     {
-        if(this.IsTurnFinish() == false)
+        if(this.isTurnFinish() == false)
         {
             //다음 공격
             this.m_nCurrAttackerIdx++;
             StartCoroutine("coAttack");
-            return;
+            return false;
         }
 
         //턴 끝
-        this.turnFinish();
+        return true;
     }
 
     public override void AddTarget(BaseUnit charTarget)

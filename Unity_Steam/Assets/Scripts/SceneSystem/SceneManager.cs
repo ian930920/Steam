@@ -50,6 +50,22 @@ public class SceneManager : BaseSingleton<SceneManager>
     {
 		this.m_reserveSceneID = eSceneID;
 
+        //유저데이터에 저장
+        switch(eSceneID)
+        {
+            case eSCENE_ID.Station:
+            {
+                UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Station);
+            }
+            break;
+
+            case eSCENE_ID.Battle:
+            {
+                UserDataManager.Instance.Session.SetSessionType(eSESSION_TYPE.Battle);
+            }
+            break;
+        }
+
         StartCoroutine("coChangeScene");
     }
 

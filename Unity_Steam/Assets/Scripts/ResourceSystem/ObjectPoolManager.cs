@@ -203,22 +203,16 @@ public class ObjectPoolManager : BaseSingleton<ObjectPoolManager>
         this.m_dicFx[resKey].GetObjectComponent<Fx_Particle_Item>().SetItem(nItemID, vecPos);
     }
 
-    public void PlayCountEffectByUlong(stDamage damage, Vector3 vecPos)
-    {
-        uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count;
-        if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
-
-        //재생
-        this.m_dicObjectPool[resKey].GetObjectComponent<Fx_Animation_Count>().Init(damage, vecPos);
-    }
-
     public void PlayCountEffect_Damage(stDamage damage, Vector3 vecPos)
     {
         uint resKey = (uint)TableData.TableObjectPool.eID.Effect_Count_Damage;
+        if(damage.IsCritical == true) resKey = (uint)TableData.TableObjectPool.eID.Effect_Count_Damage;
         if(this.m_dicObjectPool.ContainsKey(resKey) == false) return;
 
         //재생
-        this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos, damage.Value);
+        if(damage.eSkillType == stDamage.eSKILL_TYPE.Miss) this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos, "MISS");
+        else if(damage.IsCritical == true) this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos, $"Critical {damage.Value}");
+        else this.m_dicObjectPool[resKey].GetObjectComponent<DamageNumber>().Spawn(vecPos, damage.Value);
     }
 
     public void PlayCountEffect_Heal(stDamage damage, Vector3 vecPos)

@@ -19,6 +19,7 @@ public class UserData_Session : UserData<JsonData_Session>
 
 	public eSHOP_TYPE ShopType => base.Data.ShopType;
 	public int ShopCount => base.Data.ListShop.Count;
+	public bool IsEnding => this.Step >= TableData.TableRouteStep.MAX_STEP && this.Stage >= TableData.TableRouteStep.MAX_STAGE;
 
 
 	protected override void dataProcessing()
@@ -30,7 +31,6 @@ public class UserData_Session : UserData<JsonData_Session>
     {
 		//기본 초기화
 		base.Data.CurrSessionType = eSESSION_TYPE.Station;
-		base.Data.IsScenarioWatch = false;
 		base.Data.IsSessionStart = true;
 
 		//기본 스탯

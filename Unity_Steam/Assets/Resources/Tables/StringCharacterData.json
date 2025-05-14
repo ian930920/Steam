@@ -8,15 +8,15 @@
     "desc": ""
   },
   "30003": {
-    "title": "방패 전사",
+    "title": "백영",
     "desc": ""
   },
   "30004": {
-    "title": "데빈",
+    "title": "테스트",
     "desc": ""
   },
   "30005": {
-    "title": "세이",
+    "title": "테스트",
     "desc": ""
   },
   "30006": {
@@ -29,10 +29,6 @@
   },
   "30008": {
     "title": "세이",
-    "desc": ""
-  },
-  "30009": {
-    "title": "흑나비",
     "desc": ""
   },
   "31001": {
@@ -85,11 +81,11 @@
   },
   "32001": {
     "title": "화염구",
-    "desc": "선택한 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
+    "desc": "선택한 적에게 <color=red>{0}</color>만큼 피해를 줌. 대상 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
   },
   "32002": {
     "title": "화염 폭풍",
-    "desc": "모든 적에게 <color=red>{0:P0}</color>만큼 피해를 줌. 모든 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
+    "desc": "모든 적에게 <color=red>{0}</color>만큼 피해를 줌. 모든 적에게 {1}턴동안 <link=\"1000\"><color=yellow>화상</color></link> 디버프 부여"
   },
   "32003": {
     "title": "방벽",
@@ -97,23 +93,23 @@
   },
   "32004": {
     "title": "수호자",
-    "desc": "{1}턴만큼 지속되며<color=red>{0:P0}</color>의 체력을 가진 소환수를 소환. 지속 시간동안 적의 공격을 대신 맞아줌. 광역 공격은 막기 불가."
+    "desc": "{1}턴만큼 지속되며<color=red>{0}</color>의 체력을 가진 소환수를 소환. 지속 시간동안 적의 공격을 대신 맞아줌. 광역 공격은 막기 불가"
   },
   "32005": {
     "title": "원기 회복",
-    "desc": "자신에게 <color=red>{0:P0}</color>만큼 회복. 마나를 2만큼 회복"
+    "desc": "자신에게 <color=red>{0}</color>만큼 회복. 마나를 2만큼 회복"
   },
   "32006": {
-    "title": "재생의 바람",
-    "desc": "자신에게 <color=red>{0:P0}</color>만큼 회복. 자신에게 <color=red>{0:P0}</color>만큼 지속되는<link=\"2001\"><color=yellow>재생</color></link> 버프 부여"
+    "title": "성장",
+    "desc": "자신에게 <color=red>{0}</color>만큼 회복. 자신에게 {1}턴동안 지속되는 <link=\"2001\"><color=yellow>재생</color></link> 버프 부여"
   },
   "32007": {
     "title": "냉기 폭풍",
-    "desc": ""
+    "desc": "모든 적에게 <color=red>{0}</color>만큼 피해를 줌. 모든 적에게 {1}턴동안  <link=\"1008\"><color=yellow>빙결</color></link> 디버프 부여"
   },
   "32008": {
     "title": "빛의 분노",
-    "desc": ""
+    "desc": "선택한 적에게 <color=red>{0}</color>만큼 피해를 줌. 대상 적에게 {1} 동안 <link=\"1000\"><color=yellow>화상</color></link>과 <link=\"1003\"><color=yellow>암흑</color></link> 디버프 부여"
   },
   "33001": {
     "title": "어둠의 잔재",
@@ -129,6 +125,10 @@
   },
   "33004": {
     "title": "정체불명의 허기",
+    "desc": ""
+  },
+  "33005": {
+    "title": "끝나지 않는 후회",
     "desc": ""
   }
 }}
