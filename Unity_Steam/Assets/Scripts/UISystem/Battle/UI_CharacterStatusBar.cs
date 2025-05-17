@@ -10,6 +10,10 @@ public class UI_CharacterStatusBar : MonoBehaviour
 
     [SerializeField] private UI_StatusSlot[] m_arrStatus = null;
 
+    [SerializeField] private Image m_imgFill = null;
+    [SerializeField] private Color m_colorDefault;
+    [SerializeField] private Color m_colorShield;
+
     //Key : StatusID, Value : StatusSlot
     private Dictionary<uint, UI_StatusSlot> m_dicStatus = new Dictionary<uint, UI_StatusSlot>();
 
@@ -30,6 +34,18 @@ public class UI_CharacterStatusBar : MonoBehaviour
     {
         this.m_sliderHP.value = Mathf.Clamp(nHP, 0, int.MaxValue);
         this.m_textHP.text = $"{this.m_sliderHP.value}/{this.m_sliderHP.maxValue}";
+    }
+
+    public void AddShield(int nShield)
+    {
+        this.m_imgFill.color = this.m_colorShield;
+
+        this.m_textHP.text = $"{nShield}";
+    }
+
+    public void RemoveShield()
+    {
+        this.m_imgFill.color = this.m_colorDefault;
     }
 
     public void ResetStatus()

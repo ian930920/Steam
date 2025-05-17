@@ -43,8 +43,7 @@ public class Unit_User : BaseUnit
         if(base.CurrStat.GetStat(Stat_Character.eTYPE.Mana) == 0) return true;
         
         //상태이상 체크
-        if(base.GetStatus(TableData.TableStatus.eID.Fainting) != null) return true;
-        if(base.GetStatus(TableData.TableStatus.eID.Freezing) != null) return true;
+        if(base.m_isAttackable == false) return true;
 
         return false;
     }
@@ -63,6 +62,14 @@ public class Unit_User : BaseUnit
 
         //마나 채우기
         base.resetMana();
+
+        //공격불가라면
+        if(base.m_isAttackable == false)
+        {
+            //다음 턴으로 넘기기
+            SceneManager.Instance.GetCurrScene<BattleScene>().SkipUserTurn();
+            return;
+        }
 
         SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
     }

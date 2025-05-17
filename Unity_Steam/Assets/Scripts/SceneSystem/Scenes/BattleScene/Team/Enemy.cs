@@ -60,12 +60,6 @@ public class Enemy : Team
 
     public override void TurnStart()
     {
-        //상태이상 업데이트
-        for(int i = this.m_listChar.Count - 1; i >= 0; --i)
-        {
-            this.m_listChar[i].UpdateStatus();
-        }
-
         //맨 처음 적이 공격
         this.m_nCurrAttackerIdx = 0;
 

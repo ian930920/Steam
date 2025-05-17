@@ -10,6 +10,7 @@ public class UserData_Session : UserData<JsonData_Session>
 	public bool IsSessionStart => base.Data.IsSessionStart;
 	public bool IsScenarioWatch => base.Data.IsScenarioWatch;
 	public int Stage => base.Data.Stage;
+
 	public uint RouteID => base.Data.RouteID;
 	public int Step => base.Data.Step;
 
@@ -24,7 +25,11 @@ public class UserData_Session : UserData<JsonData_Session>
 
 	protected override void dataProcessing()
 	{
-
+		if(this.Step >= TableData.TableRouteStep.MAX_STEP)
+		{
+			base.Data.Step = 0;
+			base.Data.CurrSessionType = eSESSION_TYPE.Station;
+		}
 	}
 
 	public void StartSession()
@@ -108,6 +113,12 @@ public class UserData_Session : UserData<JsonData_Session>
             case eSHOP_TYPE.Summon:
 			{
 				int nCount = TableManager.Instance.Summon.GetRandomListCount(Popup_StationShop.COUNT_MAX_GOODS);
+				if(nCount == 0) //살수있는거 없으니까 다시 저장
+				{
+					this.saveShop(); 
+					return;
+				}
+
 				while(base.Data.ListShop.Count < nCount)
 				{
 					var summonID = TableManager.Instance.Summon.GetRandomData().tableID;
@@ -216,7 +227,7 @@ public class UserData_Session : UserData<JsonData_Session>
 	{
 		if(base.Data.ListStep.Count == 0) this.saveStep();
 
-		return (TableData.TableRouteStep.eSTEP_TYPE)base.Data.ListStep[base.Data.Step];
+		return (TableData.TableRouteStep.eSTEP_TYPE)base.Data.ListStep[this.Step];
 	}
 
 	public void NextStep()

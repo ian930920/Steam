@@ -31,8 +31,8 @@ namespace TableData
 
         public int GetRandomListCount(int nCount)
         {
-            var list = base.m_listData.Where(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false);
-            if(nCount < list.Count()) nCount = list.Count();
+            var buyableCount = base.m_listData.Count(data => UserDataManager.Instance.Summon.IsContainsSummon(data.tableID) == false);
+            if(nCount > buyableCount) nCount = buyableCount;
             return nCount;
         }
 
@@ -44,6 +44,9 @@ namespace TableData
 
         public uint GetRandomSummonID()
         {
+            var list = this.GetRandomList(1);
+            if(list.Count == 0) return 0;
+
             return this.GetRandomList(1)[0].tableID;
         }
 

@@ -54,10 +54,21 @@ public class Unit_Enemy : BaseUnit
     {
         base.SetMyTurn();
 
+        //상태이상 업데이트
+        base.UpdateStatus();
+
         //스킬턴 업데이트
         for(int i = 0, nMax = this.m_listSkill.Count; i < nMax; ++i)
         {
             this.m_listSkill[i].UpdateTurn();
+        }
+
+        //공격불가라면
+        if(base.m_isAttackable == false || base.m_isDead == true)
+        {
+            //다음 턴으로 넘기기
+            SceneManager.Instance.GetCurrScene<BattleScene>().ChangeTurn();
+            return;
         }
 
         //랜덤 스킬~
@@ -86,7 +97,7 @@ public class Unit_Enemy : BaseUnit
 
         yield return Utility_Time.YieldInstructionCache.WaitForSeconds(0.2f);
 
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup(TableManager.Instance.Skill.GetString_Title(base.CurrSkill.SkillID));
+        //UIManager.Instance.PopupSystem.OpenSystemTimerPopup(TableManager.Instance.Skill.GetString_Title(base.CurrSkill.SkillID));
         base.CurrSkill.UseSkill(this, this.DefaultStat, this.m_statAdditional);
     }
 

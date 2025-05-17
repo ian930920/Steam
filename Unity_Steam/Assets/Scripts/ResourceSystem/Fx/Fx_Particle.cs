@@ -12,7 +12,8 @@ public class Fx_Particle : BaseFx
 
         if(base.m_isLoop == false)
         {
-            yield return Utility_Time.YieldInstructionCache.WaitForSeconds(this.m_particle.main.duration + this.m_particle.main.startLifetime.constantMax);
+            if(base.m_isPreset == true) yield return Utility_Time.YieldInstructionCache.WaitForSeconds(this.m_particle.main.duration + this.m_particle.main.startLifetime.constantMax);
+            else yield return Utility_Time.YieldInstructionCache.WaitForSeconds(1);
 
             base.Stop();
         }

@@ -8,10 +8,12 @@ public abstract class BaseFx : MonoBehaviour
     [SerializeField] protected bool m_isPreset = false;
     protected UnityAction m_funcOnFinish = null;
 
+    /*
     private void Start()
     {
         if(this.m_isPreset == true) this.Play();
     }
+    */
 
     public void Play()
     {

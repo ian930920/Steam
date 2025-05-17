@@ -34,6 +34,20 @@ public class BattleScene : BaseScene
         //유저 세팅
         this.m_teamUser.InitStage();
 
+        if(UserDataManager.Instance.Session.IsEnding == true)
+        {
+            //끝이라면 엔딩 시나리오
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
+            return;
+        }
+        
+        if(UserDataManager.Instance.Session.Step >= TableData.TableRouteStep.MAX_STEP)
+        {
+            //역으로 보내기
+            SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
+            return;
+        }
+
         //스텝 종류에 따른 진행
         this.startCurrStep();
     }
@@ -190,8 +204,12 @@ public class BattleScene : BaseScene
                 //TODO 보상 테이블
                 //일단 정령 선물~~
                 uint summonID = TableManager.Instance.Summon.GetRandomSummonID();
-                UserDataManager.Instance.Summon.AddSummon(summonID);
-                UIManager.Instance.PopupSystem.OpenRewardSummonPopup(summonID, this.NextStep);
+                if(summonID != 0)
+                {
+                    UserDataManager.Instance.Summon.AddSummon(summonID);
+                    UIManager.Instance.PopupSystem.OpenRewardSummonPopup(summonID, this.NextStep);
+                }
+                else this.NextStep();
             }
             break;
 
@@ -214,7 +232,8 @@ public class BattleScene : BaseScene
             SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Scenario);
             return;
         }
-        else if(UserDataManager.Instance.Session.Step >= TableData.TableRouteStep.MAX_STEP)
+        
+        if(UserDataManager.Instance.Session.Step >= TableData.TableRouteStep.MAX_STEP)
         {
             //역으로 보내기
             SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Station);
@@ -340,6 +359,8 @@ public class BattleScene : BaseScene
     {
         this.IsUserClickable = isClickable;
 
+        this.m_csbtnChangeTurn.RefreshActive(isClickable);
+
         if(this.IsUserClickable == true) this.m_teamUser.SelectSkill();
     }
 
@@ -381,7 +402,7 @@ public class BattleScene : BaseScene
             default:
             {
                 //TODO 보상 테이블 참조
-                if(Random.Range(0, 1.0f) > 0.5f)
+                if(Random.Range(0, 1.0f) > 0.7f)
                 {
                     stItem reward = new stItem(TableData.TableItem.eID.Ticket, Random.Range(1, 5));
                     UIManager.Instance.PopupSystem.OpenRewardItemPopup(reward, null);

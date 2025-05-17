@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using static UnityEngine.Rendering.DebugUI;
 
 public abstract class BaseUnit : MonoBehaviour
 {
@@ -32,12 +33,13 @@ public abstract class BaseUnit : MonoBehaviour
 
     protected UI_CharacterStatusBar m_uiStatusBar = null;
 
-    private bool isDead = false;
+    protected bool m_isDead = false;
+    protected bool m_isAttackable = true;
 
     public virtual void Init(uint charID)
     {
         this.CharID = charID;
-        this.isDead = false;
+        this.m_isDead = false;
 
         this.transform.localPosition = Vector3.zero;
         this.gameObject.SetActive(true);
@@ -60,8 +62,13 @@ public abstract class BaseUnit : MonoBehaviour
     {
         //타겟 모두 비우고
         this.CurrSkill = null;
+        this.m_isAttackable = true;
 
         //각 하위 클래스에서 사용할 스킬 정해
+
+        //공격할 수 있는 지 확인
+        if(this.GetStatus(TableData.TableStatus.eID.Freezing) != null) this.m_isAttackable = false;
+        if(this.GetStatus(TableData.TableStatus.eID.Fainting) != null) this.m_isAttackable = false;
     }
 
     public void SetCurrSkill(Skill skill)
@@ -86,22 +93,30 @@ public abstract class BaseUnit : MonoBehaviour
         var listStatus = this.m_dicStatus.Values.ToList();
         for(int i = listStatus.Count - 1; i >= 0; --i)
         {
-            listStatus[i].UpdateTurn();
-            
-            //실행
-            listStatus[i].DoStatus(this);
-
-            //죽어버리면 ㄴㄴ 그만
-            if(this.gameObject.activeSelf == false) return;
-         
-            bool isRemove = this.m_uiStatusBar.UpdateStatus((uint)listStatus[i].eStatusID, listStatus[i].RemainTurn);
-            if(isRemove == true) this.m_dicStatus.Remove((uint)listStatus[i].eStatusID);
+            this.UpdateStatus((uint)listStatus[i].eStatusID);
         }
+    }
+
+    public void UpdateStatus(uint statusID)
+    {
+        if(this.m_dicStatus.ContainsKey(statusID) == false) return;
+
+        var status = this.m_dicStatus[statusID];
+        status.UpdateTurn();
+            
+        //실행
+        status.DoStatus(this);
+
+        //죽어버리면 ㄴㄴ 그만
+        if(this.gameObject.activeSelf == false) return;
+         
+        bool isRemove = this.m_uiStatusBar.UpdateStatus(statusID, status.RemainTurn);
+        if(isRemove == true) this.m_dicStatus.Remove(statusID);
     }
 
     public void Damaged(stDamage stDamage)
     {
-        if(this.isDead == true)
+        if(this.m_isDead == true)
         {
             ProjectManager.Instance.LogWarning("죽었는데 딜 왜 들어오냐?");
             return;
@@ -115,21 +130,30 @@ public abstract class BaseUnit : MonoBehaviour
             return;
         }
 
-        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Def) != null) stDamage.Value = (int)(stDamage.Value * 1.5f);
+        var def = 1.0f;
+        if(this.GetStatus(TableData.TableStatus.eID.Weakened_Def) != null) def -= 0.5f;
+        if(this.GetStatus(TableData.TableStatus.eID.Defense_Enhancement) != null) def += 0.5f;
+        stDamage.Value = (int)(stDamage.Value * def);
+
+        /*
         if(this.GetStatus(TableData.TableStatus.eID.Attack_Enhancement) != null) stDamage.Value = (int)(stDamage.Value * 1.5f);
         if(this.GetStatus(TableData.TableStatus.eID.Weakened_Atk) != null) stDamage.Value = (int)(stDamage.Value * 0.5f);
-        if(this.GetStatus(TableData.TableStatus.eID.Defense_Enhancement) != null) stDamage.Value = (int)(stDamage.Value * 0.5f);
+        */
 
         if(this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) > stDamage.Value)
         {
             var shield = this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) - stDamage.Value;
             this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, shield);
+
+            this.m_uiStatusBar.AddShield(shield);
         }
         else
         {
             var damage = stDamage.Value -= this.CurrStat.GetStat(Stat_Character.eTYPE.Shield);
             var currHP = this.CurrStat.GetStat(Stat_Character.eTYPE.HP);
             this.CurrStat.SetStat(Stat_Character.eTYPE.HP, currHP - damage);
+
+            this.m_uiStatusBar.RemoveShield();
         }
 
         //데미지
@@ -144,7 +168,7 @@ public abstract class BaseUnit : MonoBehaviour
 
     public void Heal(stDamage stDamage)
     {
-        if(this.isDead == true)
+        if(this.m_isDead == true)
         {
             ProjectManager.Instance.LogWarning("죽었는데 힐 왜 들어오냐?");
             return;
@@ -162,16 +186,20 @@ public abstract class BaseUnit : MonoBehaviour
     {
         var shield = this.CurrStat.GetStat(Stat_Character.eTYPE.Shield) + value;
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, shield);
+
+        this.m_uiStatusBar.AddShield(shield);
     }
 
     public void ResetShield()
     {
         this.CurrStat.SetStat(Stat_Character.eTYPE.Shield, 0);
+        this.m_uiStatusBar.RemoveShield();
+        this.m_uiStatusBar.RefreshGauge(this.CurrStat.GetStat(Stat_Character.eTYPE.HP));
     }
 
     public void AddStatus(uint statusID, int turn)
     {
-        if(this.isDead == true) return;
+        if(this.m_isDead == true) return;
 
         if(this.m_dicStatus.ContainsKey(statusID) == false)
         {
@@ -201,7 +229,7 @@ public abstract class BaseUnit : MonoBehaviour
     {
         ProjectManager.Instance.Log("사망");
 
-        this.isDead = true;
+        this.m_isDead = true;
         
         this.gameObject.SetActive(false);
 

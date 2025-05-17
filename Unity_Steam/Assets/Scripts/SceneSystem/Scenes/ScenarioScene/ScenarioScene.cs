@@ -40,6 +40,8 @@ public class ScenarioScene : BaseScene
 
     private void finishSenario()
     {
+        this.m_textDesc.gameObject.SetActive(false);
+
         if(UserDataManager.Instance.Session.IsEnding == true)
         {
             //엔딩 크레딧보여주고 처음으로 돌아가기

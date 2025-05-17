@@ -77,15 +77,7 @@ public class Status
             case TableData.TableStatus.eID.Fainting:
             case TableData.TableStatus.eID.Freezing:
             {
-                //행동 불가
-                if(SceneManager.Instance.GetCurrScene<BattleScene>().IsUserTurn == true)
-                {
-                    SceneManager.Instance.GetCurrScene<BattleScene>().SkipUserTurn();
-                }
-                else
-                {
-                    SceneManager.Instance.GetCurrScene<BattleScene>().ChangeTurn();
-                }
+                //공격 할때 대상자에서 적용
             }
             break;
 

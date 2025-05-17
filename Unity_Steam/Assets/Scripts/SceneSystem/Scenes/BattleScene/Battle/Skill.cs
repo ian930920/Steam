@@ -95,7 +95,9 @@ public class Skill
         //룬 적용
         acc += statAdditional.GetStat(Stat_Additional.eTYPE.Acc);
 
-        return acc >= UnityEngine.Random.Range(0, 1.0f);
+        var randomHit = UnityEngine.Random.Range(0.0f, 1.0f);
+        ProjectManager.Instance.Log($"명중률 {acc} 랜덤 값 {randomHit}");
+        return acc >= randomHit;
     }
 
     private bool isCritical(Stat_Additional statAdditional)
@@ -108,14 +110,19 @@ public class Skill
         //룬 적용
         crit += statAdditional.GetStat(Stat_Additional.eTYPE.Crit);
 
-        return UnityEngine.Random.Range(0, 1.0f) <= crit;
+        return UnityEngine.Random.Range(0.0f, 1.0f) <= crit;
     }
 
     public stDamage GetResultDamage(Stat_Character statDefault, Stat_Additional statAdditional, bool isMissable = true)
     {
         stDamage stDamage = new stDamage(TableManager.Instance.Skill.GetDefaultDamage(this.SkillID, statDefault, statAdditional));
 
-        if(this.isCritical(statAdditional) == true)
+        var atk = 1.0f;
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Weakened_Atk) != null) atk -= 0.5f;
+        if(this.m_funcGetStatus.Invoke(TableData.TableStatus.eID.Attack_Enhancement) != null) atk += 0.5f;
+        stDamage.Value = (int)(stDamage.Value * atk);
+
+        if(stDamage.Value > 0 && this.isCritical(statAdditional) == true)
         {
             stDamage.IsCritical = true;
             stDamage.Value = (int)(stDamage.Value * CRITICAL_DMG);
@@ -163,6 +170,9 @@ public class Skill
                             if(damage.eSkillType != stDamage.eSKILL_TYPE.Miss) caster.Heal(new stDamage((int)(damage.Value * 0.5f)));
                         }
 
+                        //시전자에게 암흑디버프가있었다면 지우기
+                        caster.UpdateStatus((uint)TableData.TableStatus.eID.Dark);
+
                         //턴 끝났다고 지우기
                         SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(target);
                     });
@@ -206,6 +216,13 @@ public class Skill
                     ObjectPoolManager.Instance.PlayEffect(this.m_data.resID, target.transform.position, () =>
                     {
                         target.AddShield(this.GetResultDamage(statDefault, statAdditional).Value);
+
+                        //상태이상 적용
+                        for(int j = 0, nStatusMax = this.m_data.listStatusID.Count; j < nStatusMax; ++j)
+                        {
+                            //TODO Status 명중타입따라서
+                            target.AddStatus(this.m_data.listStatusID[j], this.m_data.dur);
+                        }
 
                         //턴 끝났다고 지우기
                         SceneManager.Instance.GetCurrScene<BattleScene>().RemoveTurnEvent(target);

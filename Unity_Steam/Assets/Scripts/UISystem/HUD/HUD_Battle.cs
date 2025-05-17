@@ -112,7 +112,7 @@ public class HUD_Battle : BaseHUD
 
     public void OnOptionClicked()
     {
-        UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
+        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Title);
     }
 
     public void OnRouteInfo(bool isActive)

@@ -110,11 +110,12 @@ public class User : Team
 
     public override bool CheckTurnFinish()
     {
+        SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
+        
         if(this.isTurnFinish() == false)
         {
             //스킬 사용할 수 있다고 세팅
             this.m_imgFinishTurn.enabled = false;
-            SceneManager.Instance.GetCurrScene<BattleScene>().User_SetClickable(true);
             return false;
         }
 

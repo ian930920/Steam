@@ -118,12 +118,12 @@ public abstract class ScrollPopup : BasePopup
     {
 		base.OpenPopup(nOreder, funcClose);
 
-		if(this.IsScrolled() == true)
-		{
-			this.updateAllScrollerData();
-			this.ChangeTab(0);
-			this.ResetAllScroller();
-		}
+		this.updateAllScrollerData();
+		this.ChangeTab(0);
+		this.ResetAllScroller();
+		//if(this.IsScrolled() == true)
+		//{
+		//}
 
         return this;
     }

@@ -160,7 +160,7 @@ public class Stat_Additional
     public TableData.TableStatus.eEFFECT_TYPE GetEffectType(eTYPE eStatType)
     {
         int nStatType = (int)eStatType;
-        if(this.m_dicStat.ContainsKey(nStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
+        if(this.m_dicEffectType.ContainsKey(nStatType) == false) return TableData.TableStatus.eEFFECT_TYPE.None;
 
         return (TableData.TableStatus.eEFFECT_TYPE)this.m_dicEffectType[nStatType];
     }

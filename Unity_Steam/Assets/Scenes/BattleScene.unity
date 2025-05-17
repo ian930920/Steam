@@ -5228,11 +5228,11 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775189998}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4b08889d3b9e82c4e8aa2126fc09b567, type: 3}
-  m_Resource: {fileID: 8300000, guid: 4b08889d3b9e82c4e8aa2126fc09b567, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 211cb2ee777d4f147a841109c4f17cdb, type: 3}
+  m_Resource: {fileID: 8300000, guid: 211cb2ee777d4f147a841109c4f17cdb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -6614,7 +6614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5164178704720697696, guid: 2e9831630a422124983d915e438fa2e2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5164178704720697696, guid: 2e9831630a422124983d915e438fa2e2, type: 3}
       propertyPath: m_SizeDelta.y
@@ -6682,11 +6682,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5164178704886881273, guid: 2e9831630a422124983d915e438fa2e2, type: 3}
       propertyPath: m_text
-      value: "\uC635\uC158"
+      value: "\uD0C0\uC774\uD2C0\uB85C \uB098\uAC00\uAE30"
       objectReference: {fileID: 0}
     - target: {fileID: 5164178704886881273, guid: 2e9831630a422124983d915e438fa2e2, type: 3}
       propertyPath: m_fontSize
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8697170014796935059, guid: 2e9831630a422124983d915e438fa2e2, type: 3}
       propertyPath: m_eventOnClicked.m_PersistentCalls.m_Calls.Array.size

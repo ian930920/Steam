@@ -82,9 +82,7 @@ public class Popup_RuneEquip : ScrollPopup
     {
         this.m_textSkillDesc.text = TableManager.Instance.Skill.GetString_Desc(this.m_summonData.SkillID, this.m_summonData.Damage);
 
-        var defaultCooldown = TableManager.Instance.Skill.GetData(this.m_summonData.SkillID).cooldown;
-        var addCooldown = this.m_summonData.StatAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
-        this.m_uiSkillTurn.RefreshTurn((int)(Mathf.Clamp(defaultCooldown - addCooldown, 0, defaultCooldown)), true);
+        this.m_uiSkillTurn.RefreshTurn(TableManager.Instance.Skill.GetCooldownTurn(this.m_summonData.SkillID, this.m_summonData.StatAdditional), true);
         this.m_uiSkillTurn.SetTextColor(this.m_summonData.StatAdditional.GetEffectType(Stat_Additional.eTYPE.Cooldown));
 
         this.m_uiCostInfo.Init(this.m_summonData.StatDefault.GetStat(Stat_Character.eTYPE.Mana));

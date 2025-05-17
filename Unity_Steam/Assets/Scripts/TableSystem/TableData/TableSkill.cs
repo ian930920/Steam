@@ -101,7 +101,10 @@ namespace TableData
         {
             if(base.ContainsKey(tableID) == false) return 0;
 
-            return base.GetData(tableID).cooldown - (int)statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
+            var cooldown = base.GetData(tableID).cooldown;
+            if(cooldown == 1) return cooldown;
+
+            return cooldown - (int)statAdditional.GetStat(Stat_Additional.eTYPE.Cooldown);
         }
     }
 
