@@ -8,6 +8,7 @@ public enum ePOPUP_ID
     System = 40001,
     System_Timer,
     System_Confirm,
+    Debug,
 
     SummonSelect = 41001,
     Summon,

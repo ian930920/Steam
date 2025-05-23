@@ -67,15 +67,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: X 4
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ef36b3226e696b84482e8717cfbb9f60, type: 2}
-  m_sharedMaterial: {fileID: -6624372157664641303, guid: ef36b3226e696b84482e8717cfbb9f60, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2784a5d38a65a784b8f012d5a5f20e68, type: 2}
+  m_sharedMaterial: {fileID: 7851556493957229139, guid: 2784a5d38a65a784b8f012d5a5f20e68, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4287060196
+  m_fontColor: {r: 0.89411765, g: 0.34509805, b: 0.5294118, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_text: {fileID: 5346489959614409537}
-  m_colorDefault: {r: 1, g: 1, b: 1, a: 1}
+  m_colorDefault: {r: 0.89411765, g: 0.34509805, b: 0.5294118, a: 1}
   m_colorPositive: {r: 0, g: 1, b: 0, a: 1}
   m_colorNegative: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2203144736718691002

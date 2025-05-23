@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Button))]
-[RequireComponent(typeof(Animator))]
 public class BaseButton : MonoBehaviour
 {
     public enum eADD_LISTENER_TYPE
@@ -13,14 +10,12 @@ public class BaseButton : MonoBehaviour
         Set,
         Add
     }
-
+    
     private Button m_btn = null;
 
     [SerializeField] protected UnityEvent m_eventOnClicked = null;
 
-    protected Color BtnColor { set => this.m_btn.image.color = value; }
-
-    public bool IsInit { get; private set; } = false;
+    protected bool IsInit { get; private set; } = false;
 
     virtual public void InitButton()
     {
@@ -31,7 +26,7 @@ public class BaseButton : MonoBehaviour
         this.m_btn.onClick.RemoveAllListeners();
         this.m_btn.onClick.AddListener(this.OnClicked);
 
-        //초기화 완료
+        //초기화 완료             
         this.IsInit = true;
     }
 

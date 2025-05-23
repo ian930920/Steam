@@ -30,7 +30,7 @@ public class HUD_Station : BaseHUD
 
     public void OnOptionClicked()
     {
-        SceneManager.Instance.ChangeScene(SceneManager.eSCENE_ID.Title);
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.Debug);
     }
 
     public void OpenRouteSelect()

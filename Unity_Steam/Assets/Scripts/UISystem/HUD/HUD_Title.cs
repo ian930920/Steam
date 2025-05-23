@@ -22,6 +22,11 @@ public class HUD_Title : BaseHUD
         UIManager.Instance.PopupSystem.OpenSystemTimerPopup("TODO 옵션 팝업");
     }
 
+    public void OnDebugClicked()
+    {
+        UIManager.Instance.PopupSystem.OpenPopup(ePOPUP_ID.Debug);
+    }
+
     public void OnQuitClicked()
     {
         ProjectManager.Instance.QuitGame();

@@ -8,15 +8,6 @@ public class UI_Reactive_Button : UI_Reactive
 {
     public enum eTYPE
     {
-        Add,
-        ReceiveOrder,
-        Clean,
-        Build,
-        AD,
-        VisitStamp,
-        BuildingDetail,
-        Event,
-        Gambling,
         End
     }
 
@@ -38,21 +29,17 @@ public class UI_Reactive_Button : UI_Reactive
         }
     }
 
+    private void Awake()
+    {
+        this.m_btn.InitButton();
+    }
+
     public void ActiveUI(eTYPE eType, Transform transTarget, UnityAction funcOnClick)
     {
-        if(this.m_btn.IsInit == false) this.m_btn.InitButton();
-
         this.Type = eType;
 
         this.m_funcOnClick = funcOnClick;
-
-        UI_ReactiveGroup.eMODE eMode = UI_ReactiveGroup.eMODE.Default;
-        if(this.m_eType == eTYPE.Build) eMode = UI_ReactiveGroup.eMODE.Build;
-
-        if(this.m_eType == eTYPE.Clean) this.gameObject.tag = "Clean";
-        else this.gameObject.tag = "Untagged";
-
-        base.ActiveUI(transTarget, eMode);
+        base.ActiveUI(transTarget);
 
         this.transform.SetAsLastSibling();
     }

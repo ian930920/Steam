@@ -6,15 +6,16 @@ using UnityEngine.UI;
 
 public class Popup_Event : BasePopup
 {
+    [Header("이벤트 내용")]
     [SerializeField] private GameObject m_gobjEvent = null;
     [SerializeField] private TextMeshProUGUI m_textTitle = null;
     [SerializeField] private TypewriterByCharacter m_textDesc = null;
-    
-    [SerializeField] private GameObject m_gobjResult = null;
-    [SerializeField] private TypewriterByCharacter m_textResult = null;
-
     [SerializeField] private GameObject m_gobjBtn = null;
     [SerializeField] private Button_Event_Option[] m_arrBtnOption = null;
+    
+    [Space(5)][Header("이벤트 결과")]
+    [SerializeField] private GameObject m_gobjResult = null;
+    [SerializeField] private TypewriterByCharacter m_textResult = null;
     [SerializeField] private Button m_btnClose = null;
 
     private TableData.TableData_Event m_data = null;
